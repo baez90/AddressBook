@@ -10,12 +10,20 @@ import java.util.logging.Logger;
  */
 public class TestEncryption extends TestCase {
 
+    private static final String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!§$%&/()=?";
     private static Logger logger = Logger.getLogger(IEncryption.class.getName());
     private File sourceFile = new File("test.txt");
     private File encryptedFile = new File("test.encrypted");
     private File decryptedFile = new File("test.decrypted");
+    private String password = "";
 
     public void setUp() {
+
+        while (password.length() < 16 && password.length() != 16) {
+            int random = ((int) (Math.random() * validCharacters.length()));
+            password += validCharacters.charAt(random);
+        }
+
         try {
             sourceFile.createNewFile();
             FileOutputStream outputStream = new FileOutputStream(sourceFile);
@@ -29,8 +37,8 @@ public class TestEncryption extends TestCase {
     }
 
     public void testEncryptionDecryption() {
-        IEncryption.encryptFile("])nRL.JhG2>P>:ap", sourceFile.getPath(), encryptedFile.getPath());
-        IEncryption.decryptFile("])nRL.JhG2>P>:ap", encryptedFile.getPath(), decryptedFile.getPath());
+        IEncryption.encryptFile(password, sourceFile.getPath(), encryptedFile.getPath());
+        IEncryption.decryptFile(password, encryptedFile.getPath(), decryptedFile.getPath());
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(decryptedFile), Charset.forName("UTF-8")));
