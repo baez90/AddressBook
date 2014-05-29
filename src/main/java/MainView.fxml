@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" hgap="10" prefHeight="432.0" prefWidth="519.0" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <BorderPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                        <MenuItem mnemonicParsing="false" text="Neues Adressbuch" />
+                        <MenuItem mnemonicParsing="false" text="Adressbuch öffnen" />
+                    <MenuItem mnemonicParsing="false" onAction="#QuitApplication" text="Beenden" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Kontakte">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt" fx:id="CreateContactItem" />
+                    <MenuItem mnemonicParsing="false" text="Kontakt bearbeiten" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <TableView BorderPane.alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn prefWidth="100.0" text="Nachname" />
+                <TableColumn prefWidth="85.0" text="Vorname" />
+                  <TableColumn prefWidth="92.0" text="Handy-Nr." />
+                  <TableColumn prefWidth="119.0" text="Festnetz-Nr." />
+                  <TableColumn prefWidth="75.0" text="Email" />
+              </columns>
+            </TableView>
+         </center>
+      </BorderPane>
+   </children>
+</GridPane>

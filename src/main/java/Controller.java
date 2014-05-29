@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,7 +18,7 @@ public class Controller {
 
     public void CreateContactClick(ActionEvent actionEvent) {
         try {
-            Parent createContactRoot = FXMLLoader.load(getClass().getResource("FXMLViews/CreateContact.fxml"));
+            Parent createContactRoot = FXMLLoader.load(getClass().getResource("../FXMLViews/CreateContact.fxml"));
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Neuer Kontakt");
             createContactStage.setScene(new Scene(createContactRoot));
@@ -35,5 +36,9 @@ public class Controller {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
+    }
+
+    public void QuitApplication(ActionEvent actionEvent) {
+        Platform.exit();
     }
 }
