@@ -1,26 +1,19 @@
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class Controller {
-
-    @FXML
-    TextField FirstNameBox;
-    @FXML
-    TextField NameBox;
-    @FXML
-    TextField CellNrBox;
-    @FXML
-    TextField PhoneNrBox;
-    @FXML
-    TextField MailBox;
+    public TextField FirstNameBox;
+    public TextField NameBox;
+    public TextField CellNrBox;
+    public TextField PhoneNrBox;
+    public TextField MailBox;
 
     public void CreateContactClick(ActionEvent actionEvent) {
         try {
@@ -35,7 +28,7 @@ public class Controller {
     }
 
     public void SaveNewContactClick(ActionEvent actionEvent) {
-
+        //TODO
     }
 
     public void CancelNewContactClick(ActionEvent actionEvent) {
