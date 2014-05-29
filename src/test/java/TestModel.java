@@ -27,6 +27,7 @@ public class TestModel extends TestCase {
         contactList.add(Hans);
 
         //TODO Contact-Suche testen
+        //TODO Contact-Sorierung testen
 
         assertEquals(Heinz.getName(), "Heinz");
         assertEquals(Ludwig.getName(), "Eder");
