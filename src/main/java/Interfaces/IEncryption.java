@@ -25,12 +25,21 @@ public interface IEncryption {
      * @return boolean ob Datei erfolgreich verschlüsselt werden konnte
      */
     public static boolean encryptFile(String password, String sourcePath, String targetPath) {
+        /*
+        Dateien für die Input- und OutputStreams
+         */
         File sourceFile = new File(sourcePath);
         File targetFile = new File(targetPath);
+        /*
+        Input-, Output- und CipherStream Objekte zum lesen, schreiben und entschlüsseln von Dateien
+         */
         FileInputStream fis;
         FileOutputStream fos;
         CipherInputStream cis;
 
+        /*
+        Passwort-Länge für AES anpassen
+         */
         if (password.length() > 15) {
             password = password.substring(0, 15);
         } else {
@@ -39,12 +48,26 @@ public interface IEncryption {
             }
         }
 
+        /*
+        Key anlegen
+        */
         SecretKeySpec secretKey = new SecretKeySpec(password.getBytes(), "AES");
         try {
+            /*
+            Cipher-Modus festlegen
+             */
             Cipher encrypt = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
             encrypt.init(Cipher.ENCRYPT_MODE, secretKey);
+
+            /*
+            Datei lesen -> byte-Array entschlüsseln -> Ergebnis schreiben
+             */
             fis = new FileInputStream(sourceFile);
             cis = new CipherInputStream(fis, encrypt);
+
+            /*
+            Bei Bedarf Ziel-Datei anlegen
+             */
             if (!targetFile.exists()) {
                 targetFile.createNewFile();
             }
@@ -56,6 +79,10 @@ public interface IEncryption {
                 fos.write(bTemp, 0, iTemp);
                 iTemp = cis.read(bTemp);
             }
+
+            /*
+            Schließen aller Streams
+             */
 
             fos.flush();
             fos.close();
