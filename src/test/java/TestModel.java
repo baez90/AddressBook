@@ -15,9 +15,9 @@ public class TestModel extends TestCase {
     private Contact Hans;
 
     public void setUp() {
-        Heinz = new Contact("Karl", "Heinz", "heinz.hat@keineAdresse.de", LocalDate.of(15, 2, 1985));
-        Ludwig = new Contact("Ludwig", "Eder", "ludwig.eder@keineAdresse.de", LocalDate.of(22, 1, 1987));
-        Hans = new Contact("Hans", "Eicher", "hans.eicher@keineAdresse.de", LocalDate.of(30, 8, 1970));
+        Heinz = new Contact("Karl", "Heinz", "heinz.hat@keineAdresse.de", LocalDate.of(1985, 2, 21));
+        Ludwig = new Contact("Ludwig", "Eder", "ludwig.eder@keineAdresse.de", LocalDate.of(1987, 1, 22));
+        Hans = new Contact("Hans", "Eicher", "hans.eicher@keineAdresse.de", LocalDate.of(1970, 8, 30));
     }
 
     public void testModel() {
