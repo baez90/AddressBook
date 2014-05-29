@@ -40,10 +40,10 @@ public interface IEncryption {
         /*
         Passwort-Länge für AES anpassen
          */
-        if (password.length() > 15) {
+        if (password.length() > 16 && password.length() != 16) {
             password = password.substring(0, 15);
         } else {
-            while (password.length() < 16) {
+            while (password.length() < 16 && password.length() != 16) {
                 password += "0";
             }
         }
@@ -136,10 +136,10 @@ public interface IEncryption {
         /*
         Passwort-Länge für AES anpassen
          */
-        if (password.length() > 15) {
+        if (password.length() > 16 && password.length() != 16) {
             password = password.substring(0, 15);
         } else {
-            while (password.length() < 16) {
+            while (password.length() < 16 && password.length() != 16) {
                 password += "0";
             }
         }
