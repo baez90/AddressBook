@@ -37,7 +37,7 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#SaveAddressBookEncryptedClick"
                                           text="Adressbuch verschlüsselt speichern"/>
-                                <MenuItem mnemonicParsing="false" onAction="#OpenDecryptedAddressBookClick"
+                                <MenuItem mnemonicParsing="false" onAction="#OpenEncryptedAddressBookClick"
                                           text="Verschlüsseltes Adressbuch öffnen"/>
                             </items>
                         </Menu>

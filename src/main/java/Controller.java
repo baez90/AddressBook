@@ -1,16 +1,21 @@
 import Interfaces.IContact;
+import Interfaces.IEncryption;
 import Model.ContactList;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +58,23 @@ public class Controller {
      * TextField für Suchbegriffe
      */
     public TextField SearchBox;
+    /**
+     * Button im Verschlüsselt-Speichern Dialog,
+     * Button-Text wird verändert nach erfolgreichem speichern
+     */
+    public Button SaveEncryptedCancelButton;
+    /**
+     * PasswordField zum eingeben des Verschlüsselungspassworts
+     */
+    public PasswordField PasswordBox;
+    /**
+     * PasswordField zum wiederholen des Passworts um Schreibweise zu kontrollieren
+     */
+    public PasswordField PasswordRepeatBox;
+    /**
+     * TextField zum anzeigen des Speicherpfads nach dem Speichern zur Übersichtlichkeit
+     */
+    public TextField EncryptedSavePathBox;
 
     /**
      * Liste aller Kontakte aus der Datenbank
@@ -63,6 +85,7 @@ public class Controller {
      * Init-Methode, erstellt die benötigten Tabellen
      */
     private void initContactTable() {
+        ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         //TODO ContactTable mit Einträgen aus der DB füllen
     }
 
@@ -86,17 +109,6 @@ public class Controller {
      */
     public void SaveNewContactClick() {
         //TODO Kontakt zu Liste hinzufügen, Table updaten und Kontakt in DB speichern
-    }
-
-    /**
-     * Bricht anlegen eines neuen Kontakts ab
-     *
-     * @param actionEvent Standard-Event
-     */
-    public void CancelNewContactClick(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
     }
 
     /**
@@ -124,8 +136,6 @@ public class Controller {
             contactList.setDbPath(filePath);
             contactList.initDB();
         }
-
-
     }
 
     /**
@@ -142,6 +152,7 @@ public class Controller {
         if (file != null) {
             contactList.setDbPath(file.getAbsolutePath());
             contactList.getContactsFromDB();
+            initContactTable();
         }
     }
 
@@ -159,11 +170,74 @@ public class Controller {
         //TODO Kontakte in der Liste suchen
     }
 
+    /**
+     * Ruft den Dialog zum verschlüsselten Speichern des Adressbuchs auf
+     */
     public void SaveAddressBookEncryptedClick() {
-        //TODO Adressbuch-DB verschlüsselt ablegen
+        try {
+            Parent createContactRoot = FXMLLoader.load(getClass().getResource("SaveEncrypted.fxml"));
+            Stage createContactStage = new Stage();
+            createContactStage.setTitle("Adressbuch verschlüsselt speichern");
+            createContactStage.setScene(new Scene(createContactRoot));
+            createContactStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void OpenDecryptedAddressBookClick() {
-        //TODO verschlüsselte DB entschlüsseln und speichern
+    /**
+     * Ruft Dialog zum öffnen eines verschlüsselten Adressbuchs auf
+     */
+    public void OpenEncryptedAddressBookClick() {
+        try {
+            Parent createContactRoot = FXMLLoader.load(getClass().getResource("OpenEncrypted.fxml"));
+            Stage createContactStage = new Stage();
+            createContactStage.setTitle("Verschlüsseltes Adressbuch öffnen");
+            createContactStage.setScene(new Scene(createContactRoot));
+            createContactStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Speichert das aktuelle Adressbuch verschlüsselt an einen Pfad welcher ausgewählt wird
+     */
+    public void SaveEncryptedClick() {
+        if (contactList.getDbPath() == null || contactList.getDbPath() == "") {
+            Dialogs.create().title("Warnung").masthead("Kein Adressbuch vorhanden").message("Es wurde weder ein Adressbuch geöffnet, noch eines angelegt.").showWarning();
+            return;
+        } else if (!PasswordBox.getText().equals(PasswordRepeatBox.getText())) {
+            Dialogs.create().title("Warnung").masthead("Passwortfehler").message("Die Passwörter stimmen nicht überein").showWarning();
+            return;
+        }
+        /*
+        Dialog zum auswählen des Speicherorts
+         */
+        FileChooser chooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("crypt (*.crypt)", "*.crypt");
+        chooser.getExtensionFilters().add(extensionFilter);
+
+        File file = chooser.showSaveDialog(new Stage());
+        if (file != null) {
+            if (IEncryption.encryptFile(PasswordBox.getText(), contactList.getDbPath(), file.getAbsolutePath())) {
+                EncryptedSavePathBox.setText(file.getAbsolutePath());
+                Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showConfirm();
+            }
+
+        }
+        SaveEncryptedCancelButton.setText("Schließen");
+    }
+
+    /**
+     * Schließt etwaige Dialoge
+     *
+     * @param actionEvent Event um auf den Dialog zugreifen zu können
+     */
+    public void CancelModalClick(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }

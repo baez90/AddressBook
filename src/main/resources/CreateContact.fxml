@@ -77,7 +77,7 @@
         <HBox BorderPane.alignment="CENTER" prefWidth="200.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#SaveNewContactClick" text="Speichern"/>
-                <Button mnemonicParsing="false" onAction="#CancelNewContactClick" text="Abbrechen"/>
+                <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen"/>
             </children>
             <padding>
                 <Insets bottom="5.0" left="10.0" top="5.0"/>

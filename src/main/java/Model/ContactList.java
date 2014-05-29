@@ -56,6 +56,15 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
     }
 
     /**
+     * Standard-Getter für Pfad zum Datenbank-File
+     *
+     * @return Pfad zum Datenbank-File
+     */
+    public String getDbPath() {
+        return DbPath;
+    }
+
+    /**
      * Standard-Setter für Pfad zum Datenbank-File
      *
      * @param dbPath Absoluter Pfad zum Datenbank-File

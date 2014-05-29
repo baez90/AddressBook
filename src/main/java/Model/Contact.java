@@ -2,6 +2,7 @@ package Model;
 
 import Interfaces.IContact;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public class Contact implements IContact {
      */
     private String MailAddress;
     /**
+     * Geburtstag des Kontakts
+     */
+    private LocalDate BirthDate;
+    /**
      * Liste der Rufnummern für einen Kontakt
      */
     private NumberList ContactNumbers;
@@ -38,11 +43,12 @@ public class Contact implements IContact {
      * @param name Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
-    public Contact(String firstName, String name, String mailAddress) {
+    public Contact(String firstName, String name, String mailAddress, LocalDate birthDate) {
         ContactID = 0;
         FirstName = firstName;
         Name = name;
         MailAddress = mailAddress;
+        BirthDate = birthDate;
         ContactNumbers = new NumberList();
     }
 
@@ -53,11 +59,12 @@ public class Contact implements IContact {
      * @param name Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
-    public Contact(int id, String firstName, String name, String mailAddress) {
+    public Contact(int id, String firstName, String name, String mailAddress, LocalDate birthDate) {
         ContactID = id;
         FirstName = firstName;
         Name = name;
         MailAddress = mailAddress;
+        BirthDate = birthDate;
         ContactNumbers = new NumberList();
     }
 
@@ -137,6 +144,23 @@ public class Contact implements IContact {
      */
     public void setContactNumbers(NumberList contactNumbers) {
         ContactNumbers = contactNumbers;
+    }
+
+    /**
+     * Standard-Getter für Geburtsdatum des Kontakts
+     * @return Geburtsdatum als LocalDate
+     */
+    public LocalDate getBirthDate() {
+        return BirthDate;
+    }
+
+    /**
+     * Standard-Setter für Geburtstag des Kontakts
+     *
+     * @param birthDate Geburtstag als LocalDate
+     */
+    public void setBirthDate(LocalDate birthDate) {
+        BirthDate = birthDate;
     }
 
     /**
