@@ -12,26 +12,6 @@ import java.util.LinkedList;
  */
 public class ContactList extends LinkedList<IContact> implements IContactList {
     /**
-     * Name des verwendeten Datenbank-Treibers
-     */
-    private String DriverName = "org.sqlite.JDBC";
-    /**
-     * Pfad zum SQLite Datenbank-Files
-     */
-    private String DbPath;
-
-    /**
-     * Liest alle Kontakte aus der DB
-     *
-     * @return Liste aller vorhandenen Kontakte in der Datenbank
-     */
-    @Override
-    public IContactList getContactsFromDB() {
-        //TODO Kontakte aus DB lesen und in Liste parsen, Rufnummern berücksichtigen
-        return null;
-    }
-
-    /**
      * Sucht Kontakte in der aktuellen Liste
      * Sollte suche in Vorname, Nachname, Email-Adresse und aller Telefonnummern ermöglichen
      *
@@ -42,34 +22,5 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
     public IContactList searchContacts(String searchString) {
         //TODO Kontakte in Liste suchen, Rufnummern können auch durchsucht werden
         return null;
-    }
-
-    /**
-     * Initialisiert die Datenbank-struktur
-     *
-     * @return boolean ob erfolgreich initialisiert werden konnte
-     */
-    @Override
-    public boolean initDB() {
-        //TODO Datenbank-Struktur initialisieren
-        return false;
-    }
-
-    /**
-     * Standard-Getter für Pfad zum Datenbank-File
-     *
-     * @return Pfad zum Datenbank-File
-     */
-    public String getDbPath() {
-        return DbPath;
-    }
-
-    /**
-     * Standard-Setter für Pfad zum Datenbank-File
-     *
-     * @param dbPath Absoluter Pfad zum Datenbank-File
-     */
-    public void setDbPath(String dbPath) {
-        DbPath = dbPath;
     }
 }

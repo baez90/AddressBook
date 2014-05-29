@@ -5,7 +5,7 @@ package Model;
  *
  * @author baez
  */
-public enum NumberType {
+public enum ContactNumberType {
     Mobile,
     Work,
     Home

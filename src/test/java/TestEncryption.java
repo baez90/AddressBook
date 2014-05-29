@@ -1,4 +1,4 @@
-import Interfaces.IEncryption;
+import Interfaces.IFileEncryption;
 import junit.framework.TestCase;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class TestEncryption extends TestCase {
 
     private static final String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!§$%&/()=?";
-    private static Logger logger = Logger.getLogger(IEncryption.class.getName());
+    private static Logger logger = Logger.getLogger(IFileEncryption.class.getName());
     private File sourceFile = new File("test.txt");
     private File encryptedFile = new File("test.encrypted");
     private File decryptedFile = new File("test.decrypted");
@@ -37,8 +37,8 @@ public class TestEncryption extends TestCase {
     }
 
     public void testEncryptionDecryption() {
-        IEncryption.encryptFile(password, sourceFile.getPath(), encryptedFile.getPath());
-        IEncryption.decryptFile(password, encryptedFile.getPath(), decryptedFile.getPath());
+        IFileEncryption.encryptFile(password, sourceFile.getPath(), encryptedFile.getPath());
+        IFileEncryption.decryptFile(password, encryptedFile.getPath(), decryptedFile.getPath());
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(decryptedFile), Charset.forName("UTF-8")));

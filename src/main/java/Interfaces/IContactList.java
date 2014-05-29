@@ -1,17 +1,13 @@
 package Interfaces;
 
+import java.util.List;
+
 /**
  * Interface für die Kontaktliste
  *
  * @author baez
  */
-public interface IContactList {
-    /**
-     * Liest alle Kontakte aus der Datenbank aus
-     *
-     * @return Liste von Contact-Objekten
-     */
-    public IContactList getContactsFromDB();
+public interface IContactList extends List<IContact> {
 
     /**
      * Sucht nach Kontakten in der Liste
@@ -20,11 +16,4 @@ public interface IContactList {
      * @return neue IContactList mit den Suchergebnissen
      */
     public IContactList searchContacts(String searchString);
-
-    /**
-     * Initialisiert die Datenbank mit der benötigten Struktur
-     *
-     * @return boolean ob Initialisierung erfolgreich war
-     */
-    public boolean initDB();
 }

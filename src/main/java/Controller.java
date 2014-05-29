@@ -1,5 +1,8 @@
+import BusinessLogic.BlContacts;
+import Interfaces.IBlContacts;
 import Interfaces.IContact;
-import Interfaces.IEncryption;
+import Interfaces.IContactList;
+import Interfaces.IFileEncryption;
 import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -79,7 +82,8 @@ public class Controller {
     /**
      * Liste aller Kontakte aus der Datenbank
      */
-    private ContactList contactList = new ContactList();
+    private IContactList contactList = new ContactList();
+    private IBlContacts blContacts = new BlContacts();
 
     /**
      * Init-Methode, erstellt die benötigten Tabellen
@@ -133,8 +137,8 @@ public class Controller {
             if (!filePath.endsWith(".db")) {
                 filePath += ".db";
             }
-            contactList.setDbPath(filePath);
-            contactList.initDB();
+            blContacts.setDbPath(filePath);
+            blContacts.initDB();
         }
     }
 
@@ -150,8 +154,8 @@ public class Controller {
 
         File file = chooser.showSaveDialog(new Stage());
         if (file != null) {
-            contactList.setDbPath(file.getAbsolutePath());
-            contactList.getContactsFromDB();
+            blContacts.setDbPath(file.getAbsolutePath());
+            blContacts.getContactsFromDB();
             initContactTable();
 
             /*
@@ -209,7 +213,7 @@ public class Controller {
      * Speichert das aktuelle Adressbuch verschlüsselt an einen Pfad welcher ausgewählt wird
      */
     public void SaveEncryptedClick() {
-        if (contactList.getDbPath() == null || contactList.getDbPath() == "") {
+        if (blContacts.getDbPath() == null || blContacts.getDbPath().equals("")) {
             Dialogs.create().title("Warnung").masthead("Kein Adressbuch vorhanden").message("Es wurde weder ein Adressbuch geöffnet, noch eines angelegt.").showWarning();
             return;
         } else if (!PasswordBox.getText().equals(PasswordRepeatBox.getText())) {
@@ -226,7 +230,7 @@ public class Controller {
 
         File file = chooser.showSaveDialog(new Stage());
         if (file != null) {
-            if (IEncryption.encryptFile(PasswordBox.getText(), contactList.getDbPath(), file.getAbsolutePath())) {
+            if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {
                 EncryptedSavePathBox.setText(file.getAbsolutePath());
                 Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showConfirm();
             }

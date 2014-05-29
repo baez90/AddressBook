@@ -14,7 +14,7 @@ import java.security.NoSuchProviderException;
  *
  * @author baez
  */
-public interface IEncryption {
+public interface IFileEncryption {
 
     /**
      * Verschlüsselt Datei

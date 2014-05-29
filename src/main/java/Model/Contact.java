@@ -1,16 +1,16 @@
 package Model;
 
 import Interfaces.IContact;
+import Interfaces.IContactNumberList;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Repräsentiert Kontakt in der Datenbank
  *
  * @author baez
  */
-public class Contact implements IContact, Comparable {
+public class Contact implements IContact {
 
     /**
      * ID des Kontakts in der Datenbank
@@ -35,7 +35,7 @@ public class Contact implements IContact, Comparable {
     /**
      * Liste der Rufnummern für einen Kontakt
      */
-    private NumberList ContactNumbers;
+    private IContactNumberList ContactNumbers;
 
     /**
      * Konstruktor für CreateContact
@@ -51,7 +51,7 @@ public class Contact implements IContact, Comparable {
         Name = name;
         MailAddress = mailAddress;
         BirthDate = birthDate;
-        ContactNumbers = new NumberList();
+        ContactNumbers = new ContactNumberList();
     }
 
     /**
@@ -68,7 +68,7 @@ public class Contact implements IContact, Comparable {
         Name = name;
         MailAddress = mailAddress;
         BirthDate = birthDate;
-        ContactNumbers = new NumberList();
+        ContactNumbers = new ContactNumberList();
     }
 
     /**
@@ -141,7 +141,7 @@ public class Contact implements IContact, Comparable {
      *
      * @return Liste aller Rufnummern des Kontakts
      */
-    public List<ContactNumber> getContactNumbers() {
+    public IContactNumberList getContactNumbers() {
         return ContactNumbers;
     }
 
@@ -150,7 +150,7 @@ public class Contact implements IContact, Comparable {
      *
      * @param contactNumbers neue Liste der Rufnummern
      */
-    public void setContactNumbers(NumberList contactNumbers) {
+    public void setContactNumbers(ContactNumberList contactNumbers) {
         ContactNumbers = contactNumbers;
     }
 
@@ -172,42 +172,14 @@ public class Contact implements IContact, Comparable {
         BirthDate = birthDate;
     }
 
-    /**
-     * Überschreibt Kontakt in der Datenbank
-     *
-     * @return int-Wert zur Repräsentation des Erfolgs
-     */
     @Override
-    public int updateContactInDB() {
-        //TODO Kontakt in DB updaten, Liste von Telefonnummern berücksichtigen
-        return 0;
-    }
-
-    /**
-     * Entfernt Kontakt aus der Datenbank
-     *
-     * @return int-Wert zur Repräsentation des Erfolgs
-     */
-    @Override
-    public int removeContactInDB() {
-        //TODO Kontakt aus der DB löschen, Fehlercode berücksichtigen
-        return 0;
-    }
-
-    /**
-     * legt Kontakt in der Datenbank an
-     *
-     * @return int-Wert zur Repräsentation des Erfolgs
-     */
-    @Override
-    public int createContactInDB() {
-        //TODO Kontakt in DB anlegen, Fehlercode berücksichtigen
+    public int compareTo(IContact o) {
         return 0;
     }
 
     @Override
-    public int compareTo(Object o) {
-        //TODO implement compareTo
-        return 0;
+    public boolean dateOfBirthIsToday() {
+        //TODO prüfen ob heute Geburtstag
+        return false;
     }
 }
