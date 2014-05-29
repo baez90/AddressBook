@@ -145,7 +145,7 @@ public class Contact implements IContact {
      */
     @Override
     public int updateContactInDB() {
-        //TODO
+        //TODO Kontakt in DB updaten, Liste von Telefonnummern berücksichtigen
         return 0;
     }
 
@@ -155,7 +155,7 @@ public class Contact implements IContact {
      */
     @Override
     public int removeContactInDB() {
-        //TODO
+        //TODO Kontakt aus der DB löschen, Fehlercode berücksichtigen
         return 0;
     }
 
@@ -165,7 +165,7 @@ public class Contact implements IContact {
      */
     @Override
     public int createContactInDB() {
-        //TODO
+        //TODO Kontakt in DB anlegen, Fehlercode berücksichtigen
         return 0;
     }
 }

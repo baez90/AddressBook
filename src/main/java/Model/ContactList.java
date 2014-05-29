@@ -27,7 +27,7 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList getContactsFromDB() {
-        //TODO
+        //TODO Kontakte aus DB lesen und in Liste parsen, Rufnummern berücksichtigen
         return null;
     }
 
@@ -40,7 +40,7 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList searchContacts(String searchString) {
-        //TODO
+        //TODO Kontakte in Liste suchen, Rufnummern können auch durchsucht werden
         return null;
     }
 
@@ -51,7 +51,7 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public boolean initDB() {
-        //TODO
+        //TODO Datenbank-Struktur initialisieren
         return false;
     }
 

@@ -63,7 +63,7 @@ public class Controller {
      * Init-Methode, erstellt die benötigten Tabellen
      */
     private void initContactTable() {
-        //TODO
+        //TODO ContactTable mit Einträgen aus der DB füllen
     }
 
     /**
@@ -85,7 +85,7 @@ public class Controller {
      * Speichert neuen Kontakt in die DB und fügt ihn der Kontaktliste hinzu
      */
     public void SaveNewContactClick() {
-        //TODO
+        //TODO Kontakt zu Liste hinzufügen, Table updaten und Kontakt in DB speichern
     }
 
     /**
@@ -149,13 +149,21 @@ public class Controller {
      * löscht Kontakt aus Datenbank und aus der Liste
      */
     public void deleteContactClick() {
-        //TODO
+        //TODO Kontakt aus Liste und DB löschen, Table updaten
     }
 
     /**
      * Sucht Kontakt in der Liste und zeigt Result-List im ContactTable an
      */
     public void SearchButtonClick() {
-        //TODO
+        //TODO Kontakte in der Liste suchen
+    }
+
+    public void SaveAddressBookEncryptedClick() {
+        //TODO Adressbuch-DB verschlüsselt ablegen
+    }
+
+    public void OpenDecryptedAddressBookClick() {
+        //TODO verschlüsselte DB entschlüsseln und speichern
     }
 }
