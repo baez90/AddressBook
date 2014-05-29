@@ -25,6 +25,19 @@ public interface IEncryption {
      * @return boolean ob Datei erfolgreich verschlüsselt werden konnte
      */
     public static boolean encryptFile(String password, String sourcePath, String targetPath) {
+        PrintWriter logger = null;
+        try {
+            File logfile = new File("logfile.txt");
+            if (!logfile.exists()) {
+                logfile.createNewFile();
+            }
+            logger = new PrintWriter("logfile.txt", "UTF-8");
+        } catch (Exception e) {
+            /*
+            Sinnlos hier ein Log zu schreiben, da Logger möglicherweise nicht richtig angelegt werden konnte
+             */
+            e.printStackTrace();
+        }
         /*
         Dateien für die Input- und OutputStreams
          */
@@ -88,25 +101,37 @@ public interface IEncryption {
             fos.close();
             cis.close();
             fis.close();
+            if (logger != null) {
+                logger.close();
+            }
             return true;
         } catch (NoSuchAlgorithmException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Algorithmus nicht verfügbar\n" + e.toString());
+            }
         } catch (NoSuchProviderException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Provider nicht verfügbar\n" + e.toString());
+            }
         } catch (NoSuchPaddingException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Padding-Variante nicht verfügbar\n" + e.toString());
+            }
         } catch (InvalidKeyException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Key ungültig\n" + e.toString());
+            }
         } catch (FileNotFoundException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Die zu verschlüsselnde Datei ist nicht verfügbar\n" + e.toString());
+            }
         } catch (IOException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
+            }
+        }
+        if (logger != null) {
+            logger.close();
         }
         return false;
     }
@@ -120,6 +145,21 @@ public interface IEncryption {
      * @return boolean ob Entschlüsselung erfolgreich war
      */
     public static boolean decryptFile(String password, String sourcePath, String targetPath) {
+
+        PrintWriter logger = null;
+        try {
+            File logfile = new File("logfile.txt");
+            if (!logfile.exists()) {
+                logfile.createNewFile();
+            }
+            logger = new PrintWriter("logfile.txt", "UTF-8");
+        } catch (Exception e) {
+            /*
+            Sinnlos hier ein Log zu schreiben, da Logger möglicherweise nicht richtig angelegt werden konnte
+             */
+            e.printStackTrace();
+        }
+
         /*
         Dateien für die Input- und OutputStreams
          */
@@ -181,25 +221,37 @@ public interface IEncryption {
             fos.close();
             cis.close();
             fis.close();
+            if (logger != null) {
+                logger.close();
+            }
             return true;
         } catch (NoSuchAlgorithmException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Algorithmus nicht verfügbar\n" + e.toString());
+            }
         } catch (NoSuchProviderException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Provider nicht verfügbar\n" + e.toString());
+            }
         } catch (NoSuchPaddingException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Padding-Variante nicht verfügbar\n" + e.toString());
+            }
         } catch (InvalidKeyException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Crypto-Key ungültig\n" + e.toString());
+            }
         } catch (FileNotFoundException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Die zu verschlüsselnde Datei ist nicht verfügbar\n" + e.toString());
+            }
         } catch (IOException e) {
-            //TODO Fehler loggen
-            e.printStackTrace();
+            if (logger != null) {
+                logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
+            }
+        }
+        if (logger != null) {
+            logger.close();
         }
         return false;
     }
