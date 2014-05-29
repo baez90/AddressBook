@@ -2,6 +2,7 @@ import Model.Contact;
 import Model.ContactList;
 import junit.framework.TestCase;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 /**
@@ -14,9 +15,9 @@ public class TestModel extends TestCase {
     private Contact Hans;
 
     public void setUp() {
-        Heinz = new Contact("Karl", "Heinz", "heinz.hat@keineAdresse.de");
-        Ludwig = new Contact("Ludwig", "Eder", "ludwig.eder@keineAdresse.de");
-        Hans = new Contact("Hans", "Eicher", "hans.eicher@keineAdresse.de");
+        Heinz = new Contact("Karl", "Heinz", "heinz.hat@keineAdresse.de", LocalDate.of(15, 2, 1985));
+        Ludwig = new Contact("Ludwig", "Eder", "ludwig.eder@keineAdresse.de", LocalDate.of(22, 1, 1987));
+        Hans = new Contact("Hans", "Eicher", "hans.eicher@keineAdresse.de", LocalDate.of(30, 8, 1970));
     }
 
     public void testModel() {
