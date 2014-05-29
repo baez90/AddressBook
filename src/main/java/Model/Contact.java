@@ -7,9 +7,10 @@ import java.util.List;
 
 /**
  * Repräsentiert Kontakt in der Datenbank
+ *
  * @author baez
  */
-public class Contact implements IContact {
+public class Contact implements IContact, Comparable {
 
     /**
      * ID des Kontakts in der Datenbank
@@ -39,8 +40,9 @@ public class Contact implements IContact {
     /**
      * Konstruktor für CreateContact
      * kann direkt mit allen Attributen befüllt werden
-     * @param firstName Vorname des Kontakts
-     * @param name Nachname des Kontakts
+     *
+     * @param firstName   Vorname des Kontakts
+     * @param name        Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
     public Contact(String firstName, String name, String mailAddress, LocalDate birthDate) {
@@ -54,9 +56,10 @@ public class Contact implements IContact {
 
     /**
      * Konstruktor für auslesen aus der DB
-     * @param id ID des Kontakts in der DB
-     * @param firstName Vorname des Kontakts
-     * @param name Nachname des Kontakts
+     *
+     * @param id          ID des Kontakts in der DB
+     * @param firstName   Vorname des Kontakts
+     * @param name        Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
     public Contact(int id, String firstName, String name, String mailAddress, LocalDate birthDate) {
@@ -89,6 +92,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Setter für Vorname
+     *
      * @param firstName setzt Vornamen des Kontakts
      */
 
@@ -98,6 +102,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Getter für Nachname des Kontakts
+     *
      * @return Nachname des Kontakts
      */
     public String getName() {
@@ -106,6 +111,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Setter für Nachname
+     *
      * @param name Nachname des Kontakts
      */
     public void setName(String name) {
@@ -114,6 +120,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Getter für Email-Adresse
+     *
      * @return Email-Adresse des Kontakts
      */
     public String getMailAddress() {
@@ -122,6 +129,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Setter für Email-Adresse
+     *
      * @param mailAddress Email-Adresse des Kontakts
      */
     public void setMailAddress(String mailAddress) {
@@ -148,6 +156,7 @@ public class Contact implements IContact {
 
     /**
      * Standard-Getter für Geburtsdatum des Kontakts
+     *
      * @return Geburtsdatum als LocalDate
      */
     public LocalDate getBirthDate() {
@@ -165,6 +174,7 @@ public class Contact implements IContact {
 
     /**
      * Überschreibt Kontakt in der Datenbank
+     *
      * @return int-Wert zur Repräsentation des Erfolgs
      */
     @Override
@@ -175,6 +185,7 @@ public class Contact implements IContact {
 
     /**
      * Entfernt Kontakt aus der Datenbank
+     *
      * @return int-Wert zur Repräsentation des Erfolgs
      */
     @Override
@@ -185,11 +196,18 @@ public class Contact implements IContact {
 
     /**
      * legt Kontakt in der Datenbank an
+     *
      * @return int-Wert zur Repräsentation des Erfolgs
      */
     @Override
     public int createContactInDB() {
         //TODO Kontakt in DB anlegen, Fehlercode berücksichtigen
+        return 0;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        //TODO implement compareTo
         return 0;
     }
 }

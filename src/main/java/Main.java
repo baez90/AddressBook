@@ -18,7 +18,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         try {
             Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
             primaryStage.setTitle("Adressbuch");

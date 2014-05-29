@@ -153,6 +153,11 @@ public class Controller {
             contactList.setDbPath(file.getAbsolutePath());
             contactList.getContactsFromDB();
             initContactTable();
+
+            /*
+            TODO Benachrichtigung für aktuelle Geburtstag anzeigen
+            Notifications.create().title("Test").text("Hello World").showInformation();
+             */
         }
     }
 
