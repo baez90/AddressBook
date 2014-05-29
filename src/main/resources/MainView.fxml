@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" hgap="10" prefHeight="432.0" prefWidth="519.0" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <BorderPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                      <MenuItem mnemonicParsing="false" onAction="#CreateAddressBookClick" text="Neues Adressbuch"/>
+                      <MenuItem mnemonicParsing="false" onAction="#OpenAddressBookClick" text="Adressbuch öffnen"/>
+                      <MenuItem mnemonicParsing="false" onAction="#QuitApplication" text="Beenden"/>
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Kontakte">
+                  <items>
+                      <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt"/>
+                      <MenuItem mnemonicParsing="false" text="Kontakt bearbeiten"/>
+                      <MenuItem mnemonicParsing="false" onAction="#deleteContactClick" text="Kontakt löschen"/>
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+             <VBox>
+                 <children>
+                     <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="30.0" spacing="10.0">
+                         <children>
+                             <Button mnemonicParsing="false" onAction="#SearchButtonClick" prefWidth="100.0"
+                                     text="Suche" fx:id="SearchButton"/>
+                             <TextField maxWidth="1.7976931348623157E308" prefWidth="450.0" fx:id="SearchBox">
+                                 <HBox.margin>
+                                     <Insets right="10.0"/>
+                                 </HBox.margin>
+                             </TextField>
+                         </children>
+                         <padding>
+                             <Insets bottom="5.0" left="10.0" top="5.0"/>
+                         </padding>
+                     </HBox>
+                     <TableView VBox.vgrow="ALWAYS" prefWidth="200.0" fx:id="ContactTable">
+                         <columns>
+                             <TableColumn prefWidth="100.0" text="Nachname"/>
+                             <TableColumn prefWidth="85.0" text="Vorname"/>
+                             <TableColumn prefWidth="75.0" text="Email"/>
+                             <TableColumn prefWidth="75.0" text="Handy"/>
+                         </columns>
+                     </TableView>
+                 </children>
+             </VBox>
+         </center>
+          <right>
+              <GridPane BorderPane.alignment="CENTER">
+                  <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                  </columnConstraints>
+                  <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                  </rowConstraints>
+              </GridPane>
+          </right>
+      </BorderPane>
+   </children>
+</GridPane>

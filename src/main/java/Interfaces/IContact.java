@@ -1,4 +1,4 @@
-package Model;
+package Interfaces;
 
 /**
  * @author baez
@@ -6,12 +6,14 @@ package Model;
 public interface IContact {
     /**
      * Soll Kontakt in der Datenbank aktualisieren
+     *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
     public int updateContactInDB();
 
     /**
      * Entfernt Kontakt aus der Datanbank
+     *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repäsentiert
      */
     public int removeContactInDB();
@@ -19,6 +21,7 @@ public interface IContact {
     /**
      * erstellt Kontakt in der DB
      * sollte auch prüfen ob Kontakt bereits existiert
+     *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
     public int createContactInDB();

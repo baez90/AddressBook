@@ -12,6 +12,20 @@
         <name>GruebbelGombanie</name>
     </organization>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
