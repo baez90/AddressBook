@@ -24,11 +24,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Controller-Klasse für alle Views
+ * MainController-Klasse für alle Views
  * Kontrolliert alle Click-Events
  * befüllt etwaige Elemente mit Objekten
  */
-public class Controller {
+public class MainController {
     /**
      * TextField für Vorname
      */
@@ -184,11 +184,15 @@ public class Controller {
      */
     public void SaveAddressBookEncryptedClick() {
         try {
-            Parent createContactRoot = FXMLLoader.load(getClass().getResource("SaveEncrypted.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
+            Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Adressbuch verschlüsselt speichern");
             createContactStage.setScene(new Scene(createContactRoot));
+            //MainController c = loader.<MainController>getController();
+
             createContactStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
