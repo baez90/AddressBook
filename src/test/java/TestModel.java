@@ -6,9 +6,14 @@ import java.time.LocalDate;
 import java.util.logging.Logger;
 
 /**
- * Created by baez on 29.05.14.
+ * Testet das Model
+ *
+ * @author Baez
  */
 public class TestModel extends TestCase {
+    /**
+     * Logger um JUnit-Testergebnisse in Logfile anzuzeigen
+     */
     private static Logger logger = Logger.getLogger(Contact.class.getName());
     private Contact Heinz;
     private Contact Ludwig;

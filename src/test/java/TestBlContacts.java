@@ -8,6 +8,9 @@ import java.util.logging.Logger;
  */
 public class TestBlContacts extends TestCase {
 
+    /**
+     * Logger um JUnit-Testergebnisse in Logfile anzuzeigen
+     */
     private static Logger logger = Logger.getLogger(IBlContacts.class.getName());
 
     public void setUp() {

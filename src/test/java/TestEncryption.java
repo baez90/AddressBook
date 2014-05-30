@@ -6,11 +6,16 @@ import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
 /**
- * Created by baez on 29.05.14.
+ * Testet die Ver- und Entschlüsselung
+ *
+ * @author Baez
  */
 public class TestEncryption extends TestCase {
 
     private static final String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!§$%&/()=?";
+    /**
+     * Logger um JUnit-Testergebnisse in Logfile anzuzeigen
+     */
     private static Logger logger = Logger.getLogger(IFileEncryption.class.getName());
     private File sourceFile = new File("test.txt");
     private File encryptedFile = new File("test.encrypted");
@@ -25,11 +30,11 @@ public class TestEncryption extends TestCase {
         }
 
         try {
-            sourceFile.createNewFile();
+            logger.info("sourceFile created: " + sourceFile.createNewFile());
             FileOutputStream outputStream = new FileOutputStream(sourceFile);
             outputStream.write("Hello World".getBytes());
             outputStream.close();
-            logger.info("Test-Datei angelegt");
+            logger.info("sourceFile mit Inhalt befüllt");
         } catch (Exception e) {
             logger.info("Excepion aufgetreten " + e.toString());
             e.printStackTrace();
@@ -49,9 +54,9 @@ public class TestEncryption extends TestCase {
             /*
             Dateien wieder löschen
              */
-            sourceFile.delete();
-            encryptedFile.delete();
-            decryptedFile.delete();
+            logger.info("sourceFile deleted: " + sourceFile.delete());
+            logger.info("encryptedFile deleted: " + encryptedFile.delete());
+            logger.info("decryptedFile deleted: " + decryptedFile.delete());
 
         } catch (Exception e) {
             logger.info("Excepion aufgetreten " + e.toString());

@@ -1,23 +1,24 @@
-import Interfaces.IContactNumberList;
 import junit.framework.TestCase;
 
 import java.util.logging.Logger;
 
 /**
- * Created by baez on 29.05.14.
+ * Testet die Controller
+ *
+ * @author Baez
  */
-public class TestContactNumberList extends TestCase {
+public class TestController extends TestCase {
 
     /**
      * Logger um JUnit-Testergebnisse in Logfile anzuzeigen
      */
-    private static Logger logger = Logger.getLogger(IContactNumberList.class.getName());
+    private static Logger logger = Logger.getLogger(MainController.class.getName());
 
     public void setUp() {
         //TODO setup something
     }
 
-    public void testNumberList() {
+    public void testController() {
         //TODO test something
     }
 }
