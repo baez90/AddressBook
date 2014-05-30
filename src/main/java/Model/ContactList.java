@@ -3,10 +3,12 @@ package Model;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
  * Repräsentiert Liste aller Kontakte
+ * ist per Implementierung sortiert
  *
  * @author baez
  */
@@ -20,7 +22,19 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList searchContacts(String searchString) {
-        //TODO Kontakte in Liste suchen, Rufnummern können auch durchsucht werden
+        //TODO Kontakte in Liste suchen, Rufnummern können auch durchsucht werden!
         return null;
+    }
+
+    @Override
+    public boolean add(IContact contact) {
+
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends IContact> c) {
+
+        return false;
     }
 }

@@ -4,10 +4,12 @@ import Interfaces.IContactNumber;
 import Interfaces.IContactNumberList;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
  * Repräsentiert Liste aller Nummern eines Kontakts
+ * ist per Implementierung gruppiert
  *
  * @author baez
  */
@@ -31,6 +33,18 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
     @Override
     public IContactNumberList getNumbersByType(NumberType type) {
         return null;
+    }
+
+    @Override
+    public boolean add(IContactNumber cn) {
+        //TODO implement
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends IContactNumber> c) {
+        //TODO implement
+        return false;
     }
 
 
