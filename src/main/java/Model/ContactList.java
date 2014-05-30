@@ -5,6 +5,7 @@ import Interfaces.IContactList;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * Repräsentiert Liste aller Kontakte
@@ -28,13 +29,24 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
 
     @Override
     public boolean add(IContact contact) {
-
+        ListIterator listIterator = this.listIterator();
+        while (listIterator.hasNext()){
+            if(contact.compareTo((IContact)listIterator.next()) >= 0){
+                listIterator.add(contact);
+                break;
+            }
+        }
         return false;
     }
 
+    /**
+     * Fügt alle Elemente einer Collection der Liste hinzu
+     * @param c Collection deren Elemente das Interface IContact implementiert
+     * @return boolean ob erfolgreich alle Elemente hinzugefügt wurden
+     */
     @Override
     public boolean addAll(Collection<? extends IContact> c) {
-
-        return false;
+        c.forEach(this::add);
+        return true;
     }
 }
