@@ -1,3 +1,4 @@
+import ViewController.MainController;
 import junit.framework.TestCase;
 
 import java.util.logging.Logger;

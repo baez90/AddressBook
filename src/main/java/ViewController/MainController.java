@@ -1,3 +1,5 @@
+package ViewController;
+
 import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
@@ -24,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * MainController-Klasse für alle Views
+ * ViewController.MainController-Klasse für alle Views
  * Kontrolliert alle Click-Events
  * befüllt etwaige Elemente mit Objekten
  */
@@ -189,7 +191,7 @@ public class MainController {
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Adressbuch verschlüsselt speichern");
             createContactStage.setScene(new Scene(createContactRoot));
-            //MainController c = loader.<MainController>getController();
+            //ViewController.MainController c = loader.<ViewController.MainController>getController();
 
             createContactStage.show();
 
