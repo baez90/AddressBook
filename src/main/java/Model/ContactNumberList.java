@@ -2,6 +2,7 @@ package Model;
 
 import Interfaces.IContactNumber;
 import Interfaces.IContactNumberList;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
 
 import java.util.LinkedList;
 
@@ -23,22 +24,14 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
     }
 
     /**
-     * Sortiert Liste nach Rufnummer
-     *
-     * @return neue sortierte Rufnummerliste
+     * gibt eine gefilterte Liste von Rufnummern zurück
+     * @param type Typ auf welchen gefiltert werden soll
+     * @return neue Liste mit gefilterten Ergebnissen
      */
     @Override
-    public IContactNumberList sort() {
+    public IContactNumberList getNumbersByType(NumberType type) {
         return null;
     }
 
-    /**
-     * Gruppiert Liste nach Nummern-Typ für die Anzeige
-     *
-     * @return neue gruppierte Rufnummernliste
-     */
-    @Override
-    public IContactNumberList groupByType() {
-        return null;
-    }
+
 }

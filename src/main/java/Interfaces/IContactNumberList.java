@@ -1,5 +1,7 @@
 package Interfaces;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
+
 import java.util.List;
 
 /**
@@ -17,16 +19,10 @@ public interface IContactNumberList extends List<IContactNumber> {
     public IContactNumberList searchNumber(String searchNr);
 
     /**
-     * sortiert nach der Rufnummer
+     * gibt eine gefilterte Liste von Rufnummern zurück
      *
-     * @return sortierte Rufnummerliste
+     * @param type Typ auf welchen gefiltert werden soll
+     * @return neue Liste mit gefilterten Ergebnissen
      */
-    public IContactNumberList sort();
-
-    /**
-     * Gruppiert Liste nach Nummertyp
-     *
-     * @return gruppierte Rufnummerliste
-     */
-    public IContactNumberList groupByType();
+    public IContactNumberList getNumbersByType(NumberType type);
 }
