@@ -85,7 +85,7 @@ public class Contact implements IContact {
      *
      * @return Vorname des Kontakts
      */
-
+    @Override
     public String getFirstName() {
         return FirstName;
     }
@@ -105,6 +105,7 @@ public class Contact implements IContact {
      *
      * @return Nachname des Kontakts
      */
+    @Override
     public String getName() {
         return Name;
     }
@@ -141,6 +142,7 @@ public class Contact implements IContact {
      *
      * @return Liste aller Rufnummern des Kontakts
      */
+    @Override
     public IContactNumberList getContactNumbers() {
         return ContactNumbers;
     }
@@ -150,7 +152,7 @@ public class Contact implements IContact {
      *
      * @param contactNumbers neue Liste der Rufnummern
      */
-    public void setContactNumbers(ContactNumberList contactNumbers) {
+    public void setContactNumbers(IContactNumberList contactNumbers) {
         ContactNumbers = contactNumbers;
     }
 
@@ -159,6 +161,7 @@ public class Contact implements IContact {
      *
      * @return Geburtsdatum als LocalDate
      */
+    @Override
     public LocalDate getBirthDate() {
         return BirthDate;
     }
@@ -174,12 +177,11 @@ public class Contact implements IContact {
 
     @Override
     public int compareTo(IContact o) {
-        return 0;
+        return (Name + " " + FirstName).compareTo(o.getName() + " " + o.getFirstName());
     }
 
     @Override
     public boolean dateOfBirthIsToday() {
-        //TODO prüfen ob heute Geburtstag
-        return false;
+        return LocalDate.now().equals(BirthDate);
     }
 }

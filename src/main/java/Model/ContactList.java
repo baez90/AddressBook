@@ -3,9 +3,7 @@ package Model;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Repräsentiert Liste aller Kontakte
@@ -27,16 +25,16 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
         return null;
     }
 
+    /**
+     * Fügt Parameter automatisch sortiert ein
+     * @param contact Kontakt welcher eingefügt werden soll
+     * @return boolean ob erfolgreich eingefügt wurde
+     */
     @Override
     public boolean add(IContact contact) {
-        ListIterator listIterator = this.listIterator();
-        while (listIterator.hasNext()){
-            if(contact.compareTo((IContact)listIterator.next()) >= 0){
-                listIterator.add(contact);
-                break;
-            }
-        }
-        return false;
+        int insertionPoint = Collections.binarySearch(this, contact, (o1, o2) -> o1.compareTo(o2));
+        super.add((insertionPoint > -1) ? insertionPoint : (-insertionPoint) - 1, contact);
+        return true;
     }
 
     /**

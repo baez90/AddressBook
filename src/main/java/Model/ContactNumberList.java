@@ -6,6 +6,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * Repräsentiert Liste aller Nummern eines Kontakts
@@ -27,6 +28,7 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
 
     /**
      * gibt eine gefilterte Liste von Rufnummern zurück
+     *
      * @param type Typ auf welchen gefiltert werden soll
      * @return neue Liste mit gefilterten Ergebnissen
      */
@@ -35,15 +37,32 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
         return null;
     }
 
+    /**
+     * Fügt Elemente gruppiert nach Typ ein
+     * @param cn IContactNumber welcher eingefügt werden soll
+     * @return true
+     */
     @Override
     public boolean add(IContactNumber cn) {
-        //TODO implement
-        return false;
+        //TODO durch comparable-Interface ersetzen
+        if(isEmpty()){
+            return super.add(cn);
+        }
+        ListIterator<IContactNumber> listIterator = listIterator();
+        while (listIterator.hasNext()) {
+            if (listIterator.next().getType().equals(cn.getType())) {
+                listIterator.add(cn);
+                return true;
+            }
+        }
+       super.addLast(cn);
+        return true;
+
     }
 
     @Override
     public boolean addAll(Collection<? extends IContactNumber> c) {
-        //TODO implement
+        c.forEach(this::add);
         return false;
     }
 

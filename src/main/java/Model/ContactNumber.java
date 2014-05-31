@@ -21,7 +21,7 @@ public class ContactNumber implements IContactNumber {
         Type = type;
         Number = number;
     }
-
+    @Override
     public ContactNumberType getType() {
         return Type;
     }

@@ -1,8 +1,15 @@
+import Interfaces.IContact;
+import Interfaces.IContactNumber;
+import Interfaces.IContactNumberList;
 import Model.Contact;
 import Model.ContactList;
+import Model.ContactNumber;
+import Model.ContactNumberType;
 import junit.framework.TestCase;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +28,12 @@ public class TestModel extends TestCase {
 
     public void setUp() {
         Heinz = new Contact("Karl", "Heinz", "heinz.hat@keineAdresse.de", LocalDate.of(1985, 2, 21));
+        IContactNumberList temp = Heinz.getContactNumbers();
+        temp.add(new ContactNumber(ContactNumberType.Home, "1234"));
+        temp.add(new ContactNumber(ContactNumberType.Work, "5678"));
+        temp.add(new ContactNumber(ContactNumberType.Home, "91011"));
+        temp.add(new ContactNumber(ContactNumberType.Mobile, "1213"));
+        Heinz.setContactNumbers(temp);
         Ludwig = new Contact("Ludwig", "Eder", "ludwig.eder@keineAdresse.de", LocalDate.of(1987, 1, 22));
         Hans = new Contact("Hans", "Eicher", "hans.eicher@keineAdresse.de", LocalDate.of(1970, 8, 30));
     }
@@ -31,8 +44,10 @@ public class TestModel extends TestCase {
         contactList.add(Ludwig);
         contactList.add(Hans);
 
-        //TODO Contact-Suche testen
+        Collections.sort(contactList);
         //TODO Contact-Sorierung testen
+        //TODO Contact-Suche testen
+
 
         assertEquals(Heinz.getName(), "Heinz");
         assertEquals(Ludwig.getName(), "Eder");
