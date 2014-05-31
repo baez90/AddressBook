@@ -4,23 +4,18 @@ import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
-import Interfaces.IFileEncryption;
 import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,26 +26,6 @@ import java.io.IOException;
  * befüllt etwaige Elemente mit Objekten
  */
 public class MainController {
-    /**
-     * TextField für Vorname
-     */
-    public TextField FirstNameBox;
-    /**
-     * TextField für Nachmame
-     */
-    public TextField NameBox;
-    /**
-     * TextField für Handynummer
-     */
-    public TextField CellNrBox;
-    /**
-     * TextField für Festnetznummer
-     */
-    public TextField PhoneNrBox;
-    /**
-     * TextField für Email-Adresse
-     */
-    public TextField MailBox;
     /**
      * Tabelle zum anzeigen der Kontakte
      */
@@ -63,24 +38,6 @@ public class MainController {
      * TextField für Suchbegriffe
      */
     public TextField SearchBox;
-    /**
-     * Button im Verschlüsselt-Speichern Dialog,
-     * Button-Text wird verändert nach erfolgreichem speichern
-     */
-    public Button SaveEncryptedCancelButton;
-    /**
-     * PasswordField zum eingeben des Verschlüsselungspassworts
-     */
-    public PasswordField PasswordBox;
-    /**
-     * PasswordField zum wiederholen des Passworts um Schreibweise zu kontrollieren
-     */
-    public PasswordField PasswordRepeatBox;
-    /**
-     * TextField zum anzeigen des Speicherpfads nach dem Speichern zur Übersichtlichkeit
-     */
-    public TextField EncryptedSavePathBox;
-
     /**
      * Liste aller Kontakte aus der Datenbank
      */
@@ -100,7 +57,7 @@ public class MainController {
      */
     public void CreateContactClick() {
         try {
-            Parent createContactRoot = FXMLLoader.load(getClass().getResource("CreateContact.fxml"));
+            Parent createContactRoot = FXMLLoader.load(getClass().getResource("CreateEditContact.fxml"));
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Neuer Kontakt");
             createContactStage.setScene(new Scene(createContactRoot));
@@ -109,14 +66,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Speichert neuen Kontakt in die DB und fügt ihn der Kontaktliste hinzu
-     */
-    public void SaveNewContactClick() {
-        //TODO Kontakt zu Liste hinzufügen, Table updaten und Kontakt in DB speichern
-    }
-
     /**
      * Beendet Applikation
      */
@@ -187,11 +136,14 @@ public class MainController {
     public void SaveAddressBookEncryptedClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
+            SaveEncryptedController saveEncryptedController = new SaveEncryptedController(this);
+            loader.setController(saveEncryptedController);
+
             Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Adressbuch verschlüsselt speichern");
             createContactStage.setScene(new Scene(createContactRoot));
-            //ViewController.MainController c = loader.<ViewController.MainController>getController();
+
 
             createContactStage.show();
 
@@ -215,44 +167,11 @@ public class MainController {
         }
     }
 
-    /**
-     * Speichert das aktuelle Adressbuch verschlüsselt an einen Pfad welcher ausgewählt wird
-     */
-    public void SaveEncryptedClick() {
-        if (blContacts.getDbPath() == null || blContacts.getDbPath().equals("")) {
-            Dialogs.create().title("Warnung").masthead("Kein Adressbuch vorhanden").message("Es wurde weder ein Adressbuch geöffnet, noch eines angelegt.").showWarning();
-            return;
-        } else if (!PasswordBox.getText().equals(PasswordRepeatBox.getText())) {
-            Dialogs.create().title("Warnung").masthead("Passwortfehler").message("Die Passwörter stimmen nicht überein").showWarning();
-            return;
-        }
-        /*
-        Dialog zum auswählen des Speicherorts
-         */
-        FileChooser chooser = new FileChooser();
-
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("crypt (*.crypt)", "*.crypt");
-        chooser.getExtensionFilters().add(extensionFilter);
-
-        File file = chooser.showSaveDialog(new Stage());
-        if (file != null) {
-            if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {
-                EncryptedSavePathBox.setText(file.getAbsolutePath());
-                Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showConfirm();
-            }
-
-        }
-        SaveEncryptedCancelButton.setText("Schließen");
+    public IContactList getContactList() {
+        return contactList;
     }
 
-    /**
-     * Schließt etwaige Dialoge
-     *
-     * @param actionEvent Event um auf den Dialog zugreifen zu können
-     */
-    public void CancelModalClick(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+    public IBlContacts getBlContacts() {
+        return blContacts;
     }
 }

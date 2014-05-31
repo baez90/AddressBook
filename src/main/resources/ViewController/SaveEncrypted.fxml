@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="185.0" prefWidth="600.0"
-          xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.MainController">
-    <columnConstraints>
+          xmlns="http://javafx.com/javafx/8">
+<columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="191.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="409.0"/>
     </columnConstraints>
