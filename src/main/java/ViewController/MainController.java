@@ -57,7 +57,12 @@ public class MainController {
      */
     public void CreateContactClick() {
         try {
-            Parent createContactRoot = FXMLLoader.load(getClass().getResource("CreateEditContact.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
+
+            CreateEditController createEditController = new CreateEditController(this);
+
+            loader.setController(createEditController);
+            Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Neuer Kontakt");
             createContactStage.setScene(new Scene(createContactRoot));
@@ -138,13 +143,10 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
             SaveEncryptedController saveEncryptedController = new SaveEncryptedController(this);
             loader.setController(saveEncryptedController);
-
             Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Adressbuch verschlüsselt speichern");
             createContactStage.setScene(new Scene(createContactRoot));
-
-
             createContactStage.show();
 
         } catch (IOException e) {
@@ -157,7 +159,11 @@ public class MainController {
      */
     public void OpenEncryptedAddressBookClick() {
         try {
-            Parent createContactRoot = FXMLLoader.load(getClass().getResource("OpenEncrypted.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenEncrypted.fxml"));
+            OpenEncryptedController openEncryptedController = new OpenEncryptedController();
+
+            loader.setController(openEncryptedController);
+            Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Verschlüsseltes Adressbuch öffnen");
             createContactStage.setScene(new Scene(createContactRoot));
