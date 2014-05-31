@@ -2,15 +2,13 @@ package ViewController;
 
 import Interfaces.IContactList;
 import Model.ContactNumberType;
-import impl.org.controlsfx.spreadsheet.GridRow;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.LinkedList;
 
 /**
  * @author baez
@@ -28,11 +26,11 @@ public class CreateEditController {
      * TextField für Email-Adresse
      */
     public TextField MailBox;
-    public GridPane PhoneNumberGrid;
+    public VBox PhoneNumberVBox;
 
     IContactList contactList;
 
-    public CreateEditController(MainController con) {
+    public void initController(MainController con) {
         contactList = con.getContactList();
     }
 
@@ -60,9 +58,14 @@ public class CreateEditController {
         choiceBox.getItems().add(ContactNumberType.Mobile);
         choiceBox.getItems().add(ContactNumberType.Work);
         choiceBox.getItems().add(ContactNumberType.Work);
+        choiceBox.setValue(choiceBox.getItems().get(0));
 
-        int rowCount = PhoneNumberGrid.getRowConstraints().size();
+        HBox tempBox = new HBox();
+        tempBox.getChildren().add(choiceBox);
+        TextField nummerText = new TextField();
+        tempBox.getChildren().add(nummerText);
+        tempBox.setSpacing(10);
 
-        PhoneNumberGrid.add(choiceBox, rowCount, 0);
+        PhoneNumberVBox.getChildren().add(tempBox);
     }
 }

@@ -58,15 +58,14 @@ public class MainController {
     public void CreateContactClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
-
-            CreateEditController createEditController = new CreateEditController(this);
-
-            loader.setController(createEditController);
             Parent createContactRoot = loader.load();
             Stage createContactStage = new Stage();
             createContactStage.setTitle("Neuer Kontakt");
             createContactStage.setScene(new Scene(createContactRoot));
             createContactStage.show();
+
+            CreateEditController createEditController = loader.getController();
+            createEditController.initController(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
