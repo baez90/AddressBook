@@ -56,7 +56,7 @@ public class CreateEditController {
     public void addPhoneButtonClick(ActionEvent actionEvent){
         ChoiceBox<ContactNumberType> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().add(ContactNumberType.Mobile);
-        choiceBox.getItems().add(ContactNumberType.Work);
+        choiceBox.getItems().add(ContactNumberType.Home);
         choiceBox.getItems().add(ContactNumberType.Work);
         choiceBox.setValue(choiceBox.getItems().get(0));
 
