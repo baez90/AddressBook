@@ -124,6 +124,7 @@ public class Contact implements IContact {
      *
      * @return Email-Adresse des Kontakts
      */
+    @Override
     public String getMailAddress() {
         return MailAddress;
     }
