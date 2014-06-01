@@ -83,13 +83,13 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Hilfe">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Zur Bedienung">
+                                <MenuItem mnemonicParsing="false" onAction="#OpenHelpClick" text="Zur Bedienung">
                                     <accelerator>
                                         <KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP"
                                                             shortcut="ANY"/>
                                     </accelerator>
                                 </MenuItem>
-                                <MenuItem mnemonicParsing="false" text="Über das Adressbuch">
+                                <MenuItem mnemonicParsing="false" onAction="#OpenAboutClick" text="Über das Adressbuch">
                                     <accelerator>
                                         <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP"
                                                             shortcut="UP"/>

@@ -8,6 +8,7 @@ import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -130,14 +131,22 @@ public class MainController {
      * Ruft den Dialog zum verschlüsselten Speichern des Adressbuchs auf
      */
     public void SaveAddressBookEncryptedClick() {
-        initSaveAddressBookEncrypted();
+        initSaveAddressBookEncryptedView();
     }
 
     /**
      * Ruft Dialog zum öffnen eines verschlüsselten Adressbuchs auf
      */
     public void OpenEncryptedAddressBookClick() {
-        initOpenEncryptedAddressBook();
+        initOpenEncryptedAddressBookView();
+    }
+
+    public void OpenHelpClick(ActionEvent actionEvent) {
+        initHelpAboutView("help.html");
+    }
+
+    public void OpenAboutClick(ActionEvent actionEvent) {
+        initHelpAboutView("about.html");
     }
 
     /**
@@ -184,7 +193,7 @@ public class MainController {
         }
     }
 
-    private void initOpenEncryptedAddressBook() {
+    private void initOpenEncryptedAddressBookView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenEncrypted.fxml"));
             OpenEncryptedController openEncryptedController = loader.getController();
@@ -199,17 +208,42 @@ public class MainController {
         }
     }
 
-    private void initSaveAddressBookEncrypted() {
+    private void initSaveAddressBookEncryptedView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
 
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Adressbuch verschlüsselt speichern");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
+            Parent saveEncryptedRoot = loader.load();
+            Stage saveEncryptedStage = new Stage();
+            saveEncryptedStage.setTitle("Adressbuch verschlüsselt speichern");
+            saveEncryptedStage.setScene(new Scene(saveEncryptedRoot));
+            saveEncryptedStage.show();
             SaveEncryptedController saveEncryptedController = loader.getController();
             saveEncryptedController.initSaveEncryptedController(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initHelpAboutView(String content) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HelpAbout.fxml"));
+
+            Parent helpAboutRoot = loader.load();
+            Stage helpAboutStage = new Stage();
+            switch (content) {
+                case "about.html":
+                    helpAboutStage.setTitle("Über das Adressbuch");
+                    break;
+                case "help.html":
+                    helpAboutStage.setTitle("Hilfe");
+                    break;
+            }
+
+            helpAboutStage.setScene(new Scene(helpAboutRoot));
+            helpAboutStage.show();
+            HelpAboutController helpAboutController = loader.getController();
+            helpAboutController.initHelpAboutView(content);
 
         } catch (IOException e) {
             e.printStackTrace();
