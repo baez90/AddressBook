@@ -8,7 +8,6 @@ import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -52,6 +51,9 @@ public class MainController {
      * Init-Methode, erstellt die benötigten Tabellen
      */
     private void initContactTable() {
+        /*
+        OberserableList wrapped die contactList für die Anzeige in der Tabelle
+         */
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
     }
@@ -74,13 +76,20 @@ public class MainController {
      * Erstellt ein neues Addressbuch und initialisiert die Datenbank
      */
     public void CreateAddressBookClick() {
+        /*
+        FileChooser öffnet einen Dialog zum auswählen einer Datei
+         */
         FileChooser chooser = new FileChooser();
-
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("DB (*.db)", "*.db");
         chooser.getExtensionFilters().add(extensionFilter);
-
+        /*
+        file speichert den Datei-Pfad der ausgewählten Datei
+         */
         File file = chooser.showSaveDialog(new Stage());
         if (file != null) {
+            /*
+            prüft ob die richtige Datei-Endung angegeben wurde und hängt diese bei Bedarf an
+             */
             String filePath = file.getAbsolutePath();
             if (!filePath.endsWith(".db")) {
                 filePath += ".db";
@@ -95,11 +104,16 @@ public class MainController {
      * sollte prüfen ob Datenbank valide ist und ggf. Datenbank initialisieren
      */
     public void OpenAddressBookClick() {
+        /*
+        FileChooser öffnet einen Dialog zum auswählen einer Datei
+         */
         FileChooser chooser = new FileChooser();
-
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("DB (*.db)", "*.db");
         chooser.getExtensionFilters().add(extensionFilter);
 
+        /*
+        file speichert den Datei-Pfad der ausgewählten Datei
+         */
         File file = chooser.showSaveDialog(new Stage());
         if (file != null) {
             blContacts.setDbPath(file.getAbsolutePath());
@@ -141,11 +155,17 @@ public class MainController {
         initOpenEncryptedAddressBookView();
     }
 
-    public void OpenHelpClick(ActionEvent actionEvent) {
+    /**
+     * Öffnet die Hilfe
+     */
+    public void OpenHelpClick() {
         initHelpAboutView("help.html");
     }
 
-    public void OpenAboutClick(ActionEvent actionEvent) {
+    /**
+     * Öffnet die About-Ansicht
+     */
+    public void OpenAboutClick() {
         initHelpAboutView("about.html");
     }
 
@@ -168,19 +188,27 @@ public class MainController {
         return blContacts;
     }
 
-    public void initMainCointroller() {
-
-    }
-
+    /**
+     * initialisiert die CreateEditContactView
+     * je nach Kontext wird ein Kontakt editiert oder ein neuer erstellt
+     *
+     * @param contactToEdit Objekt welches editiert werden soll, falls ein neues erstellt werden soll wird null übergeben
+     */
     private void initCreateEditContactView(IContact contactToEdit) {
         try {
+            /*
+            lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
+             */
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Neuer Kontakt");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
+            Parent createEditContactRoot = loader.load();
+            Stage createEditContactStage = new Stage();
+            createEditContactStage.setTitle("Neuer Kontakt");
+            createEditContactStage.setScene(new Scene(createEditContactRoot));
+            createEditContactStage.show();
 
+            /*
+            holt Controller von View und initialisiert View anschließend
+             */
             CreateEditController createEditController = loader.getController();
             createEditController.initController(this);
             if (contactToEdit != null) {
@@ -193,30 +221,49 @@ public class MainController {
         }
     }
 
+    /**
+     * initialisiert die OpenEncryptedAddressBookView
+     */
     private void initOpenEncryptedAddressBookView() {
         try {
+            /*
+            lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
+             */
             FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenEncrypted.fxml"));
-            OpenEncryptedController openEncryptedController = loader.getController();
+            Parent openEncryptedAddressBookRoot = loader.load();
+            Stage openEncryptedAddressBookStage = new Stage();
+            openEncryptedAddressBookStage.setTitle("Verschlüsseltes Adressbuch öffnen");
+            openEncryptedAddressBookStage.setScene(new Scene(openEncryptedAddressBookRoot));
+            openEncryptedAddressBookStage.show();
 
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Verschlüsseltes Adressbuch öffnen");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
+            /*
+            holt Controller von View und initialisiert View anschließend
+             */
+            OpenEncryptedController openEncryptedController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Initialisiert die SaveAddressBookEncryptionView
+     */
     private void initSaveAddressBookEncryptedView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
 
+            /*
+            lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
+             */
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
             Parent saveEncryptedRoot = loader.load();
             Stage saveEncryptedStage = new Stage();
             saveEncryptedStage.setTitle("Adressbuch verschlüsselt speichern");
             saveEncryptedStage.setScene(new Scene(saveEncryptedRoot));
             saveEncryptedStage.show();
+
+            /*
+            holt Controller von View und initialisiert View anschließend
+             */
             SaveEncryptedController saveEncryptedController = loader.getController();
             saveEncryptedController.initSaveEncryptedController(this);
 
@@ -225,12 +272,23 @@ public class MainController {
         }
     }
 
+    /**
+     * initialisiert die HelpAboutView
+     * @param content Name der HTML-Seite welche geöffnet werden soll
+     */
     private void initHelpAboutView(String content) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("HelpAbout.fxml"));
 
+            /*
+            lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
+             */
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HelpAbout.fxml"));
             Parent helpAboutRoot = loader.load();
             Stage helpAboutStage = new Stage();
+
+            /*
+            je nach Kontext wird der Fenster-Titel gesetzt
+             */
             switch (content) {
                 case "about.html":
                     helpAboutStage.setTitle("Über das Adressbuch");
@@ -242,6 +300,10 @@ public class MainController {
 
             helpAboutStage.setScene(new Scene(helpAboutRoot));
             helpAboutStage.show();
+
+            /*
+            holt Controller von View und initialisiert View anschließend
+             */
             HelpAboutController helpAboutController = loader.getController();
             helpAboutController.initHelpAboutView(content);
 

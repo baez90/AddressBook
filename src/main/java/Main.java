@@ -27,7 +27,6 @@ public class Main extends Application {
             primaryStage.show();
 
             MainController controller = loader.getController();
-            controller.initMainCointroller();
         } catch (IOException e) {
             e.printStackTrace();
         }

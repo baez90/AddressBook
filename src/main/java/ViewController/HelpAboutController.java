@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 
 /**
+ * Controller für HelpAbout View
+ * öffnet Kontext abhängig entweder die about.html oder die help.html
+ *
  * @author baez
  */
 public class HelpAboutController {
