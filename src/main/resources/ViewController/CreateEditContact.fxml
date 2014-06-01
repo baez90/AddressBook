@@ -13,7 +13,7 @@
             <children>
                 <Label text="Vorname">
                     <padding>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                     </padding>
                     <font>
                         <Font name="System Bold" size="13.0"/>
@@ -21,7 +21,7 @@
                 </Label>
                 <Label text="Nachname" GridPane.rowIndex="1">
                     <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                     </GridPane.margin>
                     <font>
                         <Font name="System Bold" size="13.0"/>
@@ -29,7 +29,7 @@
                 </Label>
                 <Label text="Email-Adresse" GridPane.rowIndex="2">
                     <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                     </GridPane.margin>
                     <font>
                         <Font name="System Bold" size="13.0"/>
@@ -37,22 +37,22 @@
                 </Label>
                 <TextField fx:id="FirstNameBox" GridPane.columnIndex="1">
                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
                 <TextField fx:id="NameBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
                 <TextField fx:id="MailBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
                 <Label text="Geburtstag" GridPane.rowIndex="3">
                     <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets left="10.0"/>
                     </GridPane.margin>
                     <font>
                         <Font name="System Bold" size="13.0"/>
@@ -60,30 +60,30 @@
                 </Label>
                 <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </DatePicker>
             </children>
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="107.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="293.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="107.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="293.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
         </GridPane>
     </center>
     <bottom>
         <HBox prefHeight="38.0" prefWidth="602.0" spacing="10.0" BorderPane.alignment="CENTER">
-        <children>
-                <Button mnemonicParsing="false" onAction="#SaveNewContactClick" text="Speichern" />
-                <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen" />
+            <children>
+                <Button mnemonicParsing="false" onAction="#SaveNewContactClick" text="Speichern"/>
+                <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen"/>
             </children>
             <padding>
-                <Insets bottom="5.0" left="10.0" top="5.0" />
+                <Insets bottom="5.0" left="10.0" top="5.0"/>
             </padding>
         </HBox>
     </bottom>

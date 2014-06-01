@@ -40,10 +40,6 @@ public class SaveEncryptedController {
         blContacts = con.getBlContacts();
     }
 
-    public void test(){
-        EncryptedSavePathBox.setText("test");
-    }
-
     /**
      * Speichert das aktuelle Adressbuch verschlüsselt an einen Pfad welcher ausgewählt wird
      */

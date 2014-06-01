@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * Controller für die CreateEditView
+ *
  * @author baez
  */
 public class CreateEditController {
@@ -26,10 +28,20 @@ public class CreateEditController {
      * TextField für Email-Adresse
      */
     public TextField MailBox;
+    /**
+     * VBox in welcher die Telefonnummern hinzugefügt werden können
+     */
     public VBox PhoneNumberVBox;
+    /**
+     * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
+     */
+    private IContactList contactList;
 
-    IContactList contactList;
-
+    /**
+     * Initialisiert den Controller mit Objekten aus dem MainController
+     *
+     * @param con MainController-Objekt
+     */
     public void initController(MainController con) {
         contactList = con.getContactList();
     }
@@ -53,7 +65,11 @@ public class CreateEditController {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
-    public void addPhoneButtonClick(ActionEvent actionEvent){
+
+    /**
+     * fügt eine ChoiceBox und ein TextField in die VBox ein um zusätzliche Telefonummern eintragen zu können
+     */
+    public void addPhoneButtonClick() {
         ChoiceBox<ContactNumberType> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().add(ContactNumberType.Mobile);
         choiceBox.getItems().add(ContactNumberType.Home);

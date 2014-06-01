@@ -42,6 +42,9 @@ public class MainController {
      * Liste aller Kontakte aus der Datenbank
      */
     private IContactList contactList = new ContactList();
+    /**
+     * IBlContacts für den Datenbankzugriff
+     */
     private IBlContacts blContacts = new BlContacts();
 
     /**
@@ -70,6 +73,7 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
     /**
      * Beendet Applikation
      */
@@ -172,10 +176,21 @@ public class MainController {
         }
     }
 
+    /**
+     * Getter für die zwischengespeicherte IContactList für die anderen Controller
+     *
+     * @return IContactList welche aus der DB gelesen wurde
+     */
     public IContactList getContactList() {
         return contactList;
     }
 
+    /**
+     * Getter für die zwischengespeicherte IBlContacts für die anderen Controller
+     * benötigt für den DB-Zugriff
+     *
+     * @return IBlContacts-Objekt
+     */
     public IBlContacts getBlContacts() {
         return blContacts;
     }
