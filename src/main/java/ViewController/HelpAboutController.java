@@ -16,14 +16,27 @@ import java.net.URL;
  */
 public class HelpAboutController {
 
+    /**
+     * WebView zur Anzeige der Hilfe oder der About-Seite
+     */
     public WebView WebViewer;
 
+    /**
+     * initialisiert die HelpAboutView
+     *
+     * @param content gibt an welche HTML-Seite angezeigt werden soll
+     */
     public void initHelpAboutView(String content) {
         URL contentUrl = getClass().getResource(content);
         WebEngine engine = WebViewer.getEngine();
         engine.load(contentUrl.toString());
     }
 
+    /**
+     * Schließt die HelpAboutView
+     *
+     * @param actionEvent Event um auf das Fenster zugreifen zu können
+     */
     public void CloseHelpAboutClick(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

@@ -1,13 +1,14 @@
 package Interfaces;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
 /**
  * Interface zur Ver- und Entschlüsselung von Dateien
@@ -15,6 +16,11 @@ import java.security.NoSuchProviderException;
  * @author baez
  */
 public interface IFileEncryption {
+
+    /**
+     * statisches salt um das Salt nicht jedes mal in die Datei schreiben zu müssen
+     */
+    byte[] salt = "[B@5cad8086".getBytes();
 
     /**
      * Verschlüsselt Datei
@@ -49,28 +55,17 @@ public interface IFileEncryption {
         FileInputStream fis;
         FileOutputStream fos;
         CipherInputStream cis;
-
-        /*
-        Passwort-Länge für AES anpassen
-         */
-        if (password.length() > 16 && password.length() != 16) {
-            password = password.substring(0, 15);
-        } else {
-            while (password.length() < 16 && password.length() != 16) {
-                password += "0";
-            }
-        }
-
-        /*
-        Key anlegen
-        */
-        SecretKeySpec secretKey = new SecretKeySpec(password.getBytes(), "AES");
         try {
+
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+            SecretKey tmp = factory.generateSecret(spec);
+            SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
             /*
             Cipher-Modus festlegen
              */
             Cipher encrypt = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
-            encrypt.init(Cipher.ENCRYPT_MODE, secretKey);
+            encrypt.init(Cipher.ENCRYPT_MODE, secret);
 
             /*
             Datei lesen -> byte-Array entschlüsseln -> Ergebnis schreiben
@@ -129,6 +124,10 @@ public interface IFileEncryption {
             if (logger != null) {
                 logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
             }
+        } catch (InvalidKeySpecException e) {
+            if (logger != null) {
+                logger.write("Probleme mit der Key-Spezifizierung aufgetreten\n" + e.toString());
+            }
         }
         if (logger != null) {
             logger.close();
@@ -173,27 +172,21 @@ public interface IFileEncryption {
         FileOutputStream fos;
         CipherInputStream cis;
 
-        /*
-        Passwort-Länge für AES anpassen
-         */
-        if (password.length() > 16 && password.length() != 16) {
-            password = password.substring(0, 15);
-        } else {
-            while (password.length() < 16 && password.length() != 16) {
-                password += "0";
-            }
-        }
-
     /*
     Key anlegen
      */
         SecretKeySpec secretKey = new SecretKeySpec(password.getBytes(), "AES");
         try {
+
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+            SecretKey tmp = factory.generateSecret(spec);
+            SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
             /*
             Cipher-Modus festlegen
              */
             Cipher decrypt = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
-            decrypt.init(Cipher.DECRYPT_MODE, secretKey);
+            decrypt.init(Cipher.DECRYPT_MODE, secret);
             /*
             Datei lesen -> byte-Array entschlüsseln -> Ergebnis schreiben
              */
@@ -248,6 +241,10 @@ public interface IFileEncryption {
         } catch (IOException e) {
             if (logger != null) {
                 logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
+            }
+        } catch (InvalidKeySpecException e) {
+            if (logger != null) {
+                logger.write("Probleme mit der Key-Spezifizierung aufgetreten\n" + e.toString());
             }
         }
         if (logger != null) {

@@ -36,6 +36,11 @@ public class SaveEncryptedController {
     public TextField EncryptedSavePathBox;
     private IBlContacts blContacts;
 
+    /**
+     * initialisiert den SaveEncryptedController
+     *
+     * @param con MainController zum Zugriff auf die DB etc
+     */
     public void initSaveEncryptedController(MainController con) {
         blContacts = con.getBlContacts();
     }
@@ -52,13 +57,15 @@ public class SaveEncryptedController {
             return;
         }
         /*
-        Dialog zum auswählen des Speicherorts
+        FileChooser öffnet einen Dialog zum auswählen einer Datei
          */
         FileChooser chooser = new FileChooser();
-
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("crypt (*.crypt)", "*.crypt");
         chooser.getExtensionFilters().add(extensionFilter);
 
+        /*
+        file speichert den Datei-Pfad der ausgewählten Datei
+         */
         File file = chooser.showSaveDialog(new Stage());
         if (file != null) {
             if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {

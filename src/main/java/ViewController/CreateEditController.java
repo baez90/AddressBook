@@ -70,12 +70,18 @@ public class CreateEditController {
      * fügt eine ChoiceBox und ein TextField in die VBox ein um zusätzliche Telefonummern eintragen zu können
      */
     public void addPhoneButtonClick() {
+        /*
+        ChoiceBox für Telefonnummer-Typ
+         */
         ChoiceBox<ContactNumberType> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().add(ContactNumberType.Mobile);
         choiceBox.getItems().add(ContactNumberType.Home);
         choiceBox.getItems().add(ContactNumberType.Work);
         choiceBox.setValue(choiceBox.getItems().get(0));
 
+        /*
+        HBox in welche das TextField und die ChoiceBox gefüllt werden
+         */
         HBox tempBox = new HBox();
         tempBox.getChildren().add(choiceBox);
         TextField nummerText = new TextField();

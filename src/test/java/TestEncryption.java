@@ -24,7 +24,9 @@ public class TestEncryption extends TestCase {
 
     public void setUp() {
 
-        while (password.length() < 16 && password.length() != 16) {
+        int pwLength = ((int) (Math.random() * 24) + 6);
+
+        while (password.length() < pwLength && password.length() != pwLength) {
             int random = ((int) (Math.random() * validCharacters.length()));
             password += validCharacters.charAt(random);
         }
