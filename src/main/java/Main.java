@@ -1,3 +1,4 @@
+import ViewController.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,10 +20,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+            Parent root = loader.load();
             primaryStage.setTitle("Adressbuch");
             primaryStage.setScene(new Scene(root, 900, 700));
             primaryStage.show();
+
+            MainController controller = loader.getController();
+            controller.initMainCointroller();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -52,26 +52,14 @@ public class MainController {
      */
     private void initContactTable() {
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
-        //TODO ContactTable mit Einträgen aus der DB füllen
+        ContactTable.setItems(displayList);
     }
 
     /**
      * Zeigt Dialog zum anlegen von neuen Kontakten an
      */
     public void CreateContactClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Neuer Kontakt");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
-
-            CreateEditController createEditController = loader.getController();
-            createEditController.initController(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initCreateEditContactView(null);
     }
 
     /**
@@ -142,38 +130,14 @@ public class MainController {
      * Ruft den Dialog zum verschlüsselten Speichern des Adressbuchs auf
      */
     public void SaveAddressBookEncryptedClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
-            SaveEncryptedController saveEncryptedController = new SaveEncryptedController(this);
-            loader.setController(saveEncryptedController);
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Adressbuch verschlüsselt speichern");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initSaveAddressBookEncrypted();
     }
 
     /**
      * Ruft Dialog zum öffnen eines verschlüsselten Adressbuchs auf
      */
     public void OpenEncryptedAddressBookClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenEncrypted.fxml"));
-            OpenEncryptedController openEncryptedController = new OpenEncryptedController();
-
-            loader.setController(openEncryptedController);
-            Parent createContactRoot = loader.load();
-            Stage createContactStage = new Stage();
-            createContactStage.setTitle("Verschlüsseltes Adressbuch öffnen");
-            createContactStage.setScene(new Scene(createContactRoot));
-            createContactStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initOpenEncryptedAddressBook();
     }
 
     /**
@@ -193,5 +157,62 @@ public class MainController {
      */
     public IBlContacts getBlContacts() {
         return blContacts;
+    }
+
+    public void initMainCointroller() {
+
+    }
+
+    private void initCreateEditContactView(IContact contactToEdit) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
+            Parent createContactRoot = loader.load();
+            Stage createContactStage = new Stage();
+            createContactStage.setTitle("Neuer Kontakt");
+            createContactStage.setScene(new Scene(createContactRoot));
+            createContactStage.show();
+
+            CreateEditController createEditController = loader.getController();
+            createEditController.initController(this);
+            if (contactToEdit != null) {
+
+            } else {
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initOpenEncryptedAddressBook() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenEncrypted.fxml"));
+            OpenEncryptedController openEncryptedController = loader.getController();
+
+            Parent createContactRoot = loader.load();
+            Stage createContactStage = new Stage();
+            createContactStage.setTitle("Verschlüsseltes Adressbuch öffnen");
+            createContactStage.setScene(new Scene(createContactRoot));
+            createContactStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initSaveAddressBookEncrypted() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SaveEncrypted.fxml"));
+
+            Parent createContactRoot = loader.load();
+            Stage createContactStage = new Stage();
+            createContactStage.setTitle("Adressbuch verschlüsselt speichern");
+            createContactStage.setScene(new Scene(createContactRoot));
+            createContactStage.show();
+            SaveEncryptedController saveEncryptedController = loader.getController();
+            saveEncryptedController.initSaveEncryptedController(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

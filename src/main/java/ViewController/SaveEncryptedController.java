@@ -36,7 +36,7 @@ public class SaveEncryptedController {
     public TextField EncryptedSavePathBox;
     private IBlContacts blContacts;
 
-    public SaveEncryptedController(MainController con) {
+    public void initSaveEncryptedController(MainController con) {
         blContacts = con.getBlContacts();
     }
 

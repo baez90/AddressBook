@@ -2,9 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" prefHeight="432.0" prefWidth="519.0"
-          vgap="10" xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.MainController">
+<GridPane alignment="center" hgap="10" prefHeight="432.0" prefWidth="519.0" vgap="10" xmlns="http://javafx.com/javafx/8"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.MainController">
     <columnConstraints>
         <ColumnConstraints/>
     </columnConstraints>
@@ -12,39 +13,88 @@
         <RowConstraints/>
     </rowConstraints>
     <children>
-        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <BorderPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0">
             <top>
                 <MenuBar BorderPane.alignment="CENTER">
                     <menus>
-                        <Menu mnemonicParsing="false" text="File">
+                        <Menu mnemonicParsing="false" text="Datei">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#CreateAddressBookClick"
-                                          text="Neues Adressbuch"/>
+                                          text="Neues Adressbuch">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="DOWN" code="N" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#OpenAddressBookClick"
-                                          text="Adressbuch öffnen"/>
-                                <MenuItem mnemonicParsing="false" onAction="#QuitApplication" text="Beenden"/>
+                                          text="Adressbuch öffnen">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" onAction="#QuitApplication" text="Beenden">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Kontakte">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt"/>
-                                <MenuItem mnemonicParsing="false" text="Kontakt bearbeiten"/>
-                                <MenuItem mnemonicParsing="false" onAction="#deleteContactClick"
-                                          text="Kontakt löschen"/>
+                                <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="Kontakt bearbeiten">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" onAction="#deleteContactClick" text="Kontakt löschen">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="D" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Optionen">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#SaveAddressBookEncryptedClick"
-                                          text="Adressbuch verschlüsselt speichern"/>
+                                          text="Adressbuch verschlüsselt speichern">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#OpenEncryptedAddressBookClick"
-                                          text="Verschlüsseltes Adressbuch öffnen"/>
+                                          text="Verschlüsseltes Adressbuch öffnen">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Hilfe">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Zur Bedienung"/>
-                                <MenuItem mnemonicParsing="false" text="Über das Adressbuch"/>
+                                <MenuItem mnemonicParsing="false" text="Zur Bedienung">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP"
+                                                            shortcut="ANY"/>
+                                    </accelerator>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" text="Über das Adressbuch">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP"
+                                                            shortcut="UP"/>
+                                    </accelerator>
+                                </MenuItem>
                             </items>
                         </Menu>
                     </menus>
@@ -56,9 +106,9 @@
                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="30.0"
                               spacing="10.0">
                             <children>
-                                <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#SearchButtonClick"
-                                        prefWidth="100.0" text="Suche"/>
-                                <TextField fx:id="SearchBox" maxWidth="1.7976931348623157E308" prefWidth="450.0">
+                                <Button mnemonicParsing="false" onAction="#SearchButtonClick" prefWidth="100.0"
+                                        text="Suche" fx:id="SearchButton"/>
+                                <TextField maxWidth="1.7976931348623157E308" prefWidth="450.0" fx:id="SearchBox">
                                     <HBox.margin>
                                         <Insets right="10.0"/>
                                     </HBox.margin>
@@ -81,7 +131,7 @@
                                         <Insets/>
                                     </HBox.margin>
                                 </TableView>
-                                <GridPane maxWidth="250.0" prefWidth="250.0" HBox.hgrow="ALWAYS">
+                                <GridPane HBox.hgrow="ALWAYS" maxWidth="250.0" prefWidth="250.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
