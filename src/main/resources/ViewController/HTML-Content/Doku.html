@@ -6,8 +6,7 @@
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/smoothness/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="../../css/dashboard/dashboard.css" rel="stylesheet">
-
-
+    <link href="../../css/highlightStyles/monokai_sublime.css" rel="stylesheet">
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -35,10 +34,10 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Overview</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Analytics</a></li>
-                <li><a href="#">Export</a></li>
+                <li><a href="#" id="load_contactClass">Contact</a></li>
+                <li><a href="#">ContactList</a></li>
+                <li><a href="#">ContactNumberList</a></li>
+                <li><a href="#">ContactNumberType</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="">Nav item</a></li>
@@ -53,11 +52,50 @@
                 <li><a href="">Another nav item</a></li>
             </ul>
         </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="content">
+            <h1 class="page-header">Dashboard</h1>
+
+            <h2 class="sub-header">Section title</h2>
+            <pre>
+                <code>
+                    package Interfaces;
+
+                    import java.time.LocalDate;
+
+                    /**
+                    * @author baez
+                    */
+                    public interface IContact extends Comparable
+                    <IContact> {
+                        public boolean dateOfBirthIsToday();
+
+                        public String getName();
+
+                        public String getFirstName();
+
+                        public String getMailAddress();
+
+                        public IContactNumberList getContactNumbers();
+
+                        public LocalDate getBirthDate();
+                        }
+                </code>
+            </pre>
+        </div>
     </div>
 </div>
-
 <script src="../../js/jquery-1.11.1.min.js"></script>
 <script src="../../js/bootstrap.min.js"></script>
 <script src="../../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../../js/highlight.pack.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#load_contactClass').on('click', function () {
+            $(this).parent().addClass('active').siblings().removeClass('active');
+            $('#content').load('DokuPages/Contact.html');
+        });
+    });
+    hljs.initHighlightingOnLoad();
+</script>
 </body>
 </html>
