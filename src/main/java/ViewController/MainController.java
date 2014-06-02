@@ -1,9 +1,11 @@
 package ViewController;
 
+import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 import Model.Contact;
+import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,7 +52,7 @@ public class MainController {
     /**
      * IBlContacts für den Datenbankzugriff
      */
-    private IBlContacts blContacts = null;
+    private IBlContacts blContacts = new BlContacts();
 
     /**
      * Init-Methode, erstellt die benötigten Tabellen
@@ -59,6 +61,8 @@ public class MainController {
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */
+        //DEMO-CODE
+        contactList = new ContactList();
         contactList.add(new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now()));
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
