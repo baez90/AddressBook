@@ -56,31 +56,6 @@
             <h1 class="page-header">Dashboard</h1>
 
             <h2 class="sub-header">Section title</h2>
-            <pre>
-                <code>
-                    package Interfaces;
-
-                    import java.time.LocalDate;
-
-                    /**
-                    * @author baez
-                    */
-                    public interface IContact extends Comparable
-                    <IContact> {
-                        public boolean dateOfBirthIsToday();
-
-                        public String getName();
-
-                        public String getFirstName();
-
-                        public String getMailAddress();
-
-                        public IContactNumberList getContactNumbers();
-
-                        public LocalDate getBirthDate();
-                        }
-                </code>
-            </pre>
         </div>
     </div>
 </div>
@@ -95,7 +70,7 @@
             $('#content').load('DokuPages/Contact.html');
         });
     });
-    hljs.initHighlightingOnLoad();
+
 </script>
 </body>
 </html>
