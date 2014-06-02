@@ -197,14 +197,14 @@ public class MainController {
      * Öffnet die Hilfe
      */
     public void OpenHelpClick() {
-        initHelpAboutView("help.html");
+        initHelpAboutView("HTML-Content/help.html");
     }
 
     /**
      * Öffnet die About-Ansicht
      */
     public void OpenAboutClick() {
-        initHelpAboutView("about.html");
+        initHelpAboutView("HTML-Content/about.html");
     }
 
     /**
