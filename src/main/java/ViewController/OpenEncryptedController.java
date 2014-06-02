@@ -93,7 +93,7 @@ public class OpenEncryptedController {
         /*
         decryptedAddressBook speichert den Datei-Pfad der ausgewählten Datei
          */
-        decryptedAddressBook = chooser.showOpenDialog(new Stage());
+        decryptedAddressBook = chooser.showSaveDialog(new Stage());
 
         /*
         speichert Pfad in die entsprechende TextView um zu sehen was man öffnet

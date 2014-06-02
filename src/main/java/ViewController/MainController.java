@@ -1,10 +1,9 @@
 package ViewController;
 
-import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
-import Model.ContactList;
+import Model.Contact;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,13 +11,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * ViewController.MainController-Klasse für alle Views
@@ -38,14 +41,16 @@ public class MainController {
      * TextField für Suchbegriffe
      */
     public TextField SearchBox;
+    public Menu ContactMenu;
+
     /**
      * Liste aller Kontakte aus der Datenbank
      */
-    private IContactList contactList = new ContactList();
+    private IContactList contactList = null;
     /**
      * IBlContacts für den Datenbankzugriff
      */
-    private IBlContacts blContacts = new BlContacts();
+    private IBlContacts blContacts = null;
 
     /**
      * Init-Methode, erstellt die benötigten Tabellen
@@ -54,8 +59,24 @@ public class MainController {
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */
+        contactList.add(new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now()));
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
+    }
+
+    /**
+     * Updated den ContactTable nach Suche
+     * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
+     */
+    private void updateContactTable(IContactList contactList) {
+        if (contactList != null || contactList.size() > 1) {
+            /*
+        OberserableList wrapped die contactList für die Anzeige in der Tabelle
+         */
+            ObservableList<IContact> displayList = FXCollections.observableList(contactList);
+            ContactTable.setItems(displayList);
+        }
+
     }
 
     /**
@@ -96,6 +117,7 @@ public class MainController {
             }
             blContacts.setDbPath(filePath);
             blContacts.initDB();
+            ContactMenu.setDisable(false);
         }
     }
 
@@ -114,11 +136,12 @@ public class MainController {
         /*
         file speichert den Datei-Pfad der ausgewählten Datei
          */
-        File file = chooser.showSaveDialog(new Stage());
+        File file = chooser.showOpenDialog(new Stage());
         if (file != null) {
             blContacts.setDbPath(file.getAbsolutePath());
             blContacts.getContactsFromDB();
             initContactTable();
+            ContactMenu.setDisable(false);
 
             /*
             TODO Benachrichtigung für aktuelle Geburtstag anzeigen
@@ -138,7 +161,18 @@ public class MainController {
      * Sucht Kontakt in der Liste und zeigt Result-List im ContactTable an
      */
     public void SearchButtonClick() {
-        //TODO Kontakte in der Liste suchen
+        if (contactList == null || contactList.size() < 1) {
+            Dialogs.create().title("Info").masthead("Kein Adressbuch").message("Es wurde noch kein Adressbuch geöffnet. Es muss erst ein Adressbuch erstellt oder geöffnet werden um etwas suchen zu können").showInformation();
+        } else {
+            updateContactTable(contactList.searchContacts(SearchBox.getText()));
+        }
+
+    }
+
+    public void SearchBoxKeyDown(KeyEvent event) {
+        if (contactList != null) {
+            updateContactTable(contactList.searchContacts(SearchBox.getText() + event.getText()));
+        }
     }
 
     /**
@@ -274,6 +308,7 @@ public class MainController {
 
     /**
      * initialisiert die HelpAboutView
+     *
      * @param content Name der HTML-Seite welche geöffnet werden soll
      */
     private void initHelpAboutView(String content) {

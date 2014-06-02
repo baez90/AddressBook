@@ -5,10 +5,13 @@ import Model.ContactNumberType;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 
 /**
  * Controller für die CreateEditView
@@ -32,6 +35,7 @@ public class CreateEditController {
      * VBox in welcher die Telefonnummern hinzugefügt werden können
      */
     public VBox PhoneNumberVBox;
+    public DatePicker BirthdayDatePicker;
     /**
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
@@ -44,6 +48,7 @@ public class CreateEditController {
      */
     public void initController(MainController con) {
         contactList = con.getContactList();
+        BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
     }
 
     /**
@@ -89,5 +94,10 @@ public class CreateEditController {
         tempBox.setSpacing(10);
 
         PhoneNumberVBox.getChildren().add(tempBox);
+    }
+
+    public void RemovePhoneNumber() {
+        int PhoneNumberCount = PhoneNumberVBox.getChildren().size();
+        PhoneNumberVBox.getChildren().remove(PhoneNumberCount - 1);
     }
 }
