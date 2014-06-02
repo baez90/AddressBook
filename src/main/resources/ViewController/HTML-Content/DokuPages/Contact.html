@@ -1,16 +1,13 @@
 <script>
     $(document).ready(function () {
-        $('pre code').each(function (i, e) {
-            hljs.highlightBlock(e)
-        });
+        SyntaxHighlighter.highlight();
     });
 </script>
 <div>
 <h1 class="page-header">Contact-Class</h1>
 
 <h2 class="sub-header">Member-Variables</h2>
-<pre>
-            <code>
+<pre class="brush: java">
                 package Model;
 
                 import Interfaces.IContact;
@@ -49,11 +46,9 @@
                 * Liste der Rufnummern für einen Kontakt
                 */
                 private IContactNumberList ContactNumbers;
-            </code>
     </pre>
 <h2>Konstruktor</h2>
-    <pre>
-        <code>
+    <pre class="brush: java">
             /**
             * Konstruktor für CreateContact
             * kann direkt mit allen Attributen befüllt werden
@@ -87,11 +82,9 @@
             BirthDate = birthDate;
             ContactNumbers = new ContactNumberList();
             }
-        </code>
         </pre>
 <h2>Methoden</h2>
-    <pre>
-        <code>
+    <pre class="brush: java">
             /**
             * Standard-Getter für ContactID
             *
@@ -207,6 +200,5 @@
             return LocalDate.now().equals(BirthDate);
             }
             }
-        </code>
         </pre>
 </div>
