@@ -16,7 +16,10 @@ public class BlContacts implements IBlContacts {
      * Speichert den Pfad zur Datenbank-Datei ab
      */
     private String DbPath;
-//desd
+//desd ob der ganze kack wirklich funktioniert
+
+
+
     @Override
     public int updateContactInDB(String dbPath, IContact contact) {
         return 0;
