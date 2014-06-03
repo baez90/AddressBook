@@ -16,7 +16,7 @@ public class BlContacts implements IBlContacts {
      * Speichert den Pfad zur Datenbank-Datei ab
      */
     private String DbPath;
-
+//desd
     @Override
     public int updateContactInDB(String dbPath, IContact contact) {
         return 0;
