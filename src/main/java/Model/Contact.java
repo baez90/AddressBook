@@ -91,7 +91,7 @@ public class Contact implements IContact {
      */
     @Override
     public String getFirstName() {
-        return FirstName.toString();
+        return FirstName.getValue();
     }
 
     /**
@@ -111,7 +111,7 @@ public class Contact implements IContact {
      */
     @Override
     public String getLastName() {
-        return LastName.toString();
+        return LastName.getValue();
     }
 
     /**
@@ -130,7 +130,7 @@ public class Contact implements IContact {
      */
     @Override
     public String getMailAddress() {
-        return MailAddress.toString();
+        return MailAddress.getValue();
     }
 
     /**
