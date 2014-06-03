@@ -34,6 +34,9 @@ public class Contact implements IContact {
      * Geburtstag des Kontakts
      */
     private LocalDate BirthDate;
+    /**
+     * Adresse des Kontakts
+     */
     private Address Address;
 
     /**
@@ -180,21 +183,40 @@ public class Contact implements IContact {
         BirthDate = birthDate;
     }
 
+    /**
+     * Standard-Getter für die Adresse des Kontakts
+     *
+     * @return Adres-Objekt des Kontakts
+     */
     public Address getAddress() {
         return Address;
     }
 
+    /**
+     * Standard-Setter für die Adresse des Kontakts
+     * @param address neues Adress-Objekt für den Kontakt
+     */
     public void setAddress(Address address) {
         Address = address;
     }
 
+    /**
+     * Obligatorische Implementierung für das Compare-Interface
+     * @param o IContact-Objekt welches verglichen werden soll
+     * @return 1 falls this größer ist, 0 falls gleich, -1 falls o größer ist
+     */
     @Override
     public int compareTo(IContact o) {
         return (LastName + " " + FirstName).compareTo(o.getLastName() + " " + o.getFirstName());
     }
 
+    /**
+     * Prüft ob Kontakt heute Geburtstag hat
+     * @return boolean ob Kontakt heute Geburtstag hat
+     */
     @Override
     public boolean dateOfBirthIsToday() {
-        return LocalDate.now().equals(BirthDate);
+        LocalDate today = LocalDate.now();
+        return BirthDate.getDayOfMonth() == today.getDayOfMonth() && BirthDate.getMonth().equals(today.getMonth());
     }
 }
