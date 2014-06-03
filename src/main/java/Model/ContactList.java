@@ -3,7 +3,10 @@ package Model;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * Repräsentiert Liste aller Kontakte
@@ -21,8 +24,8 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList searchContacts(String searchString) {
-        //TODO Kontakte in Liste suchen, Rufnummern können auch durchsucht werden!
-        return null;
+        //TODO Rufnummern berücksichtigen
+        return this.stream().filter(i -> i.getFirstName().toLowerCase().equals(searchString.toLowerCase()) || i.getLastName().toLowerCase().equals(searchString.toLowerCase())).collect(Collectors.toCollection(ContactList::new));
     }
 
     /**
