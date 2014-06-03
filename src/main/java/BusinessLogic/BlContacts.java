@@ -18,7 +18,7 @@ public class BlContacts implements IBlContacts {
     private String DbPath;
 //desd ob der ganze kack wirklich funktioniert
 
-
+//noch ein schwuler kommentar
 
     @Override
     public int updateContactInDB(String dbPath, IContact contact) {
