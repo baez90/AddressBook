@@ -4,19 +4,17 @@ import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
-import Model.Contact;
-import Model.ContactList;
+import Model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
@@ -44,6 +42,12 @@ public class MainController {
      */
     public TextField SearchBox;
     public Menu ContactMenu;
+    public TableColumn FirstNameColumn;
+    public TableColumn LastNameColumn;
+    public TableColumn EmailAddressColumn;
+    public TableColumn BirthdayColumn;
+    public VBox PhoneNrBox;
+
 
     /**
      * Liste aller Kontakte aus der Datenbank
@@ -58,12 +62,20 @@ public class MainController {
      * Init-Methode, erstellt die benötigten Tabellen
      */
     private void initContactTable() {
+        FirstNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("FirstName"));
+        LastNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("LastName"));
+        EmailAddressColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("MailAddress"));
+        BirthdayColumn.setCellValueFactory(new PropertyValueFactory<IContact, LocalDate>("BirthDate"));
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */
         //DEMO-CODE
         contactList = new ContactList();
-        contactList.add(new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now()));
+        ContactNumberList temp = new ContactNumberList();
+        temp.add(new ContactNumber(ContactNumberType.Home, "123456789"));
+        Contact hans = new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now());
+        hans.setContactNumbers(temp);
+        contactList.add(hans);
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
     }
