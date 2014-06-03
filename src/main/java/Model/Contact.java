@@ -2,6 +2,8 @@ package Model;
 
 import Interfaces.IContact;
 import Interfaces.IContactNumberList;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -33,7 +35,7 @@ public class Contact implements IContact {
     /**
      * Geburtstag des Kontakts
      */
-    private LocalDate BirthDate;
+    private ObjectProperty<LocalDate> BirthDate;
     /**
      * Adresse des Kontakts
      */
@@ -57,7 +59,7 @@ public class Contact implements IContact {
         FirstName = new SimpleStringProperty(firstName);
         LastName = new SimpleStringProperty(lastName);
         MailAddress = new SimpleStringProperty(mailAddress);
-        BirthDate = birthDate;
+        BirthDate = new SimpleObjectProperty<>(birthDate);
         ContactNumbers = new ContactNumberList();
     }
 
@@ -74,7 +76,7 @@ public class Contact implements IContact {
         FirstName = new SimpleStringProperty(firstName);
         LastName = new SimpleStringProperty(lastName);
         MailAddress = new SimpleStringProperty(mailAddress);
-        BirthDate = birthDate;
+        BirthDate = new SimpleObjectProperty<>(birthDate);
         ContactNumbers = new ContactNumberList();
     }
 
@@ -171,7 +173,7 @@ public class Contact implements IContact {
      */
     @Override
     public LocalDate getBirthDate() {
-        return BirthDate;
+        return BirthDate.getValue();
     }
 
     /**
@@ -180,7 +182,7 @@ public class Contact implements IContact {
      * @param birthDate Geburtstag als LocalDate
      */
     public void setBirthDate(LocalDate birthDate) {
-        BirthDate = birthDate;
+        BirthDate.set(birthDate);
     }
 
     /**
@@ -200,6 +202,10 @@ public class Contact implements IContact {
         Address = address;
     }
 
+    public ObjectProperty<LocalDate> birthdayProperty() {
+        return BirthDate;
+    }
+
     /**
      * Obligatorische Implementierung für das Compare-Interface
      * @param o IContact-Objekt welches verglichen werden soll
@@ -217,6 +223,6 @@ public class Contact implements IContact {
     @Override
     public boolean dateOfBirthIsToday() {
         LocalDate today = LocalDate.now();
-        return BirthDate.getDayOfMonth() == today.getDayOfMonth() && BirthDate.getMonth().equals(today.getMonth());
+        return BirthDate.getValue().getDayOfMonth() == today.getDayOfMonth() && BirthDate.getValue().getMonth().equals(today.getMonth());
     }
 }
