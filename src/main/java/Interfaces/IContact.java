@@ -1,7 +1,5 @@
 package Interfaces;
 
-import javafx.beans.property.StringProperty;
-
 import java.time.LocalDate;
 
 /**
@@ -10,11 +8,11 @@ import java.time.LocalDate;
 public interface IContact extends Comparable<IContact> {
     public boolean dateOfBirthIsToday();
 
-    public StringProperty getLastName();
+    public String getLastName();
 
-    public StringProperty getFirstName();
+    public String getFirstName();
 
-    public StringProperty getMailAddress();
+    public String getMailAddress();
 
     public IContactNumberList getContactNumbers();
 
