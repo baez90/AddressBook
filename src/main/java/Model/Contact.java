@@ -2,6 +2,7 @@ package Model;
 
 import Interfaces.IContact;
 import Interfaces.IContactNumberList;
+import javafx.beans.property.StringProperty;
 
 import java.time.LocalDate;
 
@@ -19,19 +20,21 @@ public class Contact implements IContact {
     /**
      * Vorname des Kontakts
      */
-    private String FirstName;
+    private StringProperty FirstName;
     /**
      * Nachname des Kontakts
      */
-    private String Name;
+    private StringProperty LastName;
     /**
      * Email-Adresse des Kontakts
      */
-    private String MailAddress;
+    private StringProperty MailAddress;
     /**
      * Geburtstag des Kontakts
      */
     private LocalDate BirthDate;
+    private Address Address;
+
     /**
      * Liste der Rufnummern für einen Kontakt
      */
@@ -42,13 +45,13 @@ public class Contact implements IContact {
      * kann direkt mit allen Attributen befüllt werden
      *
      * @param firstName   Vorname des Kontakts
-     * @param name        Nachname des Kontakts
+     * @param lastName    Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
-    public Contact(String firstName, String name, String mailAddress, LocalDate birthDate) {
+    public Contact(StringProperty firstName, StringProperty lastName, StringProperty mailAddress, LocalDate birthDate) {
         ContactID = 0;
         FirstName = firstName;
-        Name = name;
+        LastName = lastName;
         MailAddress = mailAddress;
         BirthDate = birthDate;
         ContactNumbers = new ContactNumberList();
@@ -59,13 +62,13 @@ public class Contact implements IContact {
      *
      * @param id          ID des Kontakts in der DB
      * @param firstName   Vorname des Kontakts
-     * @param name        Nachname des Kontakts
+     * @param lastName    Nachname des Kontakts
      * @param mailAddress Email-Adresse des Kontakts
      */
-    public Contact(int id, String firstName, String name, String mailAddress, LocalDate birthDate) {
+    public Contact(int id, StringProperty firstName, StringProperty lastName, StringProperty mailAddress, LocalDate birthDate) {
         ContactID = id;
         FirstName = firstName;
-        Name = name;
+        LastName = lastName;
         MailAddress = mailAddress;
         BirthDate = birthDate;
         ContactNumbers = new ContactNumberList();
@@ -86,7 +89,7 @@ public class Contact implements IContact {
      * @return Vorname des Kontakts
      */
     @Override
-    public String getFirstName() {
+    public StringProperty getFirstName() {
         return FirstName;
     }
 
@@ -96,7 +99,7 @@ public class Contact implements IContact {
      * @param firstName setzt Vornamen des Kontakts
      */
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(StringProperty firstName) {
         FirstName = firstName;
     }
 
@@ -106,17 +109,17 @@ public class Contact implements IContact {
      * @return Nachname des Kontakts
      */
     @Override
-    public String getName() {
-        return Name;
+    public StringProperty getLastName() {
+        return LastName;
     }
 
     /**
      * Standard-Setter für Nachname
      *
-     * @param name Nachname des Kontakts
+     * @param lastName Nachname des Kontakts
      */
-    public void setName(String name) {
-        Name = name;
+    public void setLastName(StringProperty lastName) {
+        LastName = lastName;
     }
 
     /**
@@ -125,7 +128,7 @@ public class Contact implements IContact {
      * @return Email-Adresse des Kontakts
      */
     @Override
-    public String getMailAddress() {
+    public StringProperty getMailAddress() {
         return MailAddress;
     }
 
@@ -134,7 +137,7 @@ public class Contact implements IContact {
      *
      * @param mailAddress Email-Adresse des Kontakts
      */
-    public void setMailAddress(String mailAddress) {
+    public void setMailAddress(StringProperty mailAddress) {
         MailAddress = mailAddress;
     }
 
@@ -176,9 +179,17 @@ public class Contact implements IContact {
         BirthDate = birthDate;
     }
 
+    public Address getAddress() {
+        return Address;
+    }
+
+    public void setAddress(Address address) {
+        Address = address;
+    }
+
     @Override
     public int compareTo(IContact o) {
-        return (Name + " " + FirstName).compareTo(o.getName() + " " + o.getFirstName());
+        return (LastName + " " + FirstName).compareTo(o.getLastName() + " " + o.getFirstName());
     }
 
     @Override

@@ -7,6 +7,7 @@ import Interfaces.IContactList;
 import Model.Contact;
 import Model.ContactList;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -63,13 +64,14 @@ public class MainController {
          */
         //DEMO-CODE
         contactList = new ContactList();
-        contactList.add(new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now()));
+        contactList.add(new Contact(new SimpleStringProperty("hans"), new SimpleStringProperty("im Glück"), new SimpleStringProperty("hans.imGlueck@burger.lecker"), LocalDate.now()));
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
     }
 
     /**
      * Updated den ContactTable nach Suche
+     *
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
     private void updateContactTable(IContactList contactList) {
