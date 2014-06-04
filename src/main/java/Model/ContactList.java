@@ -24,11 +24,12 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList searchContacts(String searchString) {
-        return this.stream().filter(i -> i.getFirstName().toLowerCase().equals(searchString.toLowerCase()) || i.getLastName().toLowerCase().equals(searchString.toLowerCase())).collect(Collectors.toCollection(ContactList::new));
+        return this.stream().filter(i -> i.getFirstName().toLowerCase().contains(searchString.toLowerCase()) || i.getLastName().toLowerCase().contains(searchString.toLowerCase()) || !i.getContactNumbers().searchNumber(searchString).isEmpty()).collect(Collectors.toCollection(ContactList::new));
     }
 
     /**
      * Fügt Parameter automatisch sortiert ein
+     *
      * @param contact Kontakt welcher eingefügt werden soll
      * @return boolean ob erfolgreich eingefügt wurde
      */
@@ -41,6 +42,7 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
 
     /**
      * Fügt alle Elemente einer Collection der Liste hinzu
+     *
      * @param c Collection deren Elemente das Interface IContact implementiert
      * @return boolean ob erfolgreich alle Elemente hinzugefügt wurden
      */

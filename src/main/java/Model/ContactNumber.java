@@ -21,19 +21,23 @@ public class ContactNumber implements IContactNumber {
         Type = type;
         Number = number;
     }
+
     @Override
     public ContactNumberType getType() {
         return Type;
     }
 
+    @Override
     public void setType(ContactNumberType type) {
         Type = type;
     }
 
+    @Override
     public String getNumber() {
         return Number;
     }
 
+    @Override
     public void setNumber(String number) {
         Number = number;
     }

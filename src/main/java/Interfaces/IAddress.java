@@ -1,20 +1,50 @@
 package Interfaces;
 
-import javafx.beans.property.StringProperty;
-
 /**
+ * Interface für die Adresse
+ *
  * @author Baez
  */
 public interface IAddress {
-    public StringProperty getStreetAddress();
+    /**
+     * Standard-Getter
+     *
+     * @return Straße und Hausnummer als String
+     */
+    public String getStreetAddress();
 
-    public void setStreetAddress(StringProperty newStreetAddress);
+    /**
+     * Standard-Setter
+     *
+     * @param newStreetAddress neue Straße und Hausnummer als String
+     */
+    public void setStreetAddress(String newStreetAddress);
 
-    public StringProperty getZipCode();
+    /**
+     * Standard-Getter
+     *
+     * @return Postleitzahl als String
+     */
+    public String getZipCode();
 
-    public void setZipCode(StringProperty newZipCode);
+    /**
+     * Standard-Setter
+     *
+     * @param newZipCode Postleitzahl als String
+     */
+    public void setZipCode(String newZipCode);
 
-    public StringProperty getCity();
+    /**
+     * Standard-Getter
+     *
+     * @return Ort als String
+     */
+    public String getCity();
 
-    public void setCity(StringProperty newCity);
+    /**
+     * Standard-Setter
+     *
+     * @param newCity neuer Ort als String
+     */
+    public void setCity(String newCity);
 }

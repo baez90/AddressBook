@@ -7,4 +7,10 @@ import Model.ContactNumberType;
  */
 public interface IContactNumber extends Comparable<IContactNumber> {
     public ContactNumberType getType();
+
+    public void setType(ContactNumberType type);
+
+    public String getNumber();
+
+    public void setNumber(String number);
 }

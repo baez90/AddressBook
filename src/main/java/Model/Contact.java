@@ -86,6 +86,7 @@ public class Contact implements IContact {
      *
      * @return ID des Kontakts in der DB
      */
+    @Override
     public int getContactID() {
         return ContactID;
     }
@@ -105,7 +106,7 @@ public class Contact implements IContact {
      *
      * @param firstName setzt Vornamen des Kontakts
      */
-
+    @Override
     public void setFirstName(String firstName) {
         FirstName = new SimpleStringProperty(firstName);
     }
@@ -125,6 +126,7 @@ public class Contact implements IContact {
      *
      * @param lastName Nachname des Kontakts
      */
+    @Override
     public void setLastName(String lastName) {
         LastName = new SimpleStringProperty(lastName);
     }
@@ -144,6 +146,7 @@ public class Contact implements IContact {
      *
      * @param mailAddress Email-Adresse des Kontakts
      */
+    @Override
     public void setMailAddress(String mailAddress) {
         MailAddress = new SimpleStringProperty(mailAddress);
     }
@@ -163,6 +166,7 @@ public class Contact implements IContact {
      *
      * @param contactNumbers neue Liste der Rufnummern
      */
+    @Override
     public void setContactNumbers(IContactNumberList contactNumbers) {
         ContactNumbers = contactNumbers;
     }
@@ -182,6 +186,7 @@ public class Contact implements IContact {
      *
      * @param birthDate Geburtstag als LocalDate
      */
+    @Override
     public void setBirthDate(LocalDate birthDate) {
         BirthDate.set(birthDate);
     }
@@ -191,24 +196,33 @@ public class Contact implements IContact {
      *
      * @return Adres-Objekt des Kontakts
      */
+    @Override
     public IAddress getAddress() {
         return Address;
     }
 
     /**
      * Standard-Setter für die Adresse des Kontakts
+     *
      * @param address neues Adress-Objekt für den Kontakt
      */
+    @Override
     public void setAddress(IAddress address) {
         Address = address;
     }
 
+    /**
+     * Notwendige Methode zur Anzeige in der Tabelle
+     *
+     * @return BirthDay-Property
+     */
     public ObjectProperty<LocalDate> birthdayProperty() {
         return BirthDate;
     }
 
     /**
      * Obligatorische Implementierung für das Compare-Interface
+     *
      * @param o IContact-Objekt welches verglichen werden soll
      * @return 1 falls this größer ist, 0 falls gleich, -1 falls o größer ist
      */
@@ -219,6 +233,7 @@ public class Contact implements IContact {
 
     /**
      * Prüft ob Kontakt heute Geburtstag hat
+     *
      * @return boolean ob Kontakt heute Geburtstag hat
      */
     @Override
@@ -227,6 +242,13 @@ public class Contact implements IContact {
         return BirthDate.getValue().getDayOfMonth() == today.getDayOfMonth() && BirthDate.getValue().getMonth().equals(today.getMonth());
     }
 
+    /**
+     * Obligatorische equals-Methode
+     * Vergleich Vor- und Nachnamen
+     *
+     * @param o Objekt welches verglichen werden soll
+     * @return boolean ob die 2 Objekte gleich sind
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Contact)) {
