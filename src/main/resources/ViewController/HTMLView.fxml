@@ -4,12 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-            minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="805.0"
-            xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.CreateEditController">
+<BorderPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="459.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.CreateEditController">
     <center>
-        <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                  minWidth="-Infinity" prefHeight="267.0" prefWidth="440.0" BorderPane.alignment="TOP_CENTER">
+        <GridPane BorderPane.alignment="TOP_CENTER" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                  minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="440.0">
             <children>
                 <Label text="Vorname">
                     <padding>
@@ -19,7 +19,7 @@
                         <Font name="System Bold" size="13.0"/>
                     </font>
                 </Label>
-                <Label text="Nachname" GridPane.rowIndex="1">
+                <Label GridPane.rowIndex="1" text="Nachname">
                     <GridPane.margin>
                         <Insets left="10.0"/>
                     </GridPane.margin>
@@ -27,7 +27,7 @@
                         <Font name="System Bold" size="13.0"/>
                     </font>
                 </Label>
-                <Label text="Email-Adresse" GridPane.rowIndex="2">
+                <Label GridPane.rowIndex="2" text="Email-Adresse">
                     <GridPane.margin>
                         <Insets left="10.0"/>
                     </GridPane.margin>
@@ -35,22 +35,22 @@
                         <Font name="System Bold" size="13.0"/>
                     </font>
                 </Label>
-                <TextField fx:id="FirstNameBox" GridPane.columnIndex="1">
+                <TextField GridPane.columnIndex="1" fx:id="FirstNameBox">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="NameBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="NameBox">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
-                <TextField fx:id="MailBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="MailBox">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
                 </TextField>
-                <Label text="Geburtstag" GridPane.rowIndex="3">
+                <Label GridPane.rowIndex="3" text="Geburtstag">
                     <GridPane.margin>
                         <Insets left="10.0"/>
                     </GridPane.margin>
@@ -58,7 +58,7 @@
                         <Font name="System Bold" size="13.0"/>
                     </font>
                 </Label>
-                <DatePicker fx:id="BirthdayDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="BirthdayDatePicker">
                     <GridPane.margin>
                         <Insets left="10.0" right="10.0"/>
                     </GridPane.margin>
@@ -77,7 +77,7 @@
         </GridPane>
     </center>
     <bottom>
-        <HBox prefHeight="38.0" prefWidth="602.0" spacing="10.0" BorderPane.alignment="CENTER">
+        <HBox BorderPane.alignment="CENTER" prefHeight="38.0" prefWidth="602.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#SaveNewContactClick" text="Speichern"/>
                 <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen"/>
@@ -88,7 +88,7 @@
         </HBox>
     </bottom>
     <right>
-        <VBox alignment="BOTTOM_CENTER" prefHeight="421.0" prefWidth="294.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER" alignment="BOTTOM_CENTER" prefHeight="421.0" prefWidth="294.0">
             <children>
                 <Label text="Telefonnummern">
                     <font>
@@ -98,14 +98,15 @@
                         <Insets bottom="5.0" top="10.0"/>
                     </VBox.margin>
                 </Label>
-                <ScrollPane prefHeight="232.0" prefWidth="234.0" VBox.vgrow="ALWAYS">
+                <ScrollPane VBox.vgrow="ALWAYS" prefHeight="232.0" prefWidth="234.0">
                     <content>
                         <AnchorPane prefHeight="356.0" prefWidth="291.0">
                             <children>
-                                <VBox fx:id="PhoneNumberVBox" alignment="TOP_CENTER" prefHeight="230.0"
-                                      prefWidth="211.0" spacing="10.0" AnchorPane.bottomAnchor="0.0"
-                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                                <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                      AnchorPane.rightAnchor="0.0"
+                                      AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER"
+                                      prefHeight="230.0" prefWidth="211.0"
+                                      spacing="10.0" fx:id="PhoneNumberVBox">
                                     <opaqueInsets>
                                         <Insets/>
                                     </opaqueInsets>

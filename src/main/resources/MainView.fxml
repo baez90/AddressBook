@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" prefHeight="547.0" prefWidth="690.0"
-          vgap="10" xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.MainController">
+<GridPane alignment="center" hgap="10" prefHeight="547.0" prefWidth="690.0" vgap="10" xmlns="http://javafx.com/javafx/8"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.MainController">
     <columnConstraints>
         <ColumnConstraints/>
     </columnConstraints>
@@ -13,7 +13,7 @@
         <RowConstraints/>
     </rowConstraints>
     <children>
-        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <BorderPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0">
             <top>
                 <MenuBar BorderPane.alignment="CENTER">
                     <menus>
@@ -41,7 +41,7 @@
                                 </MenuItem>
                             </items>
                         </Menu>
-                        <Menu fx:id="ContactMenu" disable="true" mnemonicParsing="false" text="Kontakte">
+                        <Menu disable="true" mnemonicParsing="false" text="Kontakte" fx:id="ContactMenu">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt">
                                     <accelerator>
@@ -95,7 +95,8 @@
                                                             shortcut="UP"/>
                                     </accelerator>
                                 </MenuItem>
-                                <MenuItem mnemonicParsing="false" text="Fehlerliste ansehen"/>
+                                <MenuItem mnemonicParsing="false" onAction="#ViewErrorListClick"
+                                          text="Fehlerliste ansehen"/>
                             </items>
                         </Menu>
                     </menus>
@@ -107,10 +108,10 @@
                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="30.0"
                               spacing="10.0">
                             <children>
-                                <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#SearchButtonClick"
-                                        prefWidth="100.0" text="Suche"/>
-                                <TextField fx:id="SearchBox" maxWidth="1.7976931348623157E308"
-                                           onKeyPressed="#SearchBoxKeyDown" prefWidth="450.0">
+                                <Button mnemonicParsing="false" onAction="#SearchButtonClick" prefWidth="100.0"
+                                        text="Suche" fx:id="SearchButton"/>
+                                <TextField maxWidth="1.7976931348623157E308" onKeyPressed="#SearchBoxKeyDown"
+                                           prefWidth="450.0" fx:id="SearchBox">
                                     <HBox.margin>
                                         <Insets right="10.0"/>
                                     </HBox.margin>
@@ -122,22 +123,22 @@
                         </HBox>
                         <HBox VBox.vgrow="ALWAYS">
                             <children>
-                                <TableView fx:id="ContactTable" HBox.hgrow="ALWAYS">
+                                <TableView HBox.hgrow="ALWAYS" fx:id="ContactTable">
                                     <columns>
-                                        <TableColumn fx:id="FirstNameColumn" editable="false" prefWidth="96.0"
-                                                     text="Vorname"/>
-                                        <TableColumn fx:id="LastNameColumn" editable="false" prefWidth="100.0"
-                                                     text="Nachname"/>
-                                        <TableColumn fx:id="EmailAddressColumn" editable="false" prefWidth="154.0"
-                                                     text="Email"/>
-                                        <TableColumn fx:id="BirthdayColumn" editable="false" prefWidth="119.0"
-                                                     text="Geburtstag"/>
+                                        <TableColumn editable="false" prefWidth="96.0" text="Vorname"
+                                                     fx:id="FirstNameColumn"/>
+                                        <TableColumn editable="false" prefWidth="100.0" text="Nachname"
+                                                     fx:id="LastNameColumn"/>
+                                        <TableColumn editable="false" prefWidth="154.0" text="Email"
+                                                     fx:id="EmailAddressColumn"/>
+                                        <TableColumn editable="false" prefWidth="119.0" text="Geburtstag"
+                                                     fx:id="BirthdayColumn"/>
                                     </columns>
                                     <HBox.margin>
                                         <Insets/>
                                     </HBox.margin>
                                 </TableView>
-                                <VBox fx:id="PhoneNrBox" prefHeight="483.0" prefWidth="182.0"/>
+                                <VBox prefHeight="483.0" prefWidth="182.0" fx:id="PhoneNrBox"/>
                             </children>
                         </HBox>
                     </children>

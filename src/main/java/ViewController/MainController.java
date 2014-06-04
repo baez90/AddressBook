@@ -220,6 +220,10 @@ public class MainController {
         initHelpAboutView("HTML-Content/about.html");
     }
 
+    public void ViewErrorListClick() {
+        initHelpAboutView("HTML-Content/error.html");
+    }
+
     /**
      * Getter für die zwischengespeicherte IContactList für die anderen Controller
      *
@@ -250,7 +254,7 @@ public class MainController {
             /*
             lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
              */
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditContact.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HTMLView.fxml"));
             Parent createEditContactRoot = loader.load();
             Stage createEditContactStage = new Stage();
             createEditContactStage.setTitle("Neuer Kontakt");
@@ -363,4 +367,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+
 }

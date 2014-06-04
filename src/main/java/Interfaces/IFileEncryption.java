@@ -1,5 +1,7 @@
 package Interfaces;
 
+import BusinessLogic.ErrorLog;
+
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -31,19 +33,6 @@ public interface IFileEncryption {
      * @return boolean ob Datei erfolgreich verschlüsselt werden konnte
      */
     public static boolean encryptFile(String password, String sourcePath, String targetPath) {
-        PrintWriter logger = null;
-        try {
-            File logfile = new File("logfile.txt");
-            if (!logfile.exists()) {
-                logfile.createNewFile();
-            }
-            logger = new PrintWriter("logfile.txt", "UTF-8");
-        } catch (Exception e) {
-            /*
-            Sinnlos hier ein Log zu schreiben, da Logger möglicherweise nicht richtig angelegt werden konnte
-             */
-            e.printStackTrace();
-        }
         /*
         Dateien für die Input- und OutputStreams
          */
@@ -96,41 +85,21 @@ public interface IFileEncryption {
             fos.close();
             cis.close();
             fis.close();
-            if (logger != null) {
-                logger.close();
-            }
             return true;
         } catch (NoSuchAlgorithmException e) {
-            if (logger != null) {
-                logger.write("Crypto-Algorithmus nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString()).saveError();
         } catch (NoSuchProviderException e) {
-            if (logger != null) {
-                logger.write("Crypto-Provider nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString()).saveError();
         } catch (NoSuchPaddingException e) {
-            if (logger != null) {
-                logger.write("Padding-Variante nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString()).saveError();
         } catch (InvalidKeyException e) {
-            if (logger != null) {
-                logger.write("Crypto-Key ungültig\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Key ungültig", e.toString()).saveError();
         } catch (FileNotFoundException e) {
-            if (logger != null) {
-                logger.write("Die zu verschlüsselnde Datei ist nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString()).saveError();
         } catch (IOException e) {
-            if (logger != null) {
-                logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString()).saveError();
         } catch (InvalidKeySpecException e) {
-            if (logger != null) {
-                logger.write("Probleme mit der Key-Spezifizierung aufgetreten\n" + e.toString());
-            }
-        }
-        if (logger != null) {
-            logger.close();
+            new ErrorLog("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString()).saveError();
         }
         return false;
     }
@@ -144,21 +113,6 @@ public interface IFileEncryption {
      * @return boolean ob Entschlüsselung erfolgreich war
      */
     public static boolean decryptFile(String password, String sourcePath, String targetPath) {
-
-        PrintWriter logger = null;
-        try {
-            File logfile = new File("logfile.txt");
-            if (!logfile.exists()) {
-                logfile.createNewFile();
-            }
-            logger = new PrintWriter("logfile.txt", "UTF-8");
-        } catch (Exception e) {
-            /*
-            Sinnlos hier ein Log zu schreiben, da Logger möglicherweise nicht richtig angelegt werden konnte
-             */
-            e.printStackTrace();
-        }
-
         /*
         Dateien für die Input- und OutputStreams
          */
@@ -214,41 +168,21 @@ public interface IFileEncryption {
             fos.close();
             cis.close();
             fis.close();
-            if (logger != null) {
-                logger.close();
-            }
             return true;
         } catch (NoSuchAlgorithmException e) {
-            if (logger != null) {
-                logger.write("Crypto-Algorithmus nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString()).saveError();
         } catch (NoSuchProviderException e) {
-            if (logger != null) {
-                logger.write("Crypto-Provider nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString()).saveError();
         } catch (NoSuchPaddingException e) {
-            if (logger != null) {
-                logger.write("Padding-Variante nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString()).saveError();
         } catch (InvalidKeyException e) {
-            if (logger != null) {
-                logger.write("Crypto-Key ungültig\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Crypto-Key ungültig", e.toString()).saveError();
         } catch (FileNotFoundException e) {
-            if (logger != null) {
-                logger.write("Die zu verschlüsselnde Datei ist nicht verfügbar\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString()).saveError();
         } catch (IOException e) {
-            if (logger != null) {
-                logger.write("Eine Input- oder Output-Operation ist fehlgeschlagen\n" + e.toString());
-            }
+            new ErrorLog("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString()).saveError();
         } catch (InvalidKeySpecException e) {
-            if (logger != null) {
-                logger.write("Probleme mit der Key-Spezifizierung aufgetreten\n" + e.toString());
-            }
-        }
-        if (logger != null) {
-            logger.close();
+            new ErrorLog("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString()).saveError();
         }
         return false;
     }
