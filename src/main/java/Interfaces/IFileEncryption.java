@@ -1,7 +1,5 @@
 package Interfaces;
 
-import BusinessLogic.ErrorLog;
-
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -87,19 +85,19 @@ public interface IFileEncryption {
             fis.close();
             return true;
         } catch (NoSuchAlgorithmException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString());
         } catch (NoSuchProviderException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString());
         } catch (NoSuchPaddingException e) {
-            new ErrorLog("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString());
         } catch (InvalidKeyException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Key ungültig", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Key ungültig", e.toString());
         } catch (FileNotFoundException e) {
-            new ErrorLog("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString());
         } catch (IOException e) {
-            new ErrorLog("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString());
         } catch (InvalidKeySpecException e) {
-            new ErrorLog("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString());
         }
         return false;
     }
@@ -170,19 +168,19 @@ public interface IFileEncryption {
             fis.close();
             return true;
         } catch (NoSuchAlgorithmException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString());
         } catch (NoSuchProviderException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString());
         } catch (NoSuchPaddingException e) {
-            new ErrorLog("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString());
         } catch (InvalidKeyException e) {
-            new ErrorLog("IFileEncryption", "Crypto-Key ungültig", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Crypto-Key ungültig", e.toString());
         } catch (FileNotFoundException e) {
-            new ErrorLog("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString());
         } catch (IOException e) {
-            new ErrorLog("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString());
         } catch (InvalidKeySpecException e) {
-            new ErrorLog("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString()).saveError();
+            IErrorLog.saveError("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString());
         }
         return false;
     }
