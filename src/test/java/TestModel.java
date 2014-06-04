@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import java.time.LocalDate;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Testet das Model
@@ -41,10 +42,19 @@ public class TestModel extends TestCase {
         contactList.add(Ludwig);
         contactList.add(Hans);
 
-        //TODO Sortierung testen?
+        IContactList cloneList = contactList.stream().sorted().collect(Collectors.toCollection(ContactList::new));
+        for (int i = 0; i < cloneList.size(); i++) {
+            assertEquals(contactList.get(i).getLastName(), cloneList.get(i).getLastName());
+        }
+        logger.info("Sortierung geprüft");
 
-        IContactList searchResult = contactList.searchContacts("HeInZ");
-        assertEquals(Heinz.getLastName(), searchResult.get(0).getLastName());
+
+        IContactList heinzResult = contactList.searchContacts("HeInz");
+        assertEquals(Heinz.getLastName(), heinzResult.get(0).getLastName());
+        IContactList ludwigResult = contactList.searchContacts("lUdwi");
+        assertEquals(Ludwig.getLastName(), ludwigResult.get(0).getLastName());
+        IContactList hansResult = contactList.searchContacts("hANs");
+        assertEquals(Hans.getLastName(), hansResult.get(0).getLastName());
         logger.info("Suche getestet");
 
 

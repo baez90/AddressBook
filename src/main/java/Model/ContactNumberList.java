@@ -5,8 +5,8 @@ import Interfaces.IContactNumberList;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 /**
@@ -46,18 +46,8 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
      */
     @Override
     public boolean add(IContactNumber cn) {
-        //TODO durch comparable-Interface ersetzen
-        if (isEmpty()) {
-            return super.add(cn);
-        }
-        ListIterator<IContactNumber> listIterator = listIterator();
-        while (listIterator.hasNext()) {
-            if (listIterator.next().getType().equals(cn.getType())) {
-                listIterator.add(cn);
-                return true;
-            }
-        }
-        super.addLast(cn);
+        int insertionPoint = Collections.binarySearch(this, cn, (o1, o2) -> o1.compareTo(o2));
+        super.add((insertionPoint > -1) ? insertionPoint : (-insertionPoint) - 1, cn);
         return true;
 
     }

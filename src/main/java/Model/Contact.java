@@ -228,7 +228,7 @@ public class Contact implements IContact {
      */
     @Override
     public int compareTo(IContact o) {
-        return (LastName + " " + FirstName).compareTo(o.getLastName() + " " + o.getFirstName());
+        return LastName.getValue().compareTo(o.getLastName());
     }
 
     /**

@@ -7,13 +7,26 @@ import Interfaces.IAddress;
  */
 public class Address implements IAddress {
     /**
+     * Straße und Hausnummer
+     */
+    private String StreetAddress;
+    /**
+     * Postleitzahl
+     */
+    private String ZipCode;
+    /**
+     * Wohnort
+     */
+    private String City;
+
+    /**
      * Standard-Getter
      *
      * @return Straße und Hausnummer als String
      */
     @Override
     public String getStreetAddress() {
-        return null;
+        return StreetAddress;
     }
 
     /**
@@ -23,7 +36,7 @@ public class Address implements IAddress {
      */
     @Override
     public void setStreetAddress(String newStreetAddress) {
-
+        StreetAddress = newStreetAddress;
     }
 
     /**
@@ -33,7 +46,7 @@ public class Address implements IAddress {
      */
     @Override
     public String getZipCode() {
-        return null;
+        return ZipCode;
     }
 
     /**
@@ -43,7 +56,7 @@ public class Address implements IAddress {
      */
     @Override
     public void setZipCode(String newZipCode) {
-
+        ZipCode = newZipCode;
     }
 
     /**
@@ -53,7 +66,7 @@ public class Address implements IAddress {
      */
     @Override
     public String getCity() {
-        return null;
+        return City;
     }
 
     /**
@@ -63,6 +76,6 @@ public class Address implements IAddress {
      */
     @Override
     public void setCity(String newCity) {
-
+        City = newCity;
     }
 }
