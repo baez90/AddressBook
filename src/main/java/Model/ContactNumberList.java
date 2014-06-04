@@ -2,7 +2,6 @@ package Model;
 
 import Interfaces.IContactNumber;
 import Interfaces.IContactNumberList;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -34,8 +33,8 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
      * @return neue Liste mit gefilterten Ergebnissen
      */
     @Override
-    public IContactNumberList getNumbersByType(NumberType type) {
-        return null;
+    public IContactNumberList getNumbersByType(ContactNumberType type) {
+        return this.stream().filter(ic -> ic.getType().equals(type)).collect(Collectors.toCollection(ContactNumberList::new));
     }
 
     /**

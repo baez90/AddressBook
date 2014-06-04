@@ -1,6 +1,6 @@
 package Interfaces;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NumberType;
+import Model.ContactNumberType;
 
 import java.util.List;
 
@@ -24,5 +24,5 @@ public interface IContactNumberList extends List<IContactNumber> {
      * @param type Typ auf welchen gefiltert werden soll
      * @return neue Liste mit gefilterten Ergebnissen
      */
-    public IContactNumberList getNumbersByType(NumberType type);
+    public IContactNumberList getNumbersByType(ContactNumberType type);
 }
