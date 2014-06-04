@@ -4,6 +4,7 @@ import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
+import Interfaces.IErrorLog;
 import Model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -272,7 +273,7 @@ public class MainController {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("MainController", "Fehler beim laden der CreateEditContactView", e.toString());
         }
     }
 
@@ -296,6 +297,7 @@ public class MainController {
              */
             OpenEncryptedController openEncryptedController = loader.getController();
         } catch (IOException e) {
+            IErrorLog.saveError("MainController", "Fehler beim laden der OpenEncryptedAddressBookView", e.toString());
             e.printStackTrace();
         }
     }
@@ -323,7 +325,7 @@ public class MainController {
             saveEncryptedController.initSaveEncryptedController(this);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("MainController", "Fehler beim laden der SaveAddressBookEncryptedView", e.toString());
         }
     }
 
@@ -364,7 +366,7 @@ public class MainController {
             helpAboutController.initHelpAboutView(content);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("MainController", "Fehler beim laden der HelpAboutView ( " + content + "-Content)", e.toString());
         }
     }
 
