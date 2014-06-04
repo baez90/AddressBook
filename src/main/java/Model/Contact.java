@@ -1,5 +1,6 @@
 package Model;
 
+import Interfaces.IAddress;
 import Interfaces.IContact;
 import Interfaces.IContactNumberList;
 import javafx.beans.property.ObjectProperty;
@@ -39,7 +40,7 @@ public class Contact implements IContact {
     /**
      * Adresse des Kontakts
      */
-    private Address Address;
+    private IAddress Address;
 
     /**
      * Liste der Rufnummern für einen Kontakt
@@ -190,7 +191,7 @@ public class Contact implements IContact {
      *
      * @return Adres-Objekt des Kontakts
      */
-    public Address getAddress() {
+    public IAddress getAddress() {
         return Address;
     }
 
@@ -198,7 +199,7 @@ public class Contact implements IContact {
      * Standard-Setter für die Adresse des Kontakts
      * @param address neues Adress-Objekt für den Kontakt
      */
-    public void setAddress(Address address) {
+    public void setAddress(IAddress address) {
         Address = address;
     }
 

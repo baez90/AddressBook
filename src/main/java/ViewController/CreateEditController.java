@@ -35,6 +35,9 @@ public class CreateEditController {
      * VBox in welcher die Telefonnummern hinzugefügt werden können
      */
     public VBox PhoneNumberVBox;
+    /**
+     * Zugriff auf den DatePicker um Startdatum etwas weiter in die Vergangenheit setzen zu können
+     */
     public DatePicker BirthdayDatePicker;
     /**
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
