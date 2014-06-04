@@ -226,4 +226,14 @@ public class Contact implements IContact {
         LocalDate today = LocalDate.now();
         return BirthDate.getValue().getDayOfMonth() == today.getDayOfMonth() && BirthDate.getValue().getMonth().equals(today.getMonth());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Contact)) {
+            return false;
+        } else if ((FirstName + " " + LastName).equals(((Contact) o).getFirstName() + " " + ((Contact) o).getLastName())) {
+            return true;
+        }
+        return false;
+    }
 }

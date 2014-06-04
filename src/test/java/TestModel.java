@@ -1,3 +1,4 @@
+import Interfaces.IContactList;
 import Interfaces.IContactNumberList;
 import Model.Contact;
 import Model.ContactList;
@@ -6,7 +7,6 @@ import Model.ContactNumberType;
 import junit.framework.TestCase;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.logging.Logger;
 
 /**
@@ -36,14 +36,16 @@ public class TestModel extends TestCase {
     }
 
     public void testModel() {
-        ContactList contactList = new ContactList();
+        IContactList contactList = new ContactList();
         contactList.add(Heinz);
         contactList.add(Ludwig);
         contactList.add(Hans);
 
-        Collections.sort(contactList);
-        //TODO Contact-Sorierung testen
-        //TODO Contact-Suche testen
+        //TODO Sortierung testen?
+
+        IContactList searchResult = contactList.searchContacts("HeInZ");
+        assertEquals(Heinz.getLastName(), searchResult.get(0).getLastName());
+        logger.info("Suche getestet");
 
 
         assertEquals(Heinz.getLastName(), "Heinz");
