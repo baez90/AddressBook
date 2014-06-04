@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10" prefHeight="547.0" prefWidth="690.0" vgap="10" xmlns="http://javafx.com/javafx/8"
+<GridPane alignment="center" hgap="10" prefHeight="547.0" prefWidth="868.0" vgap="10" xmlns="http://javafx.com/javafx/8"
           xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.MainController">
     <columnConstraints>
         <ColumnConstraints/>
@@ -121,24 +121,38 @@
                                 <Insets bottom="5.0" left="10.0" top="5.0"/>
                             </padding>
                         </HBox>
-                        <HBox VBox.vgrow="ALWAYS">
+                        <HBox VBox.vgrow="ALWAYS" prefHeight="483.0" prefWidth="346.0">
                             <children>
-                                <TableView HBox.hgrow="ALWAYS" fx:id="ContactTable">
+                                <TableView HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefHeight="483.0"
+                                           prefWidth="646.0" fx:id="ContactTable">
                                     <columns>
                                         <TableColumn editable="false" prefWidth="96.0" text="Vorname"
                                                      fx:id="FirstNameColumn"/>
                                         <TableColumn editable="false" prefWidth="100.0" text="Nachname"
                                                      fx:id="LastNameColumn"/>
-                                        <TableColumn editable="false" prefWidth="154.0" text="Email"
+                                        <TableColumn editable="false" prefWidth="89.0" text="Email"
                                                      fx:id="EmailAddressColumn"/>
-                                        <TableColumn editable="false" prefWidth="119.0" text="Geburtstag"
+                                        <TableColumn editable="false" prefWidth="110.0" text="Geburtstag"
                                                      fx:id="BirthdayColumn"/>
+                                        <TableColumn prefWidth="90.0" text="Straße"/>
+                                        <TableColumn prefWidth="63.0" text="PLZ"/>
+                                        <TableColumn prefWidth="101.0" text="Ort"/>
                                     </columns>
                                     <HBox.margin>
                                         <Insets/>
                                     </HBox.margin>
                                 </TableView>
-                                <VBox prefHeight="483.0" prefWidth="182.0" fx:id="PhoneNrBox"/>
+                                <TableView HBox.hgrow="ALWAYS" maxWidth="400.0" prefHeight="483.0" prefWidth="200.0">
+                                    <columns>
+                                        <TableColumn editable="false" prefWidth="200.0" text="Telefonnummern">
+                                            <columns>
+                                                <TableColumn prefWidth="75.0" text="Home"/>
+                                                <TableColumn prefWidth="62.0" text="Mobil"/>
+                                                <TableColumn prefWidth="88.0" text="Arbeit"/>
+                                            </columns>
+                                        </TableColumn>
+                                    </columns>
+                                </TableView>
                             </children>
                         </HBox>
                     </children>
