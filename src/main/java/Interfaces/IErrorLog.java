@@ -16,9 +16,7 @@ public interface IErrorLog {
                 logFile.createNewFile();
             }
             BufferedWriter bw = new BufferedWriter(new FileWriter(logFile, true));
-            StringBuffer sb = new StringBuffer();
-            sb.append("<tr><td> ").append(errorClass).append("</td><td>").append(errorDescrption).append("</td><td>").append(errorException).append("</td></tr>");
-            bw.write(sb.toString());
+            bw.write("<tr><td>" + errorClass + "</td><td>" + errorDescrption + "</td><td>" + errorException + "</td></tr>");
             bw.newLine();
             bw.close();
         } catch (IOException e) {
