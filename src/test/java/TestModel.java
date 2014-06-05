@@ -55,6 +55,8 @@ public class TestModel extends TestCase {
         assertEquals(Ludwig.getLastName(), ludwigResult.get(0).getLastName());
         IContactList hansResult = contactList.searchContacts("hANs");
         assertEquals(Hans.getLastName(), hansResult.get(0).getLastName());
+        IContactList heinzNrResult = contactList.searchContacts("1011");
+        assertEquals(Heinz.getLastName(), heinzNrResult.get(0).getLastName());
         logger.info("Suche getestet");
 
 
