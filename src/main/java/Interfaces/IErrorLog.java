@@ -1,5 +1,7 @@
 package Interfaces;
 
+import org.controlsfx.dialog.Dialogs;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +15,9 @@ public interface IErrorLog {
         try {
             File logFile = new File("errorLog.html");
             if (!logFile.exists()) {
-                logFile.createNewFile();
+                if (!logFile.createNewFile()) {
+                    Dialogs.create().title("Warnung").masthead("Schreibrechte").message("Es konnte keine Errorlog-Datei angelegt werden, offenbar haben Sie keine ausreichenden Schreibrechte").showInformation();
+                }
             }
             BufferedWriter bw = new BufferedWriter(new FileWriter(logFile, true));
             bw.write("<tr><td>" + errorClass + "</td><td>" + errorDescrption + "</td><td>" + errorException + "</td></tr>");
