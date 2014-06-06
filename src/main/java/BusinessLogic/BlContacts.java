@@ -29,6 +29,12 @@ public class BlContacts implements IBlContacts {
         return 0;
     }
 
+    /**
+     * Entfernt Kontakt in der Datenbank
+     * @param dbPath Pfad zur Datenbank-Datei
+     * @param contact Kontakt welcher gelöscht werden soll
+     * @return Erfolgs-Code
+     */
     @Override
     public int removeContactInDB(String dbPath, IContact contact) {
         return 0;
