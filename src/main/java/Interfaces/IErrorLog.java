@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Created by baez on 04.06.14.
+ * @author baez
  */
 public interface IErrorLog {
     public static void saveError(String errorClass, String errorDescrption, String errorException) {
