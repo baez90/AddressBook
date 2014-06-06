@@ -17,6 +17,13 @@ public class BlContacts implements IBlContacts {
      */
     private String DbPath;
 
+    /**
+     * Kontakt in der DB updaten
+     *
+     * @param dbPath  Pfad zur Datenbank-Datei
+     * @param contact Kontakt welcher geupdatet werden soll
+     * @return Erfolgs-Code
+     */
     @Override
     public int updateContactInDB(String dbPath, IContact contact) {
         return 0;
