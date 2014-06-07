@@ -9,14 +9,14 @@ public interface IBlContacts {
      *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
-    public int updateContactInDB(String dbPath, IContact contact);
+    public int updateContactInDB(IContact contact);
 
     /**
      * Entfernt Kontakt aus der Datanbank
      *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repäsentiert
      */
-    public int removeContactInDB(String dbPath, IContact contact);
+    public int removeContactInDB(IContact contact);
 
     /**
      * erstellt Kontakt in der DB
@@ -24,7 +24,7 @@ public interface IBlContacts {
      *
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
-    public int createContactInDB(String dbPath, IContact contact);
+    public int createContactInDB(IContact contact);
 
     /**
      * Initialisiert die Datenbank mit der benötigten Struktur
