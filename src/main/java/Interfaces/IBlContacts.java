@@ -53,4 +53,6 @@ public interface IBlContacts {
      * @return Liste von Contact-Objekten
      */
     public IContactList getContactsFromDB();
+
+    public void ExecuteQuery(String query);
 }
