@@ -24,22 +24,21 @@ public class BlContacts implements IBlContacts {
     /**
      * Kontakt in der DB updaten
      *
-     * @param dbPath  Pfad zur Datenbank-Datei
      * @param contact Kontakt welcher geupdatet werden soll
      * @return Erfolgs-Code
      */
     @Override
-    public int updateContactInDB(String dbPath, IContact contact) {
+    public int updateContactInDB(IContact contact) {
         return 0;
     }
 
     @Override
-    public int removeContactInDB(String dbPath, IContact contact) {
+    public int removeContactInDB(IContact contact) {
         return 0;
     }
 
     @Override
-    public int createContactInDB(String dbPath, IContact contact) {
+    public int createContactInDB(IContact contact) {
         return 0;
     }
 
