@@ -11,7 +11,8 @@ import java.time.LocalDate;
 /**
  * @author baez
  */
-public class BlContacts implements IBlContacts {
+public class BlContacts implements IBlContacts
+{
     /**
      * Name des verwendeten Datenbank-Treibers
      */
@@ -51,7 +52,8 @@ public class BlContacts implements IBlContacts {
     }
 
     @Override
-    public int removeContactInDB(IContact contact) {
+    public int removeContactInDB(IContact contact)
+    {
 
         int contactID = contact.getContactID();
         String query = "Delete From Contacts where ContactID = " + contactID;
@@ -84,28 +86,37 @@ public class BlContacts implements IBlContacts {
     }
 
     @Override
-    public boolean initDB() {
+    public boolean initDB()
+    {
         return false;
     }
 
     @Override
-    public String getDbPath() {
+    public String getDbPath()
+    {
         return DbPath;
     }
 
     @Override
-    public void setDbPath(String dbPath) {
+    public void setDbPath(String dbPath)
+    {
         DbPath = dbPath;
     }
 
     @Override
-    public IContactList getContactsFromDB() {
-        try {
+    public IContactList getContactsFromDB()
+    {
+        try
+        {
             Class.forName(DriverName);
             Connection con = DriverManager.getConnection(DbPath);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             e.printStackTrace();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return null;
@@ -117,33 +128,24 @@ public class BlContacts implements IBlContacts {
         Connection con = null;
         try
         {
-            try
-            {
-                Class.forName(DriverName);
-                con = DriverManager.getConnection(DbPath);
-            } catch (ClassNotFoundException e)
-            {
-                IErrorLog.saveError("BLContacts", "Class NOT FOUND", e.toString());
-            } catch (SQLException e)
-            {
-                IErrorLog.saveError("BLContacts", "SQL Fehler", e.toString());
-            }
+          Class.forName(DriverName);
+          con = DriverManager.getConnection(DbPath);
 
-            Statement stmt = null;
-            try
-            {
-                stmt = con.createStatement();
-            } catch (SQLException e)
-            {
-                IErrorLog.saveError("BLContacts", "Fehler beim Erstellen des Statements", e.toString());
-            }
-            try
-            {
-                ResultSet rst = stmt.executeQuery(query);
-            } catch (SQLException e)
-            {
-                IErrorLog.saveError("BLContacts", "Fehler beim ausführen des Querys", e.toString());
-            }
+          Statement stmt = null;
+          stmt = con.createStatement();
+
+
+          ResultSet rst = stmt.executeQuery(query);
+
+
+        }
+        catch(ClassNotFoundException e)
+        {
+            IErrorLog.saveError("BLContacts","Treiber nicht gefunden",e.toString());
+        }
+        catch (SQLException e)
+        {
+            IErrorLog.saveError("BLContacts","Fehler in SQL",e.toString());
         }
         catch (Exception e)
         {
