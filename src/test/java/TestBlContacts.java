@@ -29,7 +29,7 @@ public class TestBlContacts extends TestCase {
         Contact contact = new Contact("Test","User","test@mail.de",LocalDate.now());
         Address adress = new Address();
         adress.setCity("TestStreet");
-        adress.setStreetAddress("Testweg 21");
+        adress.setStreetAddress("Testweg 21a");
         adress.setZipCode("89322");
         contact.setAddress(adress);
 

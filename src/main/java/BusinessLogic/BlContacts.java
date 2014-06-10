@@ -7,6 +7,7 @@ import Interfaces.IErrorLog;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Iterator;
 
 /**
  * @author baez
@@ -36,9 +37,23 @@ public class BlContacts implements IBlContacts
         String lastName = contact.getLastName();
         String mailAdress = contact.getMailAddress();
         LocalDate date = contact.getBirthDate();
-        String street = contact.getAddress().getStreetAddress();
+        String street = "";
         String zipCode = contact.getAddress().getZipCode();
-        String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
+        //String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
+        String houseNumber = contact.getAddress().getStreetAddress();
+
+        for(int i = 0; i <= houseNumber.length();i++)
+        {
+            if(Character.isLetter(houseNumber.charAt(i)))
+            {
+                street += houseNumber.charAt(i);
+            }
+            else
+                break;
+
+
+        }
+        houseNumber = houseNumber.substring(street.length(),houseNumber.length());
 
       /*  String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
                        lastName + "',MailAdress = '" + mailAdress + "',Street = '" +
@@ -75,9 +90,24 @@ public class BlContacts implements IBlContacts
         String lastName = contact.getLastName();
         String mailAdress = contact.getMailAddress();
         LocalDate date = contact.getBirthDate();
-        String street = contact.getAddress().getStreetAddress();
+        String street = "";
         String zipCode = contact.getAddress().getZipCode();
-        String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
+        //String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
+        String houseNumber = contact.getAddress().getStreetAddress();
+
+        for(int i = 0; i <= houseNumber.length();i++)
+        {
+            if(Character.isLetter(houseNumber.charAt(i)))
+            {
+                street += houseNumber.charAt(i);
+            }
+            else
+                break;
+
+
+        }
+        houseNumber = houseNumber.substring(street.length(),houseNumber.length());
+
 
         /*String query = String.format("INSERT INTO Contacts Values('"+ firstName + "','"
                       + lastName + "','" + mailAdress + "','" + street +
