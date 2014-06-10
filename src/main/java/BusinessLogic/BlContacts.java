@@ -40,11 +40,16 @@ public class BlContacts implements IBlContacts
         String zipCode = contact.getAddress().getZipCode();
         String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
 
-        String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
+      /*  String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
                        lastName + "',MailAdress = '" + mailAdress + "',Street = '" +
                        street + "',HouseNumber = '" + houseNumber + "',ZipCode = " +
                        zipCode + "',City = '" + city + "',Birthdate = '" + date + "'" +
-                       "where ContactID = " + contact.getContactID();
+                       "where ContactID = " + contact.getContactID();*/ // maybe useful ;)
+
+        String query = String.format("Update Contacts Set FirstName = '%s',LastName = '%s',MailAddress = '%s'," +
+                                     "Street = '%s',HouseNumber = '%d',ZipCode = '%d',City = '%s',BirthDate = '%d' " +
+                                      "where ContactID = %d"
+                                     ,firstName,lastName,mailAdress,street,houseNumber,zipCode,city,date,contact.getContactID());
 
         ExecuteQuery(query);
 
@@ -56,7 +61,7 @@ public class BlContacts implements IBlContacts
     {
 
         int contactID = contact.getContactID();
-        String query = "Delete From Contacts where ContactID = " + contactID;
+        String query = String.format("Delete From Contacts where ContactID = %d",contactID);
 
         ExecuteQuery(query);
         return 0;
@@ -74,10 +79,13 @@ public class BlContacts implements IBlContacts
         String zipCode = contact.getAddress().getZipCode();
         String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
 
-        String query = "INSERT INTO Contacts Values('"+ firstName + "','"
+        /*String query = String.format("INSERT INTO Contacts Values('"+ firstName + "','"
                       + lastName + "','" + mailAdress + "','" + street +
                        "','" + houseNumber + "','" + zipCode + "','" + city + "','"
-                       + date + "')";
+                       + date + "')");*/ // maybe useful
+
+        String query = String.format("INSERT INTO Contacts Values('%s','%s','%s','%s','%d','%d','%s','%s'"
+                ,firstName,lastName,mailAdress,street,houseNumber,zipCode,city,date);
 
         ExecuteQuery(query);
 
