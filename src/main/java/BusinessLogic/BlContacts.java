@@ -4,14 +4,12 @@ import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 import Interfaces.IErrorLog;
-import Model.Address;
-import Model.Contact;
 
 import java.sql.*;
 import java.time.LocalDate;
 
 /**
- * Created by baez on 29.05.14.
+ * @author baez
  */
 public class BlContacts implements IBlContacts {
     /**

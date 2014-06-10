@@ -14,6 +14,11 @@ public class TestErrorLog extends TestCase {
     File errorLogFile = new File("errorLog.html");
 
     public void setUp() {
+        if (errorLogFile.exists()) {
+            if (!errorLogFile.delete()) {
+                logger.info("Löschen der Protokolldatei fehlgeschlagen");
+            }
+        }
         IErrorLog.saveError("TestErrorLog", "erzeugt Logfile zu Test-Zwecken", "none");
     }
 
