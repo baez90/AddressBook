@@ -7,7 +7,6 @@ import Interfaces.IErrorLog;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Iterator;
 
 /**
  * @author baez
@@ -117,6 +116,8 @@ public class BlContacts implements IBlContacts
         String query = String.format("INSERT INTO Contacts Values('%s','%s','%s','%s','%d','%d','%s','%s'"
                 ,firstName,lastName,mailAdress,street,houseNumber,zipCode,city,date);
 
+        PreparedStatement stmt;
+
         ExecuteQuery(query);
 
 
@@ -148,6 +149,15 @@ public class BlContacts implements IBlContacts
         {
             Class.forName(DriverName);
             Connection con = DriverManager.getConnection(DbPath);
+
+            /*Beispiel für PreparedStatement
+
+            PreparedStatement statement;
+            statement = con.prepareStatement("INSERT INTO Contacts Values(?, ?, ?, ?, ?, ?, ?, ?);");
+            statement.setString(1, "name");
+            statement.setString(2, "nachname");
+
+            statement.executeUpdate();*/
         }
         catch (ClassNotFoundException e)
         {
