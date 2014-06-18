@@ -32,6 +32,18 @@ public class CreateEditController {
      */
     public TextField MailBox;
     /**
+     * TextField für Strasse u. Hausnummer
+     */
+    public TextField StreetAddressBox;
+    /**
+     * TextField für die PLZ
+     */
+    public TextField ZipCodeBox;
+    /**
+     * TextField für den Wohnort
+     */
+    public TextField CityBox;
+    /**
      * VBox in welcher die Telefonnummern hinzugefügt werden können
      */
     public VBox PhoneNumberVBox;

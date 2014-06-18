@@ -255,7 +255,7 @@ public class MainController {
             /*
             lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
              */
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("HTMLView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEdit.fxml"));
             Parent createEditContactRoot = loader.load();
             Stage createEditContactStage = new Stage();
             createEditContactStage.setTitle("Neuer Kontakt");
@@ -340,7 +340,7 @@ public class MainController {
             /*
             lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
              */
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("HelpAbout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HTMLView.fxml"));
             Parent helpAboutRoot = loader.load();
             Stage helpAboutStage = new Stage();
 
@@ -362,8 +362,8 @@ public class MainController {
             /*
             holt Controller von View und initialisiert View anschließend
              */
-            HelpAboutController helpAboutController = loader.getController();
-            helpAboutController.initHelpAboutView(content);
+            HTMLViewController HTMLViewController = loader.getController();
+            HTMLViewController.initHelpAboutView(content);
 
         } catch (IOException e) {
             IErrorLog.saveError("MainController", "Fehler beim laden der HelpAboutView ( " + content + "-Content)", e.toString());

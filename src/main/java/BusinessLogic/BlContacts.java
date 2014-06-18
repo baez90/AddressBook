@@ -145,10 +145,11 @@ public class BlContacts implements IBlContacts
     @Override
     public IContactList getContactsFromDB()
     {
+        //TODO implement Test ob DB valid ist
         try
         {
             Class.forName(DriverName);
-            Connection con = DriverManager.getConnection(DbPath);
+            Connection con = DriverManager.getConnection(getConnectionString());
 
             /*Beispiel für PreparedStatement
 
@@ -177,7 +178,7 @@ public class BlContacts implements IBlContacts
         try
         {
           Class.forName(DriverName);
-          con = DriverManager.getConnection(DbPath);
+            con = DriverManager.getConnection(getConnectionString());
 
           Statement stmt = null;
           stmt = con.createStatement();
@@ -211,5 +212,9 @@ public class BlContacts implements IBlContacts
                 }
         }
 
+    }
+
+    private String getConnectionString() {
+        return "jdbc://" + DbPath;
     }
 }

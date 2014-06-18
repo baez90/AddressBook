@@ -1,148 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="459.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.CreateEditController">
-    <center>
-        <GridPane BorderPane.alignment="TOP_CENTER" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                  minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="440.0">
-            <children>
-                <Label text="Vorname">
-                    <padding>
-                        <Insets left="10.0"/>
-                    </padding>
-                    <font>
-                        <Font name="System Bold" size="13.0"/>
-                    </font>
-                </Label>
-                <Label GridPane.rowIndex="1" text="Nachname">
-                    <GridPane.margin>
-                        <Insets left="10.0"/>
-                    </GridPane.margin>
-                    <font>
-                        <Font name="System Bold" size="13.0"/>
-                    </font>
-                </Label>
-                <Label GridPane.rowIndex="2" text="Email-Adresse">
-                    <GridPane.margin>
-                        <Insets left="10.0"/>
-                    </GridPane.margin>
-                    <font>
-                        <Font name="System Bold" size="13.0"/>
-                    </font>
-                </Label>
-                <TextField GridPane.columnIndex="1" fx:id="FirstNameBox">
-                    <GridPane.margin>
-                        <Insets left="10.0" right="10.0"/>
-                    </GridPane.margin>
-                </TextField>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="NameBox">
-                    <GridPane.margin>
-                        <Insets left="10.0" right="10.0"/>
-                    </GridPane.margin>
-                </TextField>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="MailBox">
-                    <GridPane.margin>
-                        <Insets left="10.0" right="10.0"/>
-                    </GridPane.margin>
-                </TextField>
-                <Label GridPane.rowIndex="3" text="Geburtstag">
-                    <GridPane.margin>
-                        <Insets left="10.0"/>
-                    </GridPane.margin>
-                    <font>
-                        <Font name="System Bold" size="13.0"/>
-                    </font>
-                </Label>
-                <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="BirthdayDatePicker">
-                    <GridPane.margin>
-                        <Insets left="10.0" right="10.0"/>
-                    </GridPane.margin>
-                </DatePicker>
-            </children>
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="107.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="293.0"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            </rowConstraints>
-        </GridPane>
-    </center>
-    <bottom>
-        <HBox BorderPane.alignment="CENTER" prefHeight="38.0" prefWidth="602.0" spacing="10.0">
-            <children>
-                <Button mnemonicParsing="false" onAction="#SaveNewContactClick" text="Speichern"/>
-                <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen"/>
-            </children>
-            <padding>
-                <Insets bottom="5.0" left="10.0" top="5.0"/>
-            </padding>
-        </HBox>
-    </bottom>
-    <right>
-        <VBox BorderPane.alignment="CENTER" alignment="BOTTOM_CENTER" prefHeight="421.0" prefWidth="294.0">
-            <children>
-                <Label text="Telefonnummern">
-                    <font>
-                        <Font name="System Bold" size="13.0"/>
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="5.0" top="10.0"/>
-                    </VBox.margin>
-                </Label>
-                <ScrollPane VBox.vgrow="ALWAYS" prefHeight="232.0" prefWidth="234.0">
-                    <content>
-                        <AnchorPane prefHeight="356.0" prefWidth="291.0">
-                            <children>
-                                <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                      AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS" alignment="TOP_CENTER"
-                                      prefHeight="230.0" prefWidth="211.0"
-                                      spacing="10.0" fx:id="PhoneNumberVBox">
-                                    <opaqueInsets>
-                                        <Insets/>
-                                    </opaqueInsets>
-                                </VBox>
-                            </children>
-                            <padding>
-                                <Insets bottom="10.0" left="10.0" top="10.0"/>
-                            </padding>
-                            <opaqueInsets>
-                                <Insets bottom="10.0" top="10.0"/>
-                            </opaqueInsets>
-                        </AnchorPane>
-                    </content>
-                </ScrollPane>
-                <HBox alignment="CENTER" prefHeight="36.0" prefWidth="294.0">
-                    <children>
-                        <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#addPhoneButtonClick"
-                                text="Hinzufügen">
-                            <HBox.margin>
-                                <Insets left="10.0"/>
-                            </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#RemovePhoneNumber" text="Entfernen">
-                            <HBox.margin>
-                                <Insets left="10.0"/>
-                            </HBox.margin>
-                        </Button>
-                    </children>
-                </HBox>
-            </children>
-            <opaqueInsets>
+<?import javafx.scene.web.WebView?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+      minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8"
+      fx:controller="ViewController.HTMLViewController">
+    <children>
+        <WebView VBox.vgrow="ALWAYS" prefHeight="428.0" prefWidth="600.0" fx:id="WebViewer">
+            <VBox.margin>
                 <Insets/>
-            </opaqueInsets>
-            <BorderPane.margin>
-                <Insets right="10.0"/>
-            </BorderPane.margin>
-        </VBox>
-    </right>
-</BorderPane>
+            </VBox.margin>
+        </WebView>
+        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="600.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#CloseHelpAboutClick" text="Schließen">
+                    <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</VBox>

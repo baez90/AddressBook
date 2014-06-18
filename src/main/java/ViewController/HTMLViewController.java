@@ -14,7 +14,7 @@ import java.net.URL;
  *
  * @author baez
  */
-public class HelpAboutController {
+public class HTMLViewController {
 
     /**
      * WebView zur Anzeige der Hilfe oder der About-Seite
