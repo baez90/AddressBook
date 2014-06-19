@@ -1,11 +1,13 @@
 package ViewController;
 
+import Interfaces.IFileEncryption;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
 
@@ -25,14 +27,7 @@ public class OpenEncryptedController {
      * TextField in welche der Pfad zur Ziel-Datei zwischengespeicher wird
      */
     public TextField targetPathBox;
-    /**
-     * File-Objekt zum zwischenspeichern der Quell-Datei
-     */
-    private File encryptedAddressBook;
-    /**
-     * File-Objekt zum zwischenspeichern der Ziel-Datei
-     */
-    private File decryptedAddressBook;
+    private MainController mainController;
 
     /**
      * Schließt etwaige Dialoge
@@ -40,9 +35,7 @@ public class OpenEncryptedController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void CancelModalClick(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        closeModal(actionEvent);
     }
 
     /**
@@ -51,7 +44,18 @@ public class OpenEncryptedController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void OpenAddressBookClick(ActionEvent actionEvent) {
-        //TODO öffnen
+        if (sourcePathBox.getText().length() < 1) {
+            Dialogs.create().title("Info").masthead("Kein Adressbuch ausgewählt").message("Es wurde kein Pfad zu einem verschlüsselten Adressbuch angegeben").showInformation();
+        } else if (targetPathBox.getText().length() < 1) {
+            Dialogs.create().title("Info").masthead("Kein Zielfpad ausgewählt").message("Es wurde kein Pfad zum Speichern des entschlüsselten Adressbuchs angegeben").showInformation();
+        } else {
+            //TODO in eine Methode im MainController auslagern
+            IFileEncryption.decryptFile(PasswordBox.getText(), sourcePathBox.getText(), targetPathBox.getText());
+            mainController.getBlContacts().setDbPath(targetPathBox.getText());
+            mainController.getBlContacts().getContactsFromDB();
+            mainController.initContactTable();
+            closeModal(actionEvent);
+        }
     }
 
     /**
@@ -69,7 +73,10 @@ public class OpenEncryptedController {
         /*
         encryptedAddressBook speichert den Datei-Pfad der ausgewählten Datei
          */
-        encryptedAddressBook = chooser.showOpenDialog(new Stage());
+        /*
+      File-Objekt zum zwischenspeichern der Quell-Datei
+     */
+        File encryptedAddressBook = chooser.showOpenDialog(new Stage());
 
         /*
         speichert Pfad in die entsprechende TextView um zu sehen was man öffnet
@@ -93,13 +100,26 @@ public class OpenEncryptedController {
         /*
         decryptedAddressBook speichert den Datei-Pfad der ausgewählten Datei
          */
-        decryptedAddressBook = chooser.showSaveDialog(new Stage());
+        /*
+      File-Objekt zum zwischenspeichern der Ziel-Datei
+     */
+        File decryptedAddressBook = chooser.showSaveDialog(new Stage());
 
         /*
         speichert Pfad in die entsprechende TextView um zu sehen was man öffnet
          */
-        if (encryptedAddressBook != null) {
+        if (decryptedAddressBook != null) {
             targetPathBox.setText(decryptedAddressBook.getAbsolutePath());
         }
+    }
+
+    public void initOpenEncryptedController(MainController main) {
+        mainController = main;
+    }
+
+    private void closeModal(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }

@@ -62,7 +62,7 @@ public class MainController {
     /**
      * Init-Methode, erstellt die benötigten Tabellen
      */
-    private void initContactTable() {
+    public void initContactTable() {
         FirstNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("FirstName"));
         LastNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("LastName"));
         EmailAddressColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("MailAddress"));
@@ -268,7 +268,7 @@ public class MainController {
             CreateEditController createEditController = loader.getController();
             createEditController.initController(this);
             if (contactToEdit != null) {
-
+                //TODO zu editierenden Kontakt laden
             } else {
 
             }
