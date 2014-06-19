@@ -105,7 +105,7 @@ public class MainController {
      *
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
-    private void updateContactTable(IContactList contactList) {
+    public void updateContactTable(IContactList contactList) {
         if (contactList != null || contactList.size() > 1) {
             /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
@@ -200,7 +200,12 @@ public class MainController {
 
     public void SearchBoxKeyDown(KeyEvent event) {
         if (contactList != null) {
-            updateContactTable(contactList.searchContacts(SearchBox.getText() + event.getText()));
+            if (Character.isLetter(event.getText().charAt(0))) {
+                updateContactTable(contactList.searchContacts(SearchBox.getText() + event.getText()));
+            } else {
+                updateContactTable(contactList.searchContacts(SearchBox.getText()));
+            }
+
         }
     }
 

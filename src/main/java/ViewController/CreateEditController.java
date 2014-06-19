@@ -1,6 +1,10 @@
 package ViewController;
 
+import Interfaces.IAddress;
+import Interfaces.IContact;
 import Interfaces.IContactList;
+import Model.Address;
+import Model.Contact;
 import Model.ContactNumberType;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -55,6 +59,7 @@ public class CreateEditController {
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
+    private MainController mainController;
 
     /**
      * Initialisiert den Controller mit Objekten aus dem MainController
@@ -63,6 +68,7 @@ public class CreateEditController {
      */
     public void initController(MainController con) {
         contactList = con.getContactList();
+        mainController = con;
         BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
     }
 
@@ -72,7 +78,14 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
+        IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText(), BirthdayDatePicker.getValue());
+        IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
+        newContact.setAddress(newAddress);
+        contactList.add(newContact);
+        mainController.getBlContacts().createContactInDB(newContact);
+        mainController.updateContactTable(contactList);
         //TODO Kontakt zu Liste hinzufügen, Table updaten und Kontakt in DB speichern
+        closeModal(actionEvent);
     }
 
     /**
@@ -81,9 +94,7 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void CancelModalClick(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        closeModal(actionEvent);
     }
 
     /**
@@ -114,5 +125,11 @@ public class CreateEditController {
     public void RemovePhoneNumber() {
         int PhoneNumberCount = PhoneNumberVBox.getChildren().size();
         PhoneNumberVBox.getChildren().remove(PhoneNumberCount - 1);
+    }
+
+    private void closeModal(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }

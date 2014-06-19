@@ -101,7 +101,7 @@ public class BlContacts implements IBlContacts {
         /*String query = String.format("INSERT INTO Contacts Values('"+ firstName + "','"
                       + lastName + "','" + mailAdress + "','" + street +
                        "','" + houseNumber + "','" + zipCode + "','" + city + "','"
-                       + date + "')");*/ // maybe useful
+                       + date + "')"); // maybe useful
 
         String query = String.format("INSERT INTO Contacts Values('%s','%s','%s','%s','%d','%d','%s','%s'"
                 , firstName, lastName, mailAdress, street, houseNumber, zipCode, city, date);
@@ -109,7 +109,7 @@ public class BlContacts implements IBlContacts {
         PreparedStatement stmt;
 
         ExecuteQuery(query);
-
+*/
 
         return 0;
     }

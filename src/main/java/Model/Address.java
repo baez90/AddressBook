@@ -19,6 +19,18 @@ public class Address implements IAddress {
      */
     private String City;
 
+    public Address() {
+        StreetAddress = "";
+        ZipCode = "";
+        City = "";
+    }
+
+    public Address(String streetAddress, String zipCode, String city) {
+        StreetAddress = streetAddress;
+        ZipCode = zipCode;
+        City = city;
+    }
+
     /**
      * Standard-Getter
      *

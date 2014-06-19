@@ -62,6 +62,7 @@ public class Contact implements IContact {
         MailAddress = new SimpleStringProperty(mailAddress);
         BirthDate = new SimpleObjectProperty<>(birthDate);
         ContactNumbers = new ContactNumberList();
+        Address = new Address();
     }
 
     /**
@@ -79,6 +80,7 @@ public class Contact implements IContact {
         MailAddress = new SimpleStringProperty(mailAddress);
         BirthDate = new SimpleObjectProperty<>(birthDate);
         ContactNumbers = new ContactNumberList();
+        Address = new Address();
     }
 
     /**
