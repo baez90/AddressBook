@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 /**
- * ViewController.MainController-Klasse für alle Views
+ * MainController-Klasse für alle Views
  * Kontrolliert alle Click-Events
  * befüllt etwaige Elemente mit Objekten
  */
@@ -198,6 +198,11 @@ public class MainController {
 
     }
 
+    /**
+     * Live-Suche in den Kontakten während des Eintippen des Suchbegriffs
+     *
+     * @param event Event welches die gedrückte Taste enthält
+     */
     public void SearchBoxKeyDown(KeyEvent event) {
         if (contactList != null) {
             if (Character.isLetter(event.getText().charAt(0))) {

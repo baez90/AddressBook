@@ -59,6 +59,9 @@ public class CreateEditController {
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
+    /**
+     * MainController für den Zugriff auf die BlContacts, ContactList, ContactTable usw
+     */
     private MainController mainController;
 
     /**
@@ -84,7 +87,6 @@ public class CreateEditController {
         contactList.add(newContact);
         mainController.getBlContacts().createContactInDB(newContact);
         mainController.updateContactTable(contactList);
-        //TODO Kontakt zu Liste hinzufügen, Table updaten und Kontakt in DB speichern
         closeModal(actionEvent);
     }
 
@@ -122,11 +124,19 @@ public class CreateEditController {
         PhoneNumberVBox.getChildren().add(tempBox);
     }
 
+    /**
+     * entfernt unterste Telefonnummer aus der Liste
+     */
     public void RemovePhoneNumber() {
         int PhoneNumberCount = PhoneNumberVBox.getChildren().size();
         PhoneNumberVBox.getChildren().remove(PhoneNumberCount - 1);
     }
 
+    /**
+     * Schließt ein Fenster
+     *
+     * @param actionEvent Event um auf den Dialog zugreifen zu können
+     */
     private void closeModal(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
