@@ -11,8 +11,7 @@ import java.time.LocalDate;
 /**
  * @author baez
  */
-public class BlContacts implements IBlContacts
-{
+public class BlContacts implements IBlContacts {
     /**
      * Name des verwendeten Datenbank-Treibers
      */
@@ -29,8 +28,7 @@ public class BlContacts implements IBlContacts
      * @return Erfolgs-Code
      */
     @Override
-    public int updateContactInDB(IContact contact)
-    {
+    public int updateContactInDB(IContact contact) {
         String city = contact.getAddress().getCity();
         String firstName = contact.getFirstName();
         String lastName = contact.getLastName();
@@ -41,18 +39,15 @@ public class BlContacts implements IBlContacts
         //String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
         String houseNumber = contact.getAddress().getStreetAddress();
 
-        for(int i = 0; i <= houseNumber.length();i++)
-        {
-            if(Character.isLetter(houseNumber.charAt(i)))
-            {
+        for (int i = 0; i <= houseNumber.length(); i++) {
+            if (Character.isLetter(houseNumber.charAt(i))) {
                 street += houseNumber.charAt(i);
-            }
-            else
+            } else
                 break;
 
 
         }
-        houseNumber = houseNumber.substring(street.length(),houseNumber.length());
+        houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
       /*  String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
                        lastName + "',MailAdress = '" + mailAdress + "',Street = '" +
@@ -61,9 +56,9 @@ public class BlContacts implements IBlContacts
                        "where ContactID = " + contact.getContactID();*/ // maybe useful ;)
 
         String query = String.format("Update Contacts Set FirstName = '%s',LastName = '%s',MailAddress = '%s'," +
-                                     "Street = '%s',HouseNumber = '%d',ZipCode = '%d',City = '%s',BirthDate = '%d' " +
-                                      "where ContactID = %d"
-                                     ,firstName,lastName,mailAdress,street,houseNumber,zipCode,city,date,contact.getContactID());
+                "Street = '%s',HouseNumber = '%d',ZipCode = '%d',City = '%s',BirthDate = '%d' " +
+                "where ContactID = %d"
+                , firstName, lastName, mailAdress, street, houseNumber, zipCode, city, date, contact.getContactID());
 
         ExecuteQuery(query);
 
@@ -71,19 +66,17 @@ public class BlContacts implements IBlContacts
     }
 
     @Override
-    public int removeContactInDB(IContact contact)
-    {
+    public int removeContactInDB(IContact contact) {
 
         int contactID = contact.getContactID();
-        String query = String.format("Delete From Contacts where ContactID = %d",contactID);
+        String query = String.format("Delete From Contacts where ContactID = %d", contactID);
 
         ExecuteQuery(query);
         return 0;
     }
 
     @Override
-    public int createContactInDB(IContact contact)
-    {
+    public int createContactInDB(IContact contact) {
         String city = contact.getAddress().getCity();
         String firstName = contact.getFirstName();
         String lastName = contact.getLastName();
@@ -94,18 +87,15 @@ public class BlContacts implements IBlContacts
         //String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
         String houseNumber = contact.getAddress().getStreetAddress();
 
-        for(int i = 0; i <= houseNumber.length();i++)
-        {
-            if(Character.isLetter(houseNumber.charAt(i)))
-            {
+        for (int i = 0; i <= houseNumber.length(); i++) {
+            if (Character.isLetter(houseNumber.charAt(i))) {
                 street += houseNumber.charAt(i);
-            }
-            else
+            } else
                 break;
 
 
         }
-        houseNumber = houseNumber.substring(street.length(),houseNumber.length());
+        houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
 
         /*String query = String.format("INSERT INTO Contacts Values('"+ firstName + "','"
@@ -114,7 +104,7 @@ public class BlContacts implements IBlContacts
                        + date + "')");*/ // maybe useful
 
         String query = String.format("INSERT INTO Contacts Values('%s','%s','%s','%s','%d','%d','%s','%s'"
-                ,firstName,lastName,mailAdress,street,houseNumber,zipCode,city,date);
+                , firstName, lastName, mailAdress, street, houseNumber, zipCode, city, date);
 
         PreparedStatement stmt;
 
@@ -125,29 +115,24 @@ public class BlContacts implements IBlContacts
     }
 
     @Override
-    public boolean initDB()
-    {
+    public boolean initDB() {
         return false;
     }
 
     @Override
-    public String getDbPath()
-    {
+    public String getDbPath() {
         return DbPath;
     }
 
     @Override
-    public void setDbPath(String dbPath)
-    {
+    public void setDbPath(String dbPath) {
         DbPath = dbPath;
     }
 
     @Override
-    public IContactList getContactsFromDB()
-    {
+    public IContactList getContactsFromDB() {
         //TODO implement Test ob DB valid ist
-        try
-        {
+        try {
             Class.forName(DriverName);
             Connection con = DriverManager.getConnection(getConnectionString());
 
@@ -159,62 +144,46 @@ public class BlContacts implements IBlContacts
             statement.setString(2, "nachname");
 
             statement.executeUpdate();*/
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public void ExecuteQuery(String query)
-    {
+    public void ExecuteQuery(String query) {
         Connection con = null;
-        try
-        {
-          Class.forName(DriverName);
+        try {
+            Class.forName(DriverName);
             con = DriverManager.getConnection(getConnectionString());
 
-          Statement stmt = null;
-          stmt = con.createStatement();
+            Statement stmt = null;
+            stmt = con.createStatement();
 
 
-          ResultSet rst = stmt.executeQuery(query);
+            ResultSet rst = stmt.executeQuery(query);
 
 
-        }
-        catch(ClassNotFoundException e)
-        {
-            IErrorLog.saveError("BLContacts","Treiber nicht gefunden",e.toString());
-        }
-        catch (SQLException e)
-        {
-            IErrorLog.saveError("BLContacts","Fehler in SQL",e.toString());
-        }
-        catch (Exception e)
-        {
-            IErrorLog.saveError("BLContacts","Unbekannter Fehler aufgetreten",e.toString());
-        }
-        finally
-        {
-            if(con != null)
-                try
-                {
+        } catch (ClassNotFoundException e) {
+            IErrorLog.saveError("BLContacts", "Treiber nicht gefunden", e.toString());
+        } catch (SQLException e) {
+            IErrorLog.saveError("BLContacts", "Fehler in SQL", e.toString());
+        } catch (Exception e) {
+            IErrorLog.saveError("BLContacts", "Unbekannter Fehler aufgetreten", e.toString());
+        } finally {
+            if (con != null)
+                try {
                     con.close();
-                } catch (SQLException e)
-                {
-                    IErrorLog.saveError("BLContacts","Fehler beim Schließen der Verbindung",e.toString());
+                } catch (SQLException e) {
+                    IErrorLog.saveError("BLContacts", "Fehler beim Schließen der Verbindung", e.toString());
                 }
         }
 
     }
 
     private String getConnectionString() {
-        return "jdbc://" + DbPath;
+        return "jdbc:sqlite://" + DbPath;
     }
 }

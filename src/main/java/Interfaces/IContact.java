@@ -103,4 +103,6 @@ public interface IContact extends Comparable<IContact> {
      * @param address neues Adress-Objekt für den Kontakt
      */
     public void setAddress(IAddress address);
+
+    public String toString();
 }

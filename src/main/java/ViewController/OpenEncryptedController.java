@@ -49,11 +49,8 @@ public class OpenEncryptedController {
         } else if (targetPathBox.getText().length() < 1) {
             Dialogs.create().title("Info").masthead("Kein Zielfpad ausgewählt").message("Es wurde kein Pfad zum Speichern des entschlüsselten Adressbuchs angegeben").showInformation();
         } else {
-            //TODO in eine Methode im MainController auslagern
             IFileEncryption.decryptFile(PasswordBox.getText(), sourcePathBox.getText(), targetPathBox.getText());
-            mainController.getBlContacts().setDbPath(targetPathBox.getText());
-            mainController.getBlContacts().getContactsFromDB();
-            mainController.initContactTable();
+            mainController.openAddressBook(targetPathBox.getText());
             closeModal(actionEvent);
         }
     }

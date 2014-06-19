@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 import org.controlsfx.dialog.Dialogs;
 
 import java.io.File;
@@ -42,11 +43,29 @@ public class MainController {
      * TextField für Suchbegriffe
      */
     public TextField SearchBox;
+    /**
+     * Kontakt-Menü, wird erst aktiviert, sobald ein Adressbuch geöffnet wurde
+     */
     public Menu ContactMenu;
+    /**
+     * Spalte für den Vornamen
+     */
     public TableColumn FirstNameColumn;
+    /**
+     * Spalte für den Nachnamen
+     */
     public TableColumn LastNameColumn;
+    /**
+     * Spalte für die Email-Adresse
+     */
     public TableColumn EmailAddressColumn;
+    /**
+     * Spalte für das Geburtsdatum
+     */
     public TableColumn BirthdayColumn;
+    /**
+     * VBox für die Telefnummer-Spalten
+     */
     public VBox PhoneNrBox;
 
 
@@ -156,15 +175,7 @@ public class MainController {
          */
         File file = chooser.showOpenDialog(new Stage());
         if (file != null) {
-            blContacts.setDbPath(file.getAbsolutePath());
-            blContacts.getContactsFromDB();
-            initContactTable();
-            ContactMenu.setDisable(false);
-
-            /*
-            TODO Benachrichtigung für aktuelle Geburtstag anzeigen
-            Notifications.create().title("Test").text("Hello World").showInformation();
-             */
+            openAddressBook(file.getAbsolutePath());
         }
     }
 
@@ -296,6 +307,7 @@ public class MainController {
             holt Controller von View und initialisiert View anschließend
              */
             OpenEncryptedController openEncryptedController = loader.getController();
+            openEncryptedController.initOpenEncryptedController(this);
         } catch (IOException e) {
             IErrorLog.saveError("MainController", "Fehler beim laden der OpenEncryptedAddressBookView", e.toString());
             e.printStackTrace();
@@ -370,5 +382,19 @@ public class MainController {
         }
     }
 
+    /**
+     * Öffnet eine SQLite-Datei, liest deren Kontakte aus und schiebt diese in die Ansicht
+     * prüft ob ein Kontakt zum aktuellen Datum Geburstag hat und zeigt bei Bedarf eine Notification an
+     *
+     * @param dbPath Pfad zur DB-Datei welche gelesen werden soll
+     */
+    public void openAddressBook(String dbPath) {
+        blContacts.setDbPath(dbPath);
+        contactList = blContacts.getContactsFromDB();
+        initContactTable();
+        ContactMenu.setDisable(false);
+
+        contactList.stream().filter(IContact::dateOfBirthIsToday).forEach(c -> Notifications.create().title("Geburtstag").text(c.toString() + " hat heute Geburtstag").showInformation());
+    }
 
 }

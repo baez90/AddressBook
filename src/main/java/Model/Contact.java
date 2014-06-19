@@ -258,4 +258,10 @@ public class Contact implements IContact {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+
+        return getFirstName() + " " + getLastName();
+    }
 }
