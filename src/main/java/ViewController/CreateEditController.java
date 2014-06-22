@@ -81,7 +81,8 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
-        IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText(), BirthdayDatePicker.getValue());
+        //TODO Email-Adresse validiren auf Format
+        IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
         newContact.setAddress(newAddress);
         contactList.add(newContact);
