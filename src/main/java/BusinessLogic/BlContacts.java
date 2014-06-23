@@ -388,6 +388,12 @@ public class BlContacts implements IBlContacts {
         return sb.toString();
     }
 
+    /**
+     * Liest ContactID eines neu erstellten Kontaktes aus der DB
+     *
+     * @param contact Kontakt welcher gerade erstellt wurde
+     * @return ContactID des neu erstellten Kontakts
+     */
     private int getContactID(IContact contact) {
         ResultSet rs;
         int id = 0;
@@ -415,6 +421,10 @@ public class BlContacts implements IBlContacts {
         return id;
     }
 
+    /**
+     * Prüft ob die Datenbank alle Tabellen enthält
+     * @return boolsches Ergebnis ob alle benötigten Tabellen vorhanden sind
+     */
     private boolean dbIsValid() {
         if (!prepareConnection()) {
             return false;
