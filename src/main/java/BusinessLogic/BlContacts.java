@@ -135,8 +135,6 @@ public class BlContacts implements IBlContacts {
                 street += houseNumber.charAt(i);
             } else
                 break;
-
-
         }
         houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
@@ -166,15 +164,42 @@ public class BlContacts implements IBlContacts {
      * Entfernt Kontakt aus der Datenbank
      * @param contact Kontakt welcher gelöscht werden soll
      * @return Fehlercode
+     * -1 bei Verbindungsfehler
+     * 0 falls Kontakt nicht existiert
+     * 1 falls erfolgrich gelöscht
+     * 2 falls Fehler aufgetreten ist
      */
     @Override
     public int removeContactInDB(IContact contact) {
-        //TODO Rufnummern berücksichtigen
-        int contactID = contact.getContactID();
-        String query = String.format("Delete From Contacts where ContactID = %d", contactID);
+        ResultSet rs;
+        if (!prepareConnection()) {
+            return -1;
+        } else if (!ContactExistsInDatabase(contact)) {
+            return 0;
+        }
+        try {
+            PreparedStatement contactStmt = connection.prepareStatement("DELETE FROM Contacts WHERE ContactID = ?;");
+            PreparedStatement queryStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
+            PreparedStatement delStmt = connection.prepareStatement("DELETE FROM ContactsNumbers WHERE contactsnumbersid = ?;");
 
-        ExecuteQuery(query);
-        return 0;
+            contactStmt.setInt(1, contact.getContactID());
+            queryStmt.setInt(1, contact.getContactID());
+            contactStmt.executeUpdate();
+            rs = queryStmt.executeQuery();
+            while (rs.next()) {
+                delStmt.setInt(1, rs.getInt("ContactNumbersID"));
+                delStmt.executeUpdate();
+            }
+            rs.close();
+            contactStmt.close();
+            queryStmt.close();
+            delStmt.close();
+            connection.close();
+            return 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 2;
     }
 
     /**
@@ -250,7 +275,6 @@ public class BlContacts implements IBlContacts {
                 tempContact.setBirthDate(rs.getDate("BirthDate").toLocalDate());
 
                 list.add(tempContact);
-
             }
             rs.close();
             stmt.close();
