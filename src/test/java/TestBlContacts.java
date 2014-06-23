@@ -1,6 +1,5 @@
 import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
-import Interfaces.IContact;
 import Interfaces.IContactList;
 import Interfaces.IErrorLog;
 import Model.Address;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.logging.Logger;
 
 /**
- * Created by baez on 29.05.14.
+ * @author baez
  */
 public class TestBlContacts extends TestCase {
 
@@ -23,6 +22,7 @@ public class TestBlContacts extends TestCase {
     private static Logger logger = Logger.getLogger(IBlContacts.class.getName());
     private IContactList contactList = new ContactList();
     private String testPath = System.getProperty("user.home") + System.getProperty("file.separator") + "test.db";
+    private IBlContacts testBl = new BlContacts();
 
 
     public void setUp() {
@@ -57,37 +57,22 @@ public class TestBlContacts extends TestCase {
         contactList.add(contact3);
 
 
-    }
-
-    public void testInitDB() {
-        BlContacts cont = new BlContacts();
-        cont.setDbPath(testPath);
-        assertTrue(cont.initDB());
-        logger.info("INIT DB getestet");
-        if (!new File(testPath).delete()) {
-            logger.info("Fehler beim löschen der TempDB");
-        }
-
+        testBl.setDbPath(testPath);
+        testBl.initDB();
     }
 
 
     public void testBLCreateGetContacts() {
-        BlContacts cont = new BlContacts();
-        cont.setDbPath(testPath);
-        cont.initDB();
         try {
-            for (IContact c : contactList) {
-                cont.createContactInDB(c);
-            }
-
-            IContactList testList = cont.getContactsFromDB();
-
+            contactList.forEach(testBl::createContactInDB);
+            IContactList testList = testBl.getContactsFromDB();
             assertEquals(contactList.size(), testList.size());
             logger.info(String.valueOf(testList.size()) + " Kontakte in Datenbank");
         } catch (Exception e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Lesen aller kontakte", e.toString());
         }
         if (!new File(testPath).delete()) {
+            fail();
             logger.info("Fehler beim löschen der TempDB");
         }
 
