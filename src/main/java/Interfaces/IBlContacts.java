@@ -54,5 +54,7 @@ public interface IBlContacts {
      */
     public IContactList getContactsFromDB();
 
+    public boolean ContactExistsInDatabase(IContact contact);
+
     public void ExecuteQuery(String query);
 }
