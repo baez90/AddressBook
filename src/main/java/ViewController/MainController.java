@@ -5,7 +5,7 @@ import Interfaces.IBlContacts;
 import Interfaces.IContact;
 import Interfaces.IContactList;
 import Interfaces.IErrorLog;
-import Model.*;
+import Model.ContactList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -72,7 +72,7 @@ public class MainController {
     /**
      * Liste aller Kontakte aus der Datenbank
      */
-    private IContactList contactList = null;
+    private IContactList contactList = new ContactList();
     /**
      * IBlContacts für den Datenbankzugriff
      */
@@ -89,13 +89,6 @@ public class MainController {
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */
-        //DEMO-CODE
-        contactList = new ContactList();
-        ContactNumberList temp = new ContactNumberList();
-        temp.add(new ContactNumber(ContactNumberType.Home, "123456789"));
-        Contact hans = new Contact("hans", "im Glück", "hans.imGlueck@burger.lecker", LocalDate.now());
-        hans.setContactNumbers(temp);
-        contactList.add(hans);
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
     }
@@ -106,7 +99,7 @@ public class MainController {
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
     public void updateContactTable(IContactList contactList) {
-        if (contactList != null || contactList.size() > 1) {
+        if (contactList.size() > 1) {
             /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */
@@ -154,6 +147,7 @@ public class MainController {
             }
             blContacts.setDbPath(filePath);
             blContacts.initDB();
+            contactList = new ContactList();
             ContactMenu.setDisable(false);
         }
     }
