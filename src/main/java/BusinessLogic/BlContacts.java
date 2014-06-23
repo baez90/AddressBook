@@ -2,6 +2,7 @@ package BusinessLogic;
 
 import Interfaces.IBlContacts;
 import Interfaces.IContact;
+import Interfaces.IContactNumber;
 import Interfaces.IErrorLog;
 import Model.Address;
 import Model.Contact;
@@ -65,7 +66,11 @@ public class BlContacts implements IBlContacts {
         if (!checkIFFileExists) {
             File databaseFile = new File(DbPath);
             try {
-                databaseFile.createNewFile();
+                if (databaseFile.createNewFile()) {
+                    IErrorLog.saveError("BlContacts", "Fehler beim ERstellen des Datenbankfiles", "");
+                    return false;
+                }
+
             } catch (IOException e) {
                 IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", e.toString());
                 return false;
@@ -124,18 +129,10 @@ public class BlContacts implements IBlContacts {
         String firstName = contact.getFirstName();
         String lastName = contact.getLastName();
         String mailAdress = contact.getMailAddress();
-        LocalDate date = contact.getBirthDate();
-        String street = "";
         String zipCode = contact.getAddress().getZipCode();
-        //String houseNumber = contact.getAddress().getStreetAddress().replaceAll("[a-zA-Z]*","");
+        LocalDate date = contact.getBirthDate();
         String houseNumber = contact.getAddress().getStreetAddress();
-
-        for (int i = 0; i <= houseNumber.length(); i++) {
-            if (Character.isLetter(houseNumber.charAt(i))) {
-                street += houseNumber.charAt(i);
-            } else
-                break;
-        }
+        String street = extractStreet(contact.getAddress().getStreetAddress());
         houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
       /*  String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
@@ -162,6 +159,7 @@ public class BlContacts implements IBlContacts {
 
     /**
      * Entfernt Kontakt aus der Datenbank
+     *
      * @param contact Kontakt welcher gelöscht werden soll
      * @return Fehlercode
      * -1 bei Verbindungsfehler
@@ -204,39 +202,56 @@ public class BlContacts implements IBlContacts {
 
     /**
      * Legt neuen Kontakt in der Datenbank an
+     *
      * @param contact Kontakt welcher angelegt werden soll
      * @return Fehlercode
      */
     @Override
     public int createContactInDB(IContact contact) {
-        //TODO Rufnummern berücksichtigen
         try {
             if (!ContactExistsInDatabase(contact)) {
-                String street = "";
                 String houseNumber = contact.getAddress().getStreetAddress();
-                for (int i = 0; i < houseNumber.length(); i++) {
-                    if (Character.isLetter(houseNumber.charAt(i))) {
-                        street += houseNumber.charAt(i);
-                    } else
-                        break;
-                }
+                String street = extractStreet(contact.getAddress().getStreetAddress());
                 houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
-                if (prepareConnection()) {
-                    PreparedStatement stmt = connection.prepareStatement("INSERT INTO Contacts (FirstName, LastName, MailAddress, Street, HouseNumber, ZipCode, City, BirthDate) VALUES(?,?,?,?,?,?,?,?);");
-                    stmt.setString(1, contact.getFirstName());
-                    stmt.setString(2, contact.getLastName());
-                    stmt.setString(3, contact.getMailAddress());
-                    stmt.setString(4, street);
-                    stmt.setString(5, houseNumber);
-                    stmt.setString(6, contact.getAddress().getZipCode());
-                    stmt.setString(7, contact.getAddress().getCity());
-                    stmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
-                    stmt.executeUpdate();
-
-                    stmt.close();
-                    connection.close();
+                if (!prepareConnection()) {
+                    return -1;
                 }
+                PreparedStatement contactStmt = connection.prepareStatement("INSERT INTO Contacts (FirstName, LastName, MailAddress, Street, HouseNumber, ZipCode, City, BirthDate) VALUES(?,?,?,?,?,?,?,?);");
+                PreparedStatement phoneStmt = connection.prepareStatement("INSERT INTO CONTACTSNUMBERS (ContactID, Number, NumberType) VALUES (?,?,?);");
+                contactStmt.setString(1, contact.getFirstName());
+                contactStmt.setString(2, contact.getLastName());
+                contactStmt.setString(3, contact.getMailAddress());
+                contactStmt.setString(4, street);
+                contactStmt.setString(5, houseNumber);
+                contactStmt.setString(6, contact.getAddress().getZipCode());
+                contactStmt.setString(7, contact.getAddress().getCity());
+                contactStmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+                contactStmt.executeUpdate();
+
+                int contactId = getContactID(contact);
+
+                for (IContactNumber nr : contact.getContactNumbers()) {
+                    phoneStmt.setInt(1, contactId);
+                    phoneStmt.setString(2, nr.getNumber());
+                    switch (nr.getType()) {
+                        case Mobile:
+                            phoneStmt.setInt(3, 0);
+                            break;
+                        case Home:
+                            phoneStmt.setInt(3, 1);
+                            break;
+                        case Work:
+                            phoneStmt.setInt(3, 2);
+                            break;
+                        default:
+                            phoneStmt.setInt(3, 5);
+                    }
+                    phoneStmt.executeUpdate();
+                }
+                phoneStmt.close();
+                contactStmt.close();
+                connection.close();
             } else {
                 updateContactInDB(contact);
                 return 1;
@@ -249,10 +264,11 @@ public class BlContacts implements IBlContacts {
 
     /**
      * liest alle Kontakte aus der Datenbank
+     *
      * @return Liste von allen Kontakten
      */
     @Override
-    public ContactList getContactsFromDB(){
+    public ContactList getContactsFromDB() {
         //TODO Rufnummern berücksichtigen
         ContactList list = new ContactList();
         Statement stmt;
@@ -315,6 +331,7 @@ public class BlContacts implements IBlContacts {
 
     /**
      * Führt eine beliebige Query aus
+     *
      * @param query SQL-Query welche ausgeführt werden soll
      */
     private void ExecuteQuery(String query) {
@@ -353,5 +370,50 @@ public class BlContacts implements IBlContacts {
             IErrorLog.saveError("BlContacts", "Fehler beim Herstellen der Verbindung", e.toString());
         }
         return false;
+    }
+
+    /**
+     * Extrahiert den Straßennamen aus StreetAddress
+     *
+     * @param streetAddress StreetAddress aus welcher der Stra0enname extrahiert werden soll
+     * @return Straßennamen als String
+     */
+    private String extractStreet(String streetAddress) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < streetAddress.length(); i++) {
+            if (Character.isLetter(streetAddress.charAt(i))) {
+                sb.append(streetAddress.charAt(i));
+            } else
+                break;
+        }
+
+        return sb.toString();
+    }
+
+    private int getContactID(IContact contact) {
+        ResultSet rs;
+        int id = 0;
+        if (!prepareConnection()) {
+            return -1;
+        }
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT ContactID FROM Contacts WHERE FirstName = ? AND LastName = ?;");
+            stmt.setString(1, contact.getFirstName());
+            stmt.setString(2, contact.getLastName());
+
+            rs = stmt.executeQuery();
+
+            if (rs.next() == rs.last()) {
+                id = rs.getInt("ContactID");
+            } else
+                id = -2;
+
+            rs.close();
+            stmt.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 }

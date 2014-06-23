@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source source="LOCAL" name="SQLite -" uuid="95640a76-cd8f-4428-b31b-b1eeb255ab96">
+  <data-source source="LOCAL" name="SQLite" uuid="95640a76-cd8f-4428-b31b-b1eeb255ab96">
     <database-info product="SQLite" version="3.7.6.3" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
@@ -15,6 +15,13 @@
       <column name="City" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="BirthDate" sqlType="DATE" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <primary-key columns="ContactID"/>
+    </table>
+    <table name="ContactsNumbers" schema="" catalog="" type="TABLE">
+      <column name="ContactsNumbersID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="ContactID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="Number" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="NumberType" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="ContactsNumbersID"/>
     </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
       <column name="name" sqlType="" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
