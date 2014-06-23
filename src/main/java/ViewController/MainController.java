@@ -394,6 +394,9 @@ public class MainController {
      */
     public void openAddressBook(String dbPath) {
         blContacts.setDbPath(dbPath);
+        if (!blContacts.initDB()) {
+            Notifications.create().title("Warnung").text("Datenbank ist korrupt.").showInformation();
+        }
         contactList = blContacts.getContactsFromDB();
         initContactTable();
         ContactMenu.setDisable(false);

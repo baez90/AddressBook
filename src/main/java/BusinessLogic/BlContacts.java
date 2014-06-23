@@ -61,9 +61,7 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public boolean initDB() {
-        boolean checkIFFileExists = new File(DbPath).exists();
-
-        if (!checkIFFileExists) {
+        if (!dbIsValid()) {
             File databaseFile = new File(DbPath);
             try {
                 if (databaseFile.createNewFile()) {
@@ -82,7 +80,7 @@ public class BlContacts implements IBlContacts {
                 }
                 stmt = connection.createStatement();
 
-                String sqlTableContacts = "CREATE TABLE Contacts " +
+                String sqlTableContacts = "CREATE TABLE IF NOT EXISTS Contacts " +
                         "(ContactID INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
                         "FirstName VARCHAR(255), " +
                         "LastName VARCHAR(255), " +
@@ -93,11 +91,11 @@ public class BlContacts implements IBlContacts {
                         "City VARCHAR(100), " +
                         "BirthDate DATE );";
 
-                String sqlTableContactList = "CREATE TABLE ContactsNumbers " +
+                String sqlTableContactList = "CREATE TABLE IF NOT EXISTS ContactsNumbers " +
                         "(ContactsNumbersID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
                         " ContactID  INTEGER, " +
                         " Number VARCHAR(255), " +
-                        " NumberType VARCHAR(255));";
+                        " NumberType VARCHAR(255))";
 
                 stmt.executeUpdate(sqlTableContacts);
                 stmt.executeUpdate(sqlTableContactList);
@@ -108,12 +106,8 @@ public class BlContacts implements IBlContacts {
                 IErrorLog.saveError("BlContacts", "Fehler bei INITDB", e.toString());
                 return false;
             }
-            return true;
-
-        } else {
-            //TODO Vollständigkeit der DB testen
-            return true;
         }
+        return true;
     }
 
     /**
@@ -205,6 +199,9 @@ public class BlContacts implements IBlContacts {
      *
      * @param contact Kontakt welcher angelegt werden soll
      * @return Fehlercode
+     * -1 Fehler aufgetreten
+     * 0 Kontakt bereits aufgetreten, wird geupdated
+     * 1 Kontakt erstellt
      */
     @Override
     public int createContactInDB(IContact contact) {
@@ -254,12 +251,13 @@ public class BlContacts implements IBlContacts {
                 connection.close();
             } else {
                 updateContactInDB(contact);
-                return 1;
+                return 0;
             }
         } catch (Exception e) {
             IErrorLog.saveError("BLContacts", "Fehler bei Create Contact", e.toString());
+            return -1;
         }
-        return 0;
+        return 1;
     }
 
     /**
@@ -403,7 +401,7 @@ public class BlContacts implements IBlContacts {
 
             rs = stmt.executeQuery();
 
-            if (rs.next() == rs.last()) {
+            if (rs.next()) {
                 id = rs.getInt("ContactID");
             } else
                 id = -2;
@@ -415,5 +413,28 @@ public class BlContacts implements IBlContacts {
             e.printStackTrace();
         }
         return id;
+    }
+
+    private boolean dbIsValid() {
+        if (!prepareConnection()) {
+            return false;
+        }
+        boolean contactsTableExist = false;
+        boolean contactsNumbersTableExist = false;
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet metaResult = metaData.getTables(null, null, null, new String[]{"TABLE"});
+            while (metaResult.next()) {
+                if (metaResult.getString("TABLE_NAME").equals("Contacts")) {
+                    contactsTableExist = true;
+                } else if (metaResult.getString("TABLE_NAME").equals("ContactsNumbers")) {
+                    contactsNumbersTableExist = true;
+                }
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (contactsTableExist & contactsNumbersTableExist);
     }
 }
