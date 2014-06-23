@@ -6,13 +6,13 @@
     <schema name="" catalog=""/>
     <table name="Contacts" schema="" catalog="" type="TABLE">
       <column name="ContactID" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
-      <column name="FirstName" sqlType="VARCHAR (255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="LastName" sqlType="VARCHAR (255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="MailAddress" sqlType="VARCHAR (200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="Street" sqlType="VARCHAR (255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="HouseNumber" sqlType="VARCHAR (50)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="ZipCode" sqlType="VARCHAR (20)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="City" sqlType="VARCHAR (100)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="FirstName" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="LastName" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="MailAddress" sqlType="VARCHAR(200)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="Street" sqlType="VARCHAR(255)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="HouseNumber" sqlType="VARCHAR(50)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="ZipCode" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="City" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <column name="BirthDate" sqlType="DATE" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
       <primary-key columns="ContactID"/>
     </table>

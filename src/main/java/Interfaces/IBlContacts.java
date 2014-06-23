@@ -53,8 +53,4 @@ public interface IBlContacts {
      * @return Liste von Contact-Objekten
      */
     public IContactList getContactsFromDB();
-
-    public boolean ContactExistsInDatabase(IContact contact);
-
-    public void ExecuteQuery(String query);
 }

@@ -255,10 +255,11 @@ public class Contact implements IContact {
     public boolean equals(Object o) {
         if (!(o instanceof Contact)) {
             return false;
-        } else if ((FirstName + " " + LastName).equals(((Contact) o).getFirstName() + " " + ((Contact) o).getLastName())) {
-            return true;
+        } else {
+            IContact con = (Contact) o;
+            return FirstName.getValue().equals(con.getFirstName()) && LastName.getValue().equals(con.getLastName());
         }
-        return false;
+
     }
 
     @Override

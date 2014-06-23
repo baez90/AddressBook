@@ -33,4 +33,8 @@ public interface IContactNumber extends Comparable<IContactNumber> {
      * @param number neue Rufnummer als String
      */
     public void setNumber(String number);
+
+    public int getContactNumbersID();
+
+    public void setContactNumbersID(int id);
 }

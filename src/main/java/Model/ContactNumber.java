@@ -8,6 +8,7 @@ import Interfaces.IContactNumber;
  * @author baez
  */
 public class ContactNumber implements IContactNumber {
+    private int ContactNumbersID;
     private ContactNumberType Type;
     private String Number;
 
@@ -18,6 +19,13 @@ public class ContactNumber implements IContactNumber {
      * @param number Rufnummer
      */
     public ContactNumber(ContactNumberType type, String number) {
+        ContactNumbersID = 0;
+        Type = type;
+        Number = number;
+    }
+
+    public ContactNumber(int id, ContactNumberType type, String number) {
+        ContactNumbersID = id;
         Type = type;
         Number = number;
     }
@@ -60,6 +68,16 @@ public class ContactNumber implements IContactNumber {
     @Override
     public void setNumber(String number) {
         Number = number;
+    }
+
+    @Override
+    public int getContactNumbersID() {
+        return 0;
+    }
+
+    @Override
+    public void setContactNumbersID(int id) {
+
     }
 
     /**

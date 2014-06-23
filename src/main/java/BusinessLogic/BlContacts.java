@@ -87,14 +87,12 @@ public class BlContacts implements IBlContacts {
                         "ZipCode INTEGER, " +
                         "City VARCHAR(100), " +
                         "BirthDate DATE );";
-                //" PRIMARY KEY ( ContactID ))";
 
                 String sqlTableContactList = "CREATE TABLE ContactsNumbers " +
                         "(ContactsNumbersID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
                         " ContactID  INTEGER, " +
                         " Number VARCHAR(255), " +
-                        " NumberType VARCHAR(255) )";
-                // " PRIMARY KEY ( ContactsNumbersID ))";
+                        " NumberType VARCHAR(255));";
 
                 stmt.executeUpdate(sqlTableContacts);
                 stmt.executeUpdate(sqlTableContactList);
@@ -121,6 +119,7 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int updateContactInDB(IContact contact) {
+        //TODO Rufnummern berücksichtigen
         String city = contact.getAddress().getCity();
         String firstName = contact.getFirstName();
         String lastName = contact.getLastName();
@@ -170,7 +169,7 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int removeContactInDB(IContact contact) {
-
+        //TODO Rufnummern berücksichtigen
         int contactID = contact.getContactID();
         String query = String.format("Delete From Contacts where ContactID = %d", contactID);
 
@@ -185,6 +184,7 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int createContactInDB(IContact contact) {
+        //TODO Rufnummern berücksichtigen
         try {
             if (!ContactExistsInDatabase(contact)) {
                 String street = "";
@@ -223,38 +223,12 @@ public class BlContacts implements IBlContacts {
     }
 
     /**
-     * Prüft anhand von Vor und Nachnamen ob Kontakt bereits existiert
-     * @param contact Kontakt welcher überprüft werden soll
-     * @return boolsches Ergebnis ob Kontakt bereits existiert
-     */
-    @Override
-    public boolean ContactExistsInDatabase(IContact contact) {
-        PreparedStatement pStmt;
-        ResultSet resultSet;
-        boolean contactExists;
-        try {
-            prepareConnection();
-            pStmt = connection.prepareStatement("SELECT * FROM Contacts WHERE LastName LIKE ? AND FirstName LIKE ?;");
-            pStmt.setString(1, "%" + contact.getLastName() + "%");
-            pStmt.setString(2, "%" + contact.getFirstName() + "%");
-            resultSet = pStmt.executeQuery();
-            contactExists = resultSet.next();
-            pStmt.close();
-            resultSet.close();
-            connection.close();
-            return contactExists;
-        } catch (Exception e) {
-            IErrorLog.saveError("BLContacts", "Fehler bei ContactExistsInDatabase", e.toString());
-        }
-        return true;
-    }
-
-    /**
      * liest alle Kontakte aus der Datenbank
      * @return Liste von allen Kontakten
      */
     @Override
     public ContactList getContactsFromDB(){
+        //TODO Rufnummern berücksichtigen
         ContactList list = new ContactList();
         Statement stmt;
         ResultSet rs;
@@ -289,11 +263,37 @@ public class BlContacts implements IBlContacts {
     }
 
     /**
+     * Prüft anhand von Vor und Nachnamen ob Kontakt bereits existiert
+     *
+     * @param contact Kontakt welcher überprüft werden soll
+     * @return boolsches Ergebnis ob Kontakt bereits existiert
+     */
+    private boolean ContactExistsInDatabase(IContact contact) {
+        PreparedStatement pStmt;
+        ResultSet resultSet;
+        boolean contactExists;
+        try {
+            prepareConnection();
+            pStmt = connection.prepareStatement("SELECT * FROM Contacts WHERE LastName LIKE ? AND FirstName LIKE ?;");
+            pStmt.setString(1, "%" + contact.getLastName() + "%");
+            pStmt.setString(2, "%" + contact.getFirstName() + "%");
+            resultSet = pStmt.executeQuery();
+            contactExists = resultSet.next();
+            pStmt.close();
+            resultSet.close();
+            connection.close();
+            return contactExists;
+        } catch (Exception e) {
+            IErrorLog.saveError("BLContacts", "Fehler bei ContactExistsInDatabase", e.toString());
+        }
+        return true;
+    }
+
+    /**
      * Führt eine beliebige Query aus
      * @param query SQL-Query welche ausgeführt werden soll
      */
-    @Override
-    public void ExecuteQuery(String query) {
+    private void ExecuteQuery(String query) {
         Statement stmt;
         try {
             prepareConnection();

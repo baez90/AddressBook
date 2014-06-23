@@ -1,5 +1,6 @@
 import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
+import Interfaces.IContact;
 import Interfaces.IContactList;
 import Interfaces.IErrorLog;
 import Model.Address;
@@ -7,6 +8,7 @@ import Model.Contact;
 import Model.ContactList;
 import junit.framework.TestCase;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
@@ -20,6 +22,7 @@ public class TestBlContacts extends TestCase {
      */
     private static Logger logger = Logger.getLogger(IBlContacts.class.getName());
     private IContactList contactList = new ContactList();
+    private String testPath = System.getProperty("user.home") + System.getProperty("file.separator") + "test.db";
 
 
     public void setUp() {
@@ -58,58 +61,35 @@ public class TestBlContacts extends TestCase {
 
     public void testInitDB() {
         BlContacts cont = new BlContacts();
+        cont.setDbPath(testPath);
         assertTrue(cont.initDB());
         logger.info("INIT DB getestet");
+        if (!new File(testPath).delete()) {
+            logger.info("Fehler beim löschen der TempDB");
+        }
+
     }
 
 
-    public void testBLGetContacts() {
+    public void testBLCreateGetContacts() {
         BlContacts cont = new BlContacts();
+        cont.setDbPath(testPath);
+        cont.initDB();
         try {
-            IContactList list = cont.getContactsFromDB();
-
-            for (int i = 0; i < list.size(); i++) {
-                Contact temp = new Contact(list.get(i).getFirstName(), list.get(i).getLastName(), list.get(i).getMailAddress(), list.get(i).getBirthDate());
-                Address addressTemp = new Address();
-                addressTemp.setZipCode(list.get(i).getAddress().getZipCode());
-                addressTemp.setStreetAddress(list.get(i).getAddress().getStreetAddress());
-                addressTemp.setCity(list.get(i).getAddress().getCity());
-                temp.setAddress(addressTemp);
-
-
-                assertEquals(false, contactList.contains(temp)); // TODO must be true
+            for (IContact c : contactList) {
+                cont.createContactInDB(c);
             }
-            logger.info(String.valueOf(list.size()) + " Kunden in Datenbank");
+
+            IContactList testList = cont.getContactsFromDB();
+
+            assertEquals(contactList.size(), testList.size());
+            logger.info(String.valueOf(testList.size()) + " Kontakte in Datenbank");
         } catch (Exception e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Lesen aller kontakte", e.toString());
         }
-    }
-
-
-    public void testBlContactsCreateContact() {
-        setUp();
-        BlContacts cont = new BlContacts();
-        //cont.getContactsFromDb();
-        logger.info("Kontakte werden in DB gespeichert ...");
-        for (int i = 0; i < 100; i++) {
-            Contact item = (Contact) contactList.get((int) (Math.random() * 2 + 1));
-
-            try {
-                assertEquals(0, cont.createContactInDB(item));
-
-
-            } catch (Exception e) {
-                logger.info("Fehler beim Speichern in DB");
-
-
-            }
-
-
+        if (!new File(testPath).delete()) {
+            logger.info("Fehler beim löschen der TempDB");
         }
-
-
-        logger.info("Kontakte erfolgreich in DB geschrieben");
-
 
     }
 }
