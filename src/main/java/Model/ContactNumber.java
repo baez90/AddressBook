@@ -72,12 +72,12 @@ public class ContactNumber implements IContactNumber {
 
     @Override
     public int getContactNumbersID() {
-        return 0;
+        return ContactNumbersID;
     }
 
     @Override
     public void setContactNumbersID(int id) {
-
+        ContactNumbersID = id;
     }
 
     /**
@@ -89,6 +89,9 @@ public class ContactNumber implements IContactNumber {
      */
     @Override
     public int compareTo(IContactNumber o) {
+        if (o == null) {
+            return 1;
+        }
         if (Type.equals(o.getType())) {
             return 0;
         } else if (Type.equals(ContactNumberType.Mobile)) {
@@ -98,5 +101,18 @@ public class ContactNumber implements IContactNumber {
         } else {
             return 1;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContactNumber that = (ContactNumber) o;
+
+        if (!Number.equals(that.Number)) return false;
+        if (Type != that.Type) return false;
+
+        return true;
     }
 }

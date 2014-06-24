@@ -1,9 +1,7 @@
 package BusinessLogic;
 
 import Interfaces.*;
-import Model.Address;
-import Model.Contact;
-import Model.ContactList;
+import Model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,7 +82,7 @@ public class BlContacts implements IBlContacts {
                         "MailAddress VARCHAR(200), " +
                         "Street VARCHAR(255), " +
                         "HouseNumber VARCHAR(50), " +
-                        "ZipCode INTEGER, " +
+                        "ZipCode VARCHAR(20), " +
                         "City VARCHAR(100), " +
                         "BirthDate DATE );";
 
@@ -92,7 +90,7 @@ public class BlContacts implements IBlContacts {
                         "(ContactsNumbersID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
                         " ContactID  INTEGER, " +
                         " Number VARCHAR(255), " +
-                        " NumberType VARCHAR(255))";
+                        " NumberType INTEGER)";
 
                 stmt.executeUpdate(sqlTableContacts);
                 stmt.executeUpdate(sqlTableContactList);
@@ -265,31 +263,57 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public ContactList getContactsFromDB() {
-        //TODO Rufnummern berücksichtigen
         ContactList list = new ContactList();
         Statement stmt;
-        ResultSet rs;
+        PreparedStatement numberStmt;
+        ResultSet contactRs;
+        ResultSet numberRs = null;
         try {
             if (!prepareConnection()) {
                 return null;
             }
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM Contacts;");
-            while (rs.next()) {
+            contactRs = stmt.executeQuery("SELECT * FROM Contacts;");
+            numberStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
+            while (contactRs.next()) {
 
-                Contact tempContact = new Contact(rs.getInt("ContactID"), rs.getString("FirstName"), rs.getString("LastName"), rs.getString("MailAddress"),
+                Contact tempContact = new Contact(contactRs.getInt("ContactID"), contactRs.getString("FirstName"), contactRs.getString("LastName"), contactRs.getString("MailAddress"),
                         LocalDate.now());
                 Address tempAdress = new Address();
-                tempAdress.setCity(rs.getString("City"));
-                tempAdress.setStreetAddress(rs.getString("Street") + rs.getString("HouseNumber"));
-                tempAdress.setZipCode(rs.getString("ZipCode"));
+                tempAdress.setCity(contactRs.getString("City"));
+                tempAdress.setStreetAddress(contactRs.getString("Street") + contactRs.getString("HouseNumber"));
+                tempAdress.setZipCode(contactRs.getString("ZipCode"));
                 tempContact.setAddress(tempAdress);
-                tempContact.setBirthDate(rs.getDate("BirthDate").toLocalDate());
+                tempContact.setBirthDate(contactRs.getDate("BirthDate").toLocalDate());
+                numberStmt.setInt(1, tempContact.getContactID());
+
+                numberRs = numberStmt.executeQuery();
+                while (numberRs.next()) {
+                    ContactNumberType tempType;
+                    switch (numberRs.getInt("NumberType")) {
+                        case 0:
+                            tempType = ContactNumberType.Mobile;
+                            break;
+                        case 1:
+                            tempType = ContactNumberType.Home;
+                            break;
+                        case 2:
+                            tempType = ContactNumberType.Work;
+                            break;
+                        default:
+                            tempType = ContactNumberType.Mobile;
+                    }
+                    tempContact.getContactNumbers().add(new ContactNumber(numberRs.getInt("ContactsNumbersID"), tempType, numberRs.getString("Number")));
+                }
 
                 list.add(tempContact);
             }
-            rs.close();
+            if (numberRs != null) {
+                numberRs.close();
+            }
+            contactRs.close();
             stmt.close();
+            numberStmt.close();
             connection.close();
 
         } catch (Exception e) {
