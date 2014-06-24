@@ -1,6 +1,8 @@
 package Model;
 
 import Interfaces.IAddress;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Created by Baez on 03.06.2014.
@@ -9,26 +11,26 @@ public class Address implements IAddress {
     /**
      * Straße und Hausnummer
      */
-    private String StreetAddress;
+    private StringProperty StreetAddress;
     /**
      * Postleitzahl
      */
-    private String ZipCode;
+    private StringProperty ZipCode;
     /**
      * Wohnort
      */
-    private String City;
+    private StringProperty City;
 
     public Address() {
-        StreetAddress = "";
-        ZipCode = "";
-        City = "";
+        StreetAddress = new SimpleStringProperty("");
+        ZipCode = new SimpleStringProperty("");
+        City = new SimpleStringProperty("");
     }
 
     public Address(String streetAddress, String zipCode, String city) {
-        StreetAddress = streetAddress;
-        ZipCode = zipCode;
-        City = city;
+        StreetAddress = new SimpleStringProperty(streetAddress);
+        ZipCode = new SimpleStringProperty(zipCode);
+        City = new SimpleStringProperty(city);
     }
 
     /**
@@ -38,7 +40,7 @@ public class Address implements IAddress {
      */
     @Override
     public String getStreetAddress() {
-        return StreetAddress;
+        return StreetAddress.getValue();
     }
 
     /**
@@ -48,7 +50,17 @@ public class Address implements IAddress {
      */
     @Override
     public void setStreetAddress(String newStreetAddress) {
-        StreetAddress = newStreetAddress;
+        StreetAddress.set(newStreetAddress);
+    }
+
+    /**
+     * Getter für TableView
+     *
+     * @return StreetAddress als StringProperty
+     */
+    @Override
+    public StringProperty getStreetAddressProperty() {
+        return StreetAddress;
     }
 
     /**
@@ -58,7 +70,7 @@ public class Address implements IAddress {
      */
     @Override
     public String getZipCode() {
-        return ZipCode;
+        return ZipCode.getValue();
     }
 
     /**
@@ -68,7 +80,17 @@ public class Address implements IAddress {
      */
     @Override
     public void setZipCode(String newZipCode) {
-        ZipCode = newZipCode;
+        ZipCode.set(newZipCode);
+    }
+
+    /**
+     * Getter für TableView
+     *
+     * @return ZipCode als StringProperty
+     */
+    @Override
+    public StringProperty getZipCodeProperty() {
+        return ZipCode;
     }
 
     /**
@@ -78,7 +100,7 @@ public class Address implements IAddress {
      */
     @Override
     public String getCity() {
-        return City;
+        return City.getValue();
     }
 
     /**
@@ -88,6 +110,16 @@ public class Address implements IAddress {
      */
     @Override
     public void setCity(String newCity) {
-        City = newCity;
+        City.set(newCity);
+    }
+
+    /**
+     * Getter für TableView
+     *
+     * @return City als StringProperty
+     */
+    @Override
+    public StringProperty getCityProperty() {
+        return City;
     }
 }

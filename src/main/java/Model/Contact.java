@@ -119,6 +119,16 @@ public class Contact implements IContact {
     }
 
     /**
+     * Getter für TableView
+     *
+     * @return FirstName als StringProperty
+     */
+    @Override
+    public StringProperty getFirstNameProperty() {
+        return FirstName;
+    }
+
+    /**
      * Standard-Getter für Nachname des Kontakts
      *
      * @return Nachname des Kontakts
@@ -139,6 +149,16 @@ public class Contact implements IContact {
     }
 
     /**
+     * Getter für TableView
+     *
+     * @return LastName als StringProperty
+     */
+    @Override
+    public StringProperty getLastNameProperty() {
+        return LastName;
+    }
+
+    /**
      * Standard-Getter für Email-Adresse
      *
      * @return Email-Adresse des Kontakts
@@ -156,6 +176,16 @@ public class Contact implements IContact {
     @Override
     public void setMailAddress(String mailAddress) {
         MailAddress = new SimpleStringProperty(mailAddress);
+    }
+
+    /**
+     * Getter für TableView
+     *
+     * @return MailAddress als StringProperty
+     */
+    @Override
+    public StringProperty getMailAddressProperty() {
+        return MailAddress;
     }
 
     /**
@@ -196,6 +226,16 @@ public class Contact implements IContact {
     @Override
     public void setBirthDate(LocalDate birthDate) {
         BirthDate.set(birthDate);
+    }
+
+    /**
+     * Getter für die TableView
+     *
+     * @return Birthday als Property
+     */
+    @Override
+    public ObjectProperty<LocalDate> getBirthdayProperty() {
+        return BirthDate;
     }
 
     /**

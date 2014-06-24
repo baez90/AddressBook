@@ -33,6 +33,9 @@ public interface IUtil {
      * @return boolsches Ergebnis der Validierung
      */
     public static boolean validateMailAddress(String addressToValidate) {
+        if (addressToValidate.length() < 1) {
+            return true;
+        }
         boolean atFound = false;
         boolean atCorrect = false;
         boolean pointFound = false;

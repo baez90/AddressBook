@@ -13,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -24,6 +23,7 @@ import org.controlsfx.dialog.Dialogs;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * MainController-Klasse für alle Views
@@ -50,26 +50,37 @@ public class MainController {
     /**
      * Spalte für den Vornamen
      */
-    public TableColumn FirstNameColumn;
+    public TableColumn<IContact, String> FirstNameColumn;
     /**
      * Spalte für den Nachnamen
      */
-    public TableColumn LastNameColumn;
+    public TableColumn<IContact, String> LastNameColumn;
     /**
      * Spalte für die Email-Adresse
      */
-    public TableColumn EmailAddressColumn;
+    public TableColumn<IContact, String> EmailAddressColumn;
     /**
      * Spalte für das Geburtsdatum
      */
-    public TableColumn BirthdayColumn;
-    public TableColumn StreetAddressColumn;
-    public TableColumn ZipCodeColumn;
-    public TableColumn CityColumn;
+    public TableColumn<IContact, LocalDate> BirthdayColumn;
+    /**
+     * Spalte für Straße und Hausnummer
+     */
+    public TableColumn<IContact, String> StreetAddressColumn;
+    /**
+     * Spalte für die Postleitzahl
+     */
+    public TableColumn<IContact, String> ZipCodeColumn;
+    /**
+     * Spalte für den Wohnort
+     */
+    public TableColumn<IContact, String> CityColumn;
     /**
      * VBox für die Telefnummer-Spalten
      */
     public VBox PhoneNrBox;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
 
     /**
@@ -85,15 +96,31 @@ public class MainController {
      * Init-Methode, erstellt die benötigten Tabellen
      */
     public void initContactTable() {
-        FirstNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("FirstName"));
-        LastNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("LastName"));
-        EmailAddressColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("MailAddress"));
-        BirthdayColumn.setCellValueFactory(new PropertyValueFactory<IContact, LocalDate>("BirthDate"));
-        /* TODO CellFactory für Addresse
-        StreetAddressColumn.setCellFactory(new PropertyValueFactory<IContact, String>("StreetAddress"));
-        ZipCodeColumn.setCellFactory(new PropertyValueFactory<IContact, String>("ZipCode"));
-        CityColumn.setCellFactory(new PropertyValueFactory<IContact, String>("City"));*/
+        FirstNameColumn.setCellValueFactory(cellData -> cellData.getValue().getFirstNameProperty());
+        LastNameColumn.setCellValueFactory(cellData -> cellData.getValue().getLastNameProperty());
+        EmailAddressColumn.setCellValueFactory(cellData -> cellData.getValue().getMailAddressProperty());
+        BirthdayColumn.setCellValueFactory(cellData -> cellData.getValue().getBirthdayProperty());
+        StreetAddressColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getStreetAddressProperty());
+        ZipCodeColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getZipCodeProperty());
+        CityColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getCityProperty());
 
+        /*
+        Geburtstage nach deutschem Format anzeigen
+         */
+        BirthdayColumn.setCellFactory(column -> new TableCell<IContact, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    // Format date.
+                    setText(formatter.format(item));
+                }
+            }
+        });
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */

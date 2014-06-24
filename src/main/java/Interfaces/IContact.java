@@ -1,5 +1,8 @@
 package Interfaces;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
+
 import java.time.LocalDate;
 
 /**
@@ -37,6 +40,13 @@ public interface IContact extends Comparable<IContact> {
     public void setLastName(String lastName);
 
     /**
+     * Getter für TableView
+     *
+     * @return LastName als StringProperty
+     */
+    public StringProperty getLastNameProperty();
+
+    /**
      * Standard-Getter für FirstName
      *
      * @return Vorname des Kontakts
@@ -51,6 +61,13 @@ public interface IContact extends Comparable<IContact> {
     public void setFirstName(String firstName);
 
     /**
+     * Getter für TableView
+     *
+     * @return FirstName als StringProperty
+     */
+    public StringProperty getFirstNameProperty();
+
+    /**
      * Standard-Getter für Email-Adresse
      *
      * @return Email-Adresse des Kontakts
@@ -63,6 +80,13 @@ public interface IContact extends Comparable<IContact> {
      * @param mailAddress Email-Adresse des Kontakts
      */
     public void setMailAddress(String mailAddress);
+
+    /**
+     * Getter für TableView
+     *
+     * @return MailAddress als StringProperty
+     */
+    public StringProperty getMailAddressProperty();
 
     /**
      * Standard-Getter für die Rufnummern des Kontakts
@@ -91,6 +115,13 @@ public interface IContact extends Comparable<IContact> {
      * @param birthDate Geburtstag als LocalDate
      */
     public void setBirthDate(LocalDate birthDate);
+
+    /**
+     * Getter für die TableView
+     *
+     * @return Birthday als Property
+     */
+    public ObjectProperty<LocalDate> getBirthdayProperty();
 
     /**
      * Standard-Getter für die Adresse des Kontakts

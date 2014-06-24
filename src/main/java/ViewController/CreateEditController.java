@@ -90,16 +90,16 @@ public class CreateEditController {
         IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
         newContact.setAddress(newAddress);
-        switch (mainController.getBlContacts().createContactInDB(newContact)) {
-            case 1:
-                contactList.add(newContact);
-                break;
+        newContact.setContactID(mainController.getBlContacts().createContactInDB(newContact));
+        switch (newContact.getContactID()) {
             case 0:
                 Dialogs.create().title("Info").masthead("Kontakt bereits vorhanden").message("Ein Kontakt mit dem selben Namen ist bereits vorhanden. Dieser Kontakt wurde geupdated.").showInformation();
                 break;
             case -1:
                 Dialogs.create().title("Info").masthead("Fehler aufgetreten").message("Beim anlegen des Kontakts ist ein Fehler aufgetreten.").showInformation();
                 break;
+            default:
+                contactList.add(newContact);
         }
 
 
