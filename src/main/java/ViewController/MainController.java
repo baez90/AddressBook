@@ -278,6 +278,9 @@ public class MainController {
         initHelpAboutView("HTML-Content/about.html");
     }
 
+    /**
+     * Zeigt die Error-Listen-Webseite an
+     */
     public void ViewErrorListClick() {
         initHelpAboutView("HTML-Content/error.html");
     }
@@ -447,6 +450,10 @@ public class MainController {
         contactList.stream().filter(IContact::dateOfBirthIsToday).forEach(c -> Notifications.create().title("Geburtstag").text(c.toString() + " hat heute Geburtstag").showInformation());
     }
 
+    /**
+     * Initialisiert ebenfalls nur die CreateEditContactView
+     * dadurch, dass das Objekt contactToEdit nicht null ist, wird ein Edit ausgeführt
+     */
     public void EditContactClick() {
         initCreateEditContactView();
     }
