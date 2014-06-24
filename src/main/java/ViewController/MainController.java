@@ -80,13 +80,19 @@ public class MainController {
      */
     public VBox PhoneNrBox;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
+    /**
+     * DateTimeFormatter zur Anzeige des Geburtsdatums im deutschen Format
+     */
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     /**
      * Liste aller Kontakte aus der Datenbank
      */
     private IContactList contactList = new ContactList();
+    /**
+     * Zwischenspeicher für den Edit
+     */
+    private IContact contactToEdit = null;
     /**
      * IBlContacts für den Datenbankzugriff
      */
@@ -126,6 +132,8 @@ public class MainController {
          */
         ObservableList<IContact> displayList = FXCollections.observableList(contactList);
         ContactTable.setItems(displayList);
+
+        ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> contactToEdit = newValue);
     }
 
     /**
@@ -148,7 +156,7 @@ public class MainController {
      * Zeigt Dialog zum anlegen von neuen Kontakten an
      */
     public void CreateContactClick() {
-        initCreateEditContactView(null);
+        initCreateEditContactView();
     }
 
     /**
@@ -295,12 +303,18 @@ public class MainController {
     }
 
     /**
+     * Getter für CreateEditController
+     * @return IContact-Objekt welches editiert werden soll
+     */
+    public IContact getContactToEdit() {
+        return contactToEdit;
+    }
+
+    /**
      * initialisiert die CreateEditContactView
      * je nach Kontext wird ein Kontakt editiert oder ein neuer erstellt
-     *
-     * @param contactToEdit Objekt welches editiert werden soll, falls ein neues erstellt werden soll wird null übergeben
      */
-    private void initCreateEditContactView(IContact contactToEdit) {
+    private void initCreateEditContactView() {
         try {
             /*
             lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
@@ -317,11 +331,6 @@ public class MainController {
              */
             CreateEditController createEditController = loader.getController();
             createEditController.initController(this);
-            if (contactToEdit != null) {
-                //TODO zu editierenden Kontakt laden
-            } else {
-
-            }
         } catch (IOException e) {
             IErrorLog.saveError("MainController", "Fehler beim laden der CreateEditContactView", e.toString());
         }
@@ -439,4 +448,7 @@ public class MainController {
         contactList.stream().filter(IContact::dateOfBirthIsToday).forEach(c -> Notifications.create().title("Geburtstag").text(c.toString() + " hat heute Geburtstag").showInformation());
     }
 
+    public void EditContactClick() {
+        initCreateEditContactView();
+    }
 }

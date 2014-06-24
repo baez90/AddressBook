@@ -61,6 +61,7 @@ public class CreateEditController {
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
+    private IContact contactToEdit;
     /**
      * MainController für den Zugriff auf die BlContacts, ContactList, ContactTable usw
      */
@@ -75,6 +76,16 @@ public class CreateEditController {
         contactList = con.getContactList();
         mainController = con;
         BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
+        if (mainController.getContactToEdit() != null) {
+            //TODO Rufnummern berücksichtigen
+            contactToEdit = mainController.getContactToEdit();
+            FirstNameBox.setText(contactToEdit.getFirstName());
+            NameBox.setText(contactToEdit.getLastName());
+            MailBox.setText(contactToEdit.getMailAddress());
+            StreetAddressBox.setText(contactToEdit.getAddress().getStreetAddress());
+            ZipCodeBox.setText(contactToEdit.getAddress().getZipCode());
+            CityBox.setText(contactToEdit.getAddress().getCity());
+        }
     }
 
     /**
@@ -83,6 +94,7 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
+        //TODO edit berücksichtigen
         if (!IUtil.validateMailAddress(MailBox.getText())) {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
             return;

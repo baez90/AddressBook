@@ -68,7 +68,6 @@ public class TestBlContacts extends TestCase {
      * Testet die createContactInDB() und die getContactsFromDB() Methoden
      */
     public void testBLCreateGetContacts() {
-        //TODO Rufnummern berücksichtigen
         IBlContacts createBl = new BlContacts();
         createBl.setDbPath(testPath + "CreateGet.db");
         createBl.initDB();
