@@ -70,7 +70,7 @@ public class SaveEncryptedController {
         if (file != null) {
             if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {
                 EncryptedSavePathBox.setText(file.getAbsolutePath());
-                Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showConfirm();
+                Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showInformation();
             }
 
         }

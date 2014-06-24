@@ -63,6 +63,9 @@ public class MainController {
      * Spalte für das Geburtsdatum
      */
     public TableColumn BirthdayColumn;
+    public TableColumn StreetAddressColumn;
+    public TableColumn ZipCodeColumn;
+    public TableColumn CityColumn;
     /**
      * VBox für die Telefnummer-Spalten
      */
@@ -86,6 +89,11 @@ public class MainController {
         LastNameColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("LastName"));
         EmailAddressColumn.setCellValueFactory(new PropertyValueFactory<IContact, String>("MailAddress"));
         BirthdayColumn.setCellValueFactory(new PropertyValueFactory<IContact, LocalDate>("BirthDate"));
+        /* TODO CellFactory für Addresse
+        StreetAddressColumn.setCellFactory(new PropertyValueFactory<IContact, String>("StreetAddress"));
+        ZipCodeColumn.setCellFactory(new PropertyValueFactory<IContact, String>("ZipCode"));
+        CityColumn.setCellFactory(new PropertyValueFactory<IContact, String>("City"));*/
+
         /*
         OberserableList wrapped die contactList für die Anzeige in der Tabelle
          */

@@ -93,6 +93,11 @@ public class Contact implements IContact {
         return ContactID;
     }
 
+    @Override
+    public void setContactID(int id) {
+        ContactID = id;
+    }
+
     /**
      * Standard-Getter für FirstName
      *

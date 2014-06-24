@@ -3,6 +3,7 @@ package ViewController;
 import Interfaces.IAddress;
 import Interfaces.IContact;
 import Interfaces.IContactList;
+import Interfaces.IUtil;
 import Model.Address;
 import Model.Contact;
 import Model.ContactNumberType;
@@ -82,7 +83,10 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
-        //TODO Email-Adresse validiren auf Format
+        if (!IUtil.validateMailAddress(MailBox.getText())) {
+            Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
+            return;
+        }
         IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
         newContact.setAddress(newAddress);

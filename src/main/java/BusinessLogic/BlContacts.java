@@ -1,9 +1,6 @@
 package BusinessLogic;
 
-import Interfaces.IBlContacts;
-import Interfaces.IContact;
-import Interfaces.IContactNumber;
-import Interfaces.IErrorLog;
+import Interfaces.*;
 import Model.Address;
 import Model.Contact;
 import Model.ContactList;
@@ -65,7 +62,7 @@ public class BlContacts implements IBlContacts {
             File databaseFile = new File(DbPath);
             try {
                 if (databaseFile.createNewFile()) {
-                    IErrorLog.saveError("BlContacts", "Fehler beim ERstellen des Datenbankfiles", "");
+                    IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", "");
                     return false;
                 }
 
@@ -115,39 +112,40 @@ public class BlContacts implements IBlContacts {
      *
      * @param contact Kontakt welcher geupdatet werden soll
      * @return Erfolgs-Code
+     * -1 bei Verbindungsfehler zur DB
+     * 0 bei SQL-Fehler
+     * 1 bei Erfolg
      */
     @Override
     public int updateContactInDB(IContact contact) {
-        //TODO Rufnummern berücksichtigen
-        String city = contact.getAddress().getCity();
-        String firstName = contact.getFirstName();
-        String lastName = contact.getLastName();
-        String mailAdress = contact.getMailAddress();
-        String zipCode = contact.getAddress().getZipCode();
-        LocalDate date = contact.getBirthDate();
+
+        if (!prepareConnection()) {
+            return -1;
+        }
         String houseNumber = contact.getAddress().getStreetAddress();
-        String street = extractStreet(contact.getAddress().getStreetAddress());
-        houseNumber = houseNumber.substring(street.length(), houseNumber.length());
+        String street = IUtil.extractStreet(contact.getAddress().getStreetAddress());
+        houseNumber = houseNumber.substring(street.length(), houseNumber.length()).trim();
 
-      /*  String query = "Update Contacts Set FirstName = '" + firstName + "',LastName = '" +
-                       lastName + "',MailAdress = '" + mailAdress + "',Street = '" +
-                       street + "',HouseNumber = '" + houseNumber + "',ZipCode = " +
-                       zipCode + "',City = '" + city + "',Birthdate = '" + date + "'" +
-                       "where ContactID = " + contact.getContactID();*/ // maybe useful ;)
+        try {
+            PreparedStatement updateStmt = connection.prepareStatement("UPDATE Contacts SET FirstName = ?, LastName = ?, MailAddress = ?, Street = ?, HouseNumber = ?, ZipCode = ?, City = ?, BirthDate = ? WHERE ContactID = ?;");
+            updateStmt.setString(1, contact.getFirstName());
+            updateStmt.setString(2, contact.getLastName());
+            updateStmt.setString(3, contact.getMailAddress());
+            updateStmt.setString(4, street);
+            updateStmt.setString(5, houseNumber);
+            updateStmt.setString(6, contact.getAddress().getZipCode());
+            updateStmt.setString(7, contact.getAddress().getCity());
+            updateStmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+            updateStmt.setInt(9, contact.getContactID());
 
-             /*  String query = String.format("Update Contacts Set FirstName = '%s',LastName = '%s',MailAddress = '%s'," +
-                "Street = '%s',HouseNumber = '%s',ZipCode = '%s',City = '%s'" +
-                "where ContactID = %d"
-                , firstName, lastName, mailAdress, street, houseNumber, zipCode, city,(int)contact.getContactID());
-                */
-        String query = String.format("Update Contacts Set FirstName = '%s',LastName = '%s',MailAddress = '%s'," +
-                "Street = '%s',HouseNumber = '%s',ZipCode = '%s',City = '%s'" +
-                "where LastName = '%s'"
-                , firstName, lastName, mailAdress, street, houseNumber, zipCode, city, lastName);
+            updateStmt.executeUpdate();
 
-
-        ExecuteQuery(query);
-
+            updateStmt.close();
+            connection.close();
+            return 1;
+        } catch (SQLException e) {
+            IErrorLog.saveError("BlContacts", "Fehler beim Update eines Kontakts", e.toString());
+        }
         return 0;
     }
 
@@ -208,7 +206,7 @@ public class BlContacts implements IBlContacts {
         try {
             if (!ContactExistsInDatabase(contact)) {
                 String houseNumber = contact.getAddress().getStreetAddress();
-                String street = extractStreet(contact.getAddress().getStreetAddress());
+                String street = IUtil.extractStreet(contact.getAddress().getStreetAddress());
                 houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
                 if (!prepareConnection()) {
@@ -218,7 +216,7 @@ public class BlContacts implements IBlContacts {
                 PreparedStatement phoneStmt = connection.prepareStatement("INSERT INTO CONTACTSNUMBERS (ContactID, Number, NumberType) VALUES (?,?,?);");
                 contactStmt.setString(1, contact.getFirstName());
                 contactStmt.setString(2, contact.getLastName());
-                contactStmt.setString(3, contact.getMailAddress());
+                contactStmt.setString(3, contact.getMailAddress().toLowerCase());
                 contactStmt.setString(4, street);
                 contactStmt.setString(5, houseNumber);
                 contactStmt.setString(6, contact.getAddress().getZipCode());
@@ -257,7 +255,7 @@ public class BlContacts implements IBlContacts {
             IErrorLog.saveError("BLContacts", "Fehler bei Create Contact", e.toString());
             return -1;
         }
-        return 1;
+        return getContactID(contact);
     }
 
     /**
@@ -328,27 +326,6 @@ public class BlContacts implements IBlContacts {
     }
 
     /**
-     * Führt eine beliebige Query aus
-     *
-     * @param query SQL-Query welche ausgeführt werden soll
-     */
-    private void ExecuteQuery(String query) {
-        Statement stmt;
-        try {
-            prepareConnection();
-            stmt = connection.createStatement();
-            stmt.executeQuery(query);
-            stmt.close();
-            connection.close();
-        } catch (SQLException e) {
-            IErrorLog.saveError("BLContacts", "Fehler in SQL", e.toString());
-        } catch (Exception e) {
-            IErrorLog.saveError("BLContacts", "Unbekannter Fehler aufgetreten", e.toString());
-        }
-
-    }
-
-    /**
      * initialisiert das Connection-Objekt
      *
      * @return boolsches Ergebnis ob Connection erfolgreich angelegt werden konnte
@@ -368,24 +345,6 @@ public class BlContacts implements IBlContacts {
             IErrorLog.saveError("BlContacts", "Fehler beim Herstellen der Verbindung", e.toString());
         }
         return false;
-    }
-
-    /**
-     * Extrahiert den Straßennamen aus StreetAddress
-     *
-     * @param streetAddress StreetAddress aus welcher der Stra0enname extrahiert werden soll
-     * @return Straßennamen als String
-     */
-    private String extractStreet(String streetAddress) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < streetAddress.length(); i++) {
-            if (Character.isLetter(streetAddress.charAt(i))) {
-                sb.append(streetAddress.charAt(i));
-            } else
-                break;
-        }
-
-        return sb.toString();
     }
 
     /**
@@ -423,6 +382,7 @@ public class BlContacts implements IBlContacts {
 
     /**
      * Prüft ob die Datenbank alle Tabellen enthält
+     *
      * @return boolsches Ergebnis ob alle benötigten Tabellen vorhanden sind
      */
     private boolean dbIsValid() {
@@ -442,8 +402,9 @@ public class BlContacts implements IBlContacts {
                 }
             }
             connection.close();
+            metaResult.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("BlContacts", "Fehler bei dbValid", e.toString());
         }
         return (contactsTableExist & contactsNumbersTableExist);
     }

@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10" prefHeight="547.0" prefWidth="868.0" vgap="10" xmlns="http://javafx.com/javafx/8"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.MainController">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" prefHeight="547.0" prefWidth="868.0"
+          vgap="10" xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.MainController">
     <columnConstraints>
         <ColumnConstraints/>
     </columnConstraints>
@@ -13,7 +13,7 @@
         <RowConstraints/>
     </rowConstraints>
     <children>
-        <BorderPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0">
+        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
             <top>
                 <MenuBar BorderPane.alignment="CENTER">
                     <menus>
@@ -41,7 +41,7 @@
                                 </MenuItem>
                             </items>
                         </Menu>
-                        <Menu disable="true" mnemonicParsing="false" text="Kontakte" fx:id="ContactMenu">
+                        <Menu fx:id="ContactMenu" disable="true" mnemonicParsing="false" text="Kontakte">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#CreateContactClick" text="Neuer Kontakt">
                                     <accelerator>
@@ -108,10 +108,10 @@
                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="30.0"
                               spacing="10.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#SearchButtonClick" prefWidth="100.0"
-                                        text="Suche" fx:id="SearchButton"/>
-                                <TextField maxWidth="1.7976931348623157E308" onKeyPressed="#SearchBoxKeyDown"
-                                           prefWidth="450.0" fx:id="SearchBox">
+                                <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#SearchButtonClick"
+                                        prefWidth="100.0" text="Suche"/>
+                                <TextField fx:id="SearchBox" maxWidth="1.7976931348623157E308"
+                                           onKeyPressed="#SearchBoxKeyDown" prefWidth="450.0">
                                     <HBox.margin>
                                         <Insets right="10.0"/>
                                     </HBox.margin>
@@ -121,28 +121,28 @@
                                 <Insets bottom="5.0" left="10.0" top="5.0"/>
                             </padding>
                         </HBox>
-                        <HBox VBox.vgrow="ALWAYS" prefHeight="483.0" prefWidth="346.0">
+                        <HBox prefHeight="483.0" prefWidth="346.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <TableView HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefHeight="483.0"
-                                           prefWidth="646.0" fx:id="ContactTable">
+                                <TableView fx:id="ContactTable" maxWidth="1.7976931348623157E308" prefHeight="483.0"
+                                           prefWidth="646.0" HBox.hgrow="ALWAYS">
                                     <columns>
-                                        <TableColumn editable="false" prefWidth="96.0" text="Vorname"
-                                                     fx:id="FirstNameColumn"/>
-                                        <TableColumn editable="false" prefWidth="100.0" text="Nachname"
-                                                     fx:id="LastNameColumn"/>
-                                        <TableColumn editable="false" prefWidth="89.0" text="Email"
-                                                     fx:id="EmailAddressColumn"/>
-                                        <TableColumn editable="false" prefWidth="110.0" text="Geburtstag"
-                                                     fx:id="BirthdayColumn"/>
-                                        <TableColumn prefWidth="90.0" text="Straße"/>
-                                        <TableColumn prefWidth="63.0" text="PLZ"/>
-                                        <TableColumn prefWidth="101.0" text="Ort"/>
+                                        <TableColumn fx:id="FirstNameColumn" editable="false" prefWidth="96.0"
+                                                     text="Vorname"/>
+                                        <TableColumn fx:id="LastNameColumn" editable="false" prefWidth="100.0"
+                                                     text="Nachname"/>
+                                        <TableColumn fx:id="EmailAddressColumn" editable="false" prefWidth="89.0"
+                                                     text="Email"/>
+                                        <TableColumn fx:id="BirthdayColumn" editable="false" prefWidth="110.0"
+                                                     text="Geburtstag"/>
+                                        <TableColumn fx:id="StreetAddressColumn" prefWidth="90.0" text="Straße"/>
+                                        <TableColumn fx:id="ZipCodeColumn" prefWidth="63.0" text="PLZ"/>
+                                        <TableColumn fx:id="CityColumn" prefWidth="101.0" text="Ort"/>
                                     </columns>
                                     <HBox.margin>
                                         <Insets/>
                                     </HBox.margin>
                                 </TableView>
-                                <TableView HBox.hgrow="ALWAYS" maxWidth="400.0" prefHeight="483.0" prefWidth="200.0">
+                                <TableView maxWidth="400.0" prefHeight="483.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                     <columns>
                                         <TableColumn editable="false" prefWidth="200.0" text="Telefonnummern">
                                             <columns>

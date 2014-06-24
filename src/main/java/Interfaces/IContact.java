@@ -20,6 +20,8 @@ public interface IContact extends Comparable<IContact> {
      */
     public int getContactID();
 
+    public void setContactID(int id);
+
     /**
      * Standard-Getter für Nachname des Kontakts
      *

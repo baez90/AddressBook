@@ -1,5 +1,6 @@
 import BusinessLogic.BlContacts;
 import Interfaces.IBlContacts;
+import Interfaces.IContact;
 import Interfaces.IContactList;
 import Interfaces.IErrorLog;
 import Model.Address;
@@ -21,10 +22,11 @@ public class TestBlContacts extends TestCase {
      */
     private static Logger logger = Logger.getLogger(IBlContacts.class.getName());
     private IContactList contactList = new ContactList();
-    private String testPath = System.getProperty("user.home") + System.getProperty("file.separator") + "test.db";
-    private IBlContacts testBl = new BlContacts();
+    private String testPath = System.getProperty("user.home") + System.getProperty("file.separator");
 
-
+    /**
+     * Füllt eine Liste von Kontakten für den Test
+     */
     public void setUp() {
         Contact contact = new Contact("Test", "User", "test@mail.de", LocalDate.now());
         Address adress = new Address();
@@ -55,27 +57,77 @@ public class TestBlContacts extends TestCase {
         contactList.add(contact1);
         contactList.add(contact2);
         contactList.add(contact3);
-
-
-        testBl.setDbPath(testPath);
-        testBl.initDB();
     }
 
-
+    /**
+     * Testet die createContactInDB() und die getContactsFromDB() Methoden
+     */
     public void testBLCreateGetContacts() {
+        IBlContacts createBl = new BlContacts();
+        createBl.setDbPath(testPath + "CreateGet.db");
+        createBl.initDB();
         try {
-            contactList.forEach(testBl::createContactInDB);
-            IContactList testList = testBl.getContactsFromDB();
+            contactList.forEach(createBl::createContactInDB);
+            IContactList testList = createBl.getContactsFromDB();
             assertEquals(contactList.size(), testList.size());
             logger.info(String.valueOf(testList.size()) + " Kontakte in Datenbank");
         } catch (Exception e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Lesen aller kontakte", e.toString());
         }
-        if (!new File(testPath).delete()) {
-            fail();
-            logger.info("Fehler beim löschen der TempDB");
-        }
+        deleteTempDb(testPath + "CreateGet.db");
 
+    }
+
+    /**
+     * Testet die removeContactInDB() und die getContactsFromDB() Methoden
+     */
+    public void testRemoveGetContacts() {
+        IBlContacts removeBl = new BlContacts();
+        removeBl.setDbPath(testPath + "RemoveGet.db");
+        removeBl.initDB();
+        removeBl.removeContactInDB(contactList.get(0));
+        IContactList resultList = removeBl.getContactsFromDB();
+        assertTrue(!resultList.contains(contactList.get(0)));
+        logger.info("RemovegetContacts erfolgreich getestet");
+        deleteTempDb(testPath + "RemoveGet.db");
+    }
+
+    /**
+     * Testet die updateContactInDB() und die getContactsFromDB() Methoden
+     */
+    public void testUpdateContacts() {
+        IBlContacts updateBl = new BlContacts();
+        IContactList resultList;
+        updateBl.setDbPath(testPath + "UpdateContacts.db");
+        updateBl.initDB();
+        boolean updateSuccess = false;
+        IContact testContact = new Contact("Ted", "Tester", "ted.tester@test.com", LocalDate.now());
+        testContact.setContactID(updateBl.createContactInDB(testContact));
+
+        testContact.setFirstName("Teddy");
+        updateBl.updateContactInDB(testContact);
+
+        resultList = updateBl.getContactsFromDB();
+        for (IContact c : resultList) {
+            if (c.getFirstName().equals("Teddy")) {
+                updateSuccess = true;
+            }
+        }
+        assertTrue(updateSuccess);
+        logger.info("updateContacts erfolgreich getestet");
+        deleteTempDb(testPath + "UpdateContacts.db");
+    }
+
+    /**
+     * Hilfsmethode zum ablöschen der diversten TempDBs
+     *
+     * @param path Pfad zur TempDB welche gelöscht werden soll
+     */
+    private void deleteTempDb(String path) {
+        if (!new File(path).delete()) {
+            fail();
+            logger.info("Fehler beim löschen der TempDB " + path);
+        }
     }
 }
 
