@@ -21,12 +21,22 @@ public class Address implements IAddress {
      */
     private StringProperty City;
 
+    /**
+     * Standard-Konstruktor
+     */
     public Address() {
         StreetAddress = new SimpleStringProperty("");
         ZipCode = new SimpleStringProperty("");
         City = new SimpleStringProperty("");
     }
 
+    /**
+     * Konstruktor mit voller Initialisierung
+     *
+     * @param streetAddress Straße und Hausnummer als String
+     * @param zipCode       Postleitzahl als String
+     * @param city          Wohnort als String
+     */
     public Address(String streetAddress, String zipCode, String city) {
         StreetAddress = new SimpleStringProperty(streetAddress);
         ZipCode = new SimpleStringProperty(zipCode);
