@@ -90,6 +90,10 @@ public class MainController {
      */
     private IContactList contactList = new ContactList();
     /**
+     * Wrapper um die contactList
+     */
+    private ObservableList<IContact> displayList = FXCollections.observableList(contactList);
+    /**
      * Zwischenspeicher für den Edit
      */
     private IContact contactToEdit = null;
@@ -127,10 +131,8 @@ public class MainController {
                 }
             }
         });
-        /*
-        OberserableList wrapped die contactList für die Anzeige in der Tabelle
-         */
-        ObservableList<IContact> displayList = FXCollections.observableList(contactList);
+        displayList.clear();
+        displayList.addAll(contactList);
         ContactTable.setItems(displayList);
 
         ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> contactToEdit = newValue);
@@ -143,11 +145,8 @@ public class MainController {
      */
     public void updateContactTable(IContactList contactList) {
         if (contactList.size() > 1) {
-            /*
-        OberserableList wrapped die contactList für die Anzeige in der Tabelle
-         */
-            ObservableList<IContact> displayList = FXCollections.observableList(contactList);
-            ContactTable.setItems(displayList);
+            displayList.clear();
+            displayList.addAll(contactList);
         }
 
     }

@@ -61,7 +61,7 @@ public class CreateEditController {
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
-    private IContact contactToEdit;
+    private IContact contactToEdit = null;
     /**
      * MainController für den Zugriff auf die BlContacts, ContactList, ContactTable usw
      */
@@ -94,7 +94,6 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
-        //TODO edit berücksichtigen
         if (!IUtil.validateMailAddress(MailBox.getText())) {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
             return;
@@ -102,18 +101,24 @@ public class CreateEditController {
         IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
         newContact.setAddress(newAddress);
-        newContact.setContactID(mainController.getBlContacts().createContactInDB(newContact));
-        switch (newContact.getContactID()) {
-            case 0:
-                Dialogs.create().title("Info").masthead("Kontakt bereits vorhanden").message("Ein Kontakt mit dem selben Namen ist bereits vorhanden. Dieser Kontakt wurde geupdated.").showInformation();
-                break;
-            case -1:
-                Dialogs.create().title("Info").masthead("Fehler aufgetreten").message("Beim anlegen des Kontakts ist ein Fehler aufgetreten.").showInformation();
-                break;
-            default:
-                contactList.add(newContact);
+        if (contactToEdit != null) {
+            newContact.setContactID(contactToEdit.getContactID());
+            mainController.getBlContacts().updateContactInDB(newContact);
+            contactList.remove(contactToEdit);
+            contactList.add(newContact);
+        } else {
+            newContact.setContactID(mainController.getBlContacts().createContactInDB(newContact));
+            switch (newContact.getContactID()) {
+                case 0:
+                    Dialogs.create().title("Info").masthead("Kontakt bereits vorhanden").message("Ein Kontakt mit dem selben Namen ist bereits vorhanden. Dieser Kontakt wurde geupdated.").showInformation();
+                    break;
+                case -1:
+                    Dialogs.create().title("Info").masthead("Fehler aufgetreten").message("Beim anlegen des Kontakts ist ein Fehler aufgetreten.").showInformation();
+                    break;
+                default:
+                    contactList.add(newContact);
+            }
         }
-
 
         mainController.updateContactTable(contactList);
         closeModal(actionEvent);
