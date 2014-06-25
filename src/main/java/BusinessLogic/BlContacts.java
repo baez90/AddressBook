@@ -195,7 +195,7 @@ public class BlContacts implements IBlContacts {
      * @return Fehlercode/ID des neuen Kontakts
      * -1 Fehler aufgetreten
      * 0 Kontakt bereits aufgetreten, wird geupdated
-     * >1 Kontakt erstellt
+     * größer 1 Kontakt erstellt
      */
     @Override
     public int createContactInDB(IContact contact) {
