@@ -47,6 +47,17 @@ public class Contact implements IContact {
      */
     private IContactNumberList ContactNumbers;
 
+    public Contact() {
+        ContactID = 0;
+        FirstName = new SimpleStringProperty("");
+        LastName = new SimpleStringProperty("");
+        MailAddress = new SimpleStringProperty("");
+        BirthDate = new SimpleObjectProperty<>(LocalDate.now());
+        ContactNumbers = new ContactNumberList();
+        Address = new Address();
+
+    }
+
     /**
      * Konstruktor für CreateContact
      * kann direkt mit allen Attributen befüllt werden

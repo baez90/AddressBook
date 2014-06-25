@@ -1,21 +1,26 @@
 package ViewController;
 
-import Interfaces.IAddress;
-import Interfaces.IContact;
-import Interfaces.IContactList;
-import Interfaces.IUtil;
+import Interfaces.*;
 import Model.Address;
 import Model.Contact;
+import Model.ContactNumberList;
 import Model.ContactNumberType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -59,18 +64,32 @@ public class CreateEditController {
      */
     @FXML
     private DatePicker BirthdayDatePicker;
+    @FXML
+    private TableView<IContactNumber> PhoneNrTable;
+    @FXML
+    private TableColumn<IContactNumber, ContactNumberType> NrTypeColumn;
+    @FXML
+    private TableColumn<IContactNumber, String> NrColumn;
     /**
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
     /**
+     * TableView benötigt Oberservable List zum anzeigen der Elemente
+     */
+    private ObservableList<IContactNumber> displayList = FXCollections.observableList(new ContactNumberList());
+    /**
      * Zwischenspeicher für Kontakt-Objekt zum editieren
      */
-    private IContact contactToEdit = null;
+    private IContact contactToEdit = new Contact();
     /**
      * MainController für den Zugriff auf die BlContacts, ContactList, ContactTable usw
      */
     private MainController mainController;
+    /**
+     * Zwischenspeicher für den SelectionHandler zum editieren
+     */
+    private IContactNumber numberToEdit = null;
 
     /**
      * Initialisiert den Controller mit Objekten aus dem MainController
@@ -83,7 +102,6 @@ public class CreateEditController {
         mainController = con;
         BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
         if (edit) {
-            //TODO Rufnummern berücksichtigen
             contactToEdit = mainController.getSelectedContact();
             FirstNameBox.setText(contactToEdit.getFirstName());
             NameBox.setText(contactToEdit.getLastName());
@@ -93,6 +111,21 @@ public class CreateEditController {
             ZipCodeBox.setText(contactToEdit.getAddress().getZipCode());
             CityBox.setText(contactToEdit.getAddress().getCity());
         }
+        initPhoneNrTable();
+    }
+
+    private void initPhoneNrTable() {
+        NrTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
+        NrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
+        PhoneNrTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> numberToEdit = newValue);
+        displayList.addAll(contactToEdit.getContactNumbers());
+        PhoneNrTable.setItems(displayList);
+    }
+
+    public void updatePhoneNrTable() {
+        displayList.clear();
+        displayList.addAll(contactToEdit.getContactNumbers());
+        PhoneNrTable.setItems(displayList);
     }
 
     /**
@@ -101,7 +134,7 @@ public class CreateEditController {
      * @param actionEvent Event um auf den Dialog zugreifen zu können
      */
     public void SaveNewContactClick(ActionEvent actionEvent) {
-        if (contactToEdit != null) {
+        if (contactToEdit.getContactID() > 0) {
             updateContact(actionEvent);
         } else {
             saveNewContact(actionEvent);
@@ -121,23 +154,27 @@ public class CreateEditController {
      * fügt eine ChoiceBox und ein TextField in die VBox ein um zusätzliche Telefonummern eintragen zu können
      */
     public void addPhoneButtonClick() {
-        /*
-        ChoiceBox für Telefonnummer-Typ
-         */
-        ChoiceBox<ContactNumberType> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().add(ContactNumberType.Mobile);
-        choiceBox.getItems().add(ContactNumberType.Home);
-        choiceBox.getItems().add(ContactNumberType.Work);
-        choiceBox.setValue(choiceBox.getItems().get(0));
+        initCreateEditNumber(false);
+    }
 
-        //TODO implement Create/Edit PhoneNumbers
+    public void editNumberClick() {
+        if (numberToEdit != null) {
+            initCreateEditNumber(true);
+        } else {
+            Dialogs.create().title("Info").masthead("Keine Nummer ausgewählt").message("Es wurde keine Nummer zum bearbeiten markiert.").showInformation();
+        }
+
     }
 
     /**
      * entfernt unterste Telefonnummer aus der Liste
      */
     public void RemovePhoneNumber() {
-        //TODO implement
+        contactToEdit.getContactNumbers().remove(numberToEdit);
+        displayList.clear();
+        displayList.addAll(contactToEdit.getContactNumbers());
+        PhoneNrTable.setItems(displayList);
+        numberToEdit = null;
     }
 
     private void saveNewContact(ActionEvent actionEvent) {
@@ -145,14 +182,15 @@ public class CreateEditController {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
             return;
         }
-
-        IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
+        contactToEdit.setFirstName(FirstNameBox.getText());
+        contactToEdit.setLastName(NameBox.getText());
+        contactToEdit.setMailAddress(MailBox.getText());
+        contactToEdit.setBirthDate(BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
-        newContact.setAddress(newAddress);
-        //TODO implement phone numbers
+        contactToEdit.setAddress(newAddress);
 
-        newContact.setContactID(mainController.getBlContacts().createContactInDB(newContact));
-        switch (newContact.getContactID()) {
+        contactToEdit.setContactID(mainController.getBlContacts().createContactInDB(contactToEdit));
+        switch (contactToEdit.getContactID()) {
             case 0:
                 Dialogs.create().title("Info").masthead("Kontakt bereits vorhanden").message("Ein Kontakt mit dem selben Namen ist bereits vorhanden. Dieser Kontakt wurde geupdated.").showInformation();
                 break;
@@ -160,7 +198,7 @@ public class CreateEditController {
                 Dialogs.create().title("Info").masthead("Fehler aufgetreten").message("Beim anlegen des Kontakts ist ein Fehler aufgetreten.").showInformation();
                 break;
             default:
-                contactList.add(newContact);
+                contactList.add(contactToEdit);
         }
         mainController.updateContactTable(contactList);
         closeModal(actionEvent);
@@ -194,5 +232,36 @@ public class CreateEditController {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
+    }
+
+    private void initCreateEditNumber(boolean edit) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateEditNumber.fxml"));
+            Parent createEditNumberRoot = loader.load();
+            Stage createEditNumberStage = new Stage();
+
+            if (edit) {
+                createEditNumberStage.setTitle("Nummer editieren");
+            } else {
+                createEditNumberStage.setTitle("Neue Nummer erstellen");
+            }
+
+            createEditNumberStage.setScene(new Scene(createEditNumberRoot));
+            createEditNumberStage.show();
+
+            CreateEditNumberController controller = loader.getController();
+            controller.initController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public IContact getContactToEdit() {
+        return contactToEdit;
+    }
+
+    public IContactNumber getNumberToEdit() {
+        return numberToEdit;
     }
 }

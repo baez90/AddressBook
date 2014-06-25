@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
@@ -83,10 +82,6 @@ public class MainController {
      * Spalte für alle Mobil-Nummern eines Kontakts
      */
     public TableColumn<IContactNumber, String> NumberColumn;
-    /**
-     * VBox für die Telefnummer-Spalten
-     */
-    public VBox PhoneNrBox;
 
     /**
      * DateTimeFormatter zur Anzeige des Geburtsdatums im deutschen Format
@@ -150,7 +145,7 @@ public class MainController {
         ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedContact = newValue;
             phoneNrList.clear();
-            if (selectedContact.getContactNumbers().size() > 0) {
+            if (selectedContact != null && selectedContact.getContactNumbers().size() > 0) {
                 phoneNrList.addAll(selectedContact.getContactNumbers());
                 PhoneNrTable.setItems(phoneNrList);
             }
@@ -163,11 +158,9 @@ public class MainController {
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
     public void updateContactTable(IContactList contactList) {
-        if (contactList.size() > 0) {
-            displayList.clear();
-            displayList.addAll(contactList);
-        }
-
+        this.contactList = contactList;
+        displayList.clear();
+        displayList.addAll(contactList);
     }
 
     /**
@@ -238,12 +231,11 @@ public class MainController {
      * löscht Kontakt aus Datenbank und aus der Liste
      */
     public void deleteContactClick() {
-
         if (selectedContact != null) {
             if (blContacts.removeContactInDB(selectedContact) == 1) {
                 contactList.remove(selectedContact);
-                displayList.remove(selectedContact);
                 selectedContact = null;
+                updateContactTable(contactList);
             }
         } else {
             Dialogs.create().title("Info").masthead("Kein Eintrag markiert").message("Es wurde kein Eintrag zum löschen markiert").showInformation();
