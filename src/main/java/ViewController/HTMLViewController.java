@@ -1,6 +1,7 @@
 package ViewController;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -19,7 +20,8 @@ public class HTMLViewController {
     /**
      * WebView zur Anzeige der Hilfe oder der About-Seite
      */
-    public WebView WebViewer;
+    @FXML
+    private WebView WebViewer;
 
     /**
      * initialisiert die HelpAboutView

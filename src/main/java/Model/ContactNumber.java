@@ -1,6 +1,8 @@
 package Model;
 
 import Interfaces.IContactNumber;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -50,6 +52,11 @@ public class ContactNumber implements IContactNumber {
     @Override
     public void setType(ContactNumberType type) {
         Type = type;
+    }
+
+    @Override
+    public ObjectProperty<ContactNumberType> getTypeProperty() {
+        return new SimpleObjectProperty<>(Type);
     }
 
     /**

@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Model.ContactNumberType;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -20,6 +21,8 @@ public interface IContactNumber extends Comparable<IContactNumber> {
      * @param type neuer Typ der Nummer als ContactNumberType
      */
     public void setType(ContactNumberType type);
+
+    public ObjectProperty<ContactNumberType> getTypeProperty();
 
     /**
      * Standard-Getter

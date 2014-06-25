@@ -2,6 +2,7 @@ package ViewController;
 
 import Interfaces.IFileEncryption;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -18,15 +19,18 @@ public class OpenEncryptedController {
     /**
      * Passwort-Feld der GUI für die entschlüsselung der Datei
      */
-    public PasswordField PasswordBox;
+    @FXML
+    private PasswordField PasswordBox;
     /**
      * TextField in welche der Pfad zur Quelldatei zwischengespeichert wird
      */
-    public TextField sourcePathBox;
+    @FXML
+    private TextField sourcePathBox;
     /**
      * TextField in welche der Pfad zur Ziel-Datei zwischengespeicher wird
      */
-    public TextField targetPathBox;
+    @FXML
+    private TextField targetPathBox;
     private MainController mainController;
 
     /**

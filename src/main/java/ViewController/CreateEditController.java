@@ -8,12 +8,11 @@ import Model.Address;
 import Model.Contact;
 import Model.ContactNumberType;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
@@ -28,39 +27,45 @@ public class CreateEditController {
     /**
      * TextField für Vorname
      */
-    public TextField FirstNameBox;
+    @FXML
+    private TextField FirstNameBox;
     /**
      * TextField für Nachmame
      */
-    public TextField NameBox;
+    @FXML
+    private TextField NameBox;
     /**
      * TextField für Email-Adresse
      */
-    public TextField MailBox;
+    @FXML
+    private TextField MailBox;
     /**
      * TextField für Strasse u. Hausnummer
      */
-    public TextField StreetAddressBox;
+    @FXML
+    private TextField StreetAddressBox;
     /**
      * TextField für die PLZ
      */
-    public TextField ZipCodeBox;
+    @FXML
+    private TextField ZipCodeBox;
     /**
      * TextField für den Wohnort
      */
-    public TextField CityBox;
-    /**
-     * VBox in welcher die Telefonnummern hinzugefügt werden können
-     */
-    public VBox PhoneNumberVBox;
+    @FXML
+    private TextField CityBox;
     /**
      * Zugriff auf den DatePicker um Startdatum etwas weiter in die Vergangenheit setzen zu können
      */
-    public DatePicker BirthdayDatePicker;
+    @FXML
+    private DatePicker BirthdayDatePicker;
     /**
      * IContactList als Zwischenspeicher um Veränderungen ablegen zu können.
      */
     private IContactList contactList;
+    /**
+     * Zwischenspeicher für Kontakt-Objekt zum editieren
+     */
     private IContact contactToEdit = null;
     /**
      * MainController für den Zugriff auf die BlContacts, ContactList, ContactTable usw
@@ -70,13 +75,14 @@ public class CreateEditController {
     /**
      * Initialisiert den Controller mit Objekten aus dem MainController
      *
-     * @param con MainController-Objekt
+     * @param con  MainController-Objekt
+     * @param edit boolean ob Edit oder Create
      */
-    public void initController(MainController con) {
+    public void initController(MainController con, boolean edit) {
         contactList = con.getContactList();
         mainController = con;
         BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
-        if (mainController.getSelectedContact() != null) {
+        if (edit) {
             //TODO Rufnummern berücksichtigen
             contactToEdit = mainController.getSelectedContact();
             FirstNameBox.setText(contactToEdit.getFirstName());
@@ -124,24 +130,14 @@ public class CreateEditController {
         choiceBox.getItems().add(ContactNumberType.Work);
         choiceBox.setValue(choiceBox.getItems().get(0));
 
-        /*
-        HBox in welche das TextField und die ChoiceBox gefüllt werden
-         */
-        HBox tempBox = new HBox();
-        tempBox.getChildren().add(choiceBox);
-        TextField nummerText = new TextField();
-        tempBox.getChildren().add(nummerText);
-        tempBox.setSpacing(10);
-
-        PhoneNumberVBox.getChildren().add(tempBox);
+        //TODO implement Create/Edit PhoneNumbers
     }
 
     /**
      * entfernt unterste Telefonnummer aus der Liste
      */
     public void RemovePhoneNumber() {
-        int PhoneNumberCount = PhoneNumberVBox.getChildren().size();
-        PhoneNumberVBox.getChildren().remove(PhoneNumberCount - 1);
+        //TODO implement
     }
 
     private void saveNewContact(ActionEvent actionEvent) {
@@ -149,9 +145,12 @@ public class CreateEditController {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
             return;
         }
+
         IContact newContact = new Contact(FirstNameBox.getText(), NameBox.getText(), MailBox.getText().toLowerCase(), BirthdayDatePicker.getValue());
         IAddress newAddress = new Address(StreetAddressBox.getText(), ZipCodeBox.getText(), CityBox.getText());
         newContact.setAddress(newAddress);
+        //TODO implement phone numbers
+
         newContact.setContactID(mainController.getBlContacts().createContactInDB(newContact));
         switch (newContact.getContactID()) {
             case 0:

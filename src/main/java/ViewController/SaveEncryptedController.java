@@ -3,6 +3,7 @@ package ViewController;
 import Interfaces.IBlContacts;
 import Interfaces.IFileEncryption;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -21,19 +22,26 @@ public class SaveEncryptedController {
      * Button im Verschlüsselt-Speichern Dialog,
      * Button-Text wird verändert nach erfolgreichem speichern
      */
-    public Button SaveEncryptedCancelButton;
+    @FXML
+    private Button SaveEncryptedCancelButton;
     /**
      * PasswordField zum eingeben des Verschlüsselungspassworts
      */
-    public PasswordField PasswordBox;
+    @FXML
+    private PasswordField PasswordBox;
     /**
      * PasswordField zum wiederholen des Passworts um Schreibweise zu kontrollieren
      */
-    public PasswordField PasswordRepeatBox;
+    @FXML
+    private PasswordField PasswordRepeatBox;
     /**
      * TextField zum anzeigen des Speicherpfads nach dem Speichern zur Übersichtlichkeit
      */
-    public TextField EncryptedSavePathBox;
+    @FXML
+    private TextField EncryptedSavePathBox;
+    /**
+     * Zwischenspeicher für IBlContacts für den Zugriff auf den Pfad zur DB-Datei
+     */
     private IBlContacts blContacts;
 
     /**
@@ -74,7 +82,10 @@ public class SaveEncryptedController {
         stage.close();
     }
 
-    public void setTargetPathClick(ActionEvent actionEvent) {
+    /**
+     * Setzt Pfad zur zu speichernden verschlüsselten Datei
+     */
+    public void setTargetPathClick() {
         /*
         FileChooser öffnet einen Dialog zum auswählen einer Datei
          */

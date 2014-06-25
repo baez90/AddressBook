@@ -34,6 +34,7 @@ public class MainController {
      * Tabelle zum anzeigen der Kontakte
      */
     public TableView<IContact> ContactTable;
+    public TableView<IContactNumber> PhoneNrTable;
     /**
      * Button zum suchen von Kontakten
      */
@@ -77,15 +78,11 @@ public class MainController {
     /**
      * Spalte für alle Festnetz-Nummern eines Kontakts
      */
-    public TableColumn<IContactNumber, String> HomeNrColumn;
+    public TableColumn<IContactNumber, ContactNumberType> NumberTypeColumn;
     /**
      * Spalte für alle Mobil-Nummern eines Kontakts
      */
-    public TableColumn<IContactNumber, String> MobileNrColumn;
-    /**
-     * Spalte für alle Arbeits-Nummern eines Kontakts
-     */
-    public TableColumn<IContactNumber, String> WorkNrColumn;
+    public TableColumn<IContactNumber, String> NumberColumn;
     /**
      * VBox für die Telefnummer-Spalten
      */
@@ -104,9 +101,7 @@ public class MainController {
      * Wrapper um die contactList
      */
     private ObservableList<IContact> displayList = FXCollections.observableList(contactList);
-    private ObservableList<IContactNumber> homeNrList = FXCollections.observableList(new ContactNumberList());
-    private ObservableList<IContactNumber> mobileNrList = FXCollections.observableList(new ContactNumberList());
-    private ObservableList<IContactNumber> workNrList = FXCollections.observableList(new ContactNumberList());
+    private ObservableList<IContactNumber> phoneNrList = FXCollections.observableList(new ContactNumberList());
     /**
      * Zwischenspeicher für den Edit
      */
@@ -127,9 +122,8 @@ public class MainController {
         StreetAddressColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getStreetAddressProperty());
         ZipCodeColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getZipCodeProperty());
         CityColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getCityProperty());
-        HomeNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
-        MobileNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
-        WorkNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
+        NumberTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
+        NumberColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
 
         /*
         Geburtstage nach deutschem Format anzeigen
@@ -151,15 +145,15 @@ public class MainController {
         displayList.clear();
         displayList.addAll(contactList);
         ContactTable.setItems(displayList);
+        PhoneNrTable.setItems(phoneNrList);
 
         ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedContact = newValue;
-            homeNrList.clear();
-            homeNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Home));
-            mobileNrList.clear();
-            mobileNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Mobile));
-            workNrList.clear();
-            workNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Work));
+            phoneNrList.clear();
+            if (selectedContact.getContactNumbers().size() > 0) {
+                phoneNrList.addAll(selectedContact.getContactNumbers());
+                PhoneNrTable.setItems(phoneNrList);
+            }
         });
     }
 
@@ -180,7 +174,7 @@ public class MainController {
      * Zeigt Dialog zum anlegen von neuen Kontakten an
      */
     public void CreateContactClick() {
-        initCreateEditContactView();
+        initCreateEditContactView(false);
     }
 
     /**
@@ -352,7 +346,7 @@ public class MainController {
      * initialisiert die CreateEditContactView
      * je nach Kontext wird ein Kontakt editiert oder ein neuer erstellt
      */
-    private void initCreateEditContactView() {
+    private void initCreateEditContactView(boolean edit) {
         try {
             /*
             lädt .fxml-Datei und bindet diese in eine neue Stage (Fenster)
@@ -368,7 +362,7 @@ public class MainController {
             holt Controller von View und initialisiert View anschließend
              */
             CreateEditController createEditController = loader.getController();
-            createEditController.initController(this);
+            createEditController.initController(this, edit);
         } catch (IOException e) {
             IErrorLog.saveError("MainController", "Fehler beim laden der CreateEditContactView", e.toString());
         }
@@ -492,7 +486,7 @@ public class MainController {
      */
     public void EditContactClick() {
         if (selectedContact != null) {
-            initCreateEditContactView();
+            initCreateEditContactView(true);
         } else {
             Dialogs.create().title("Info").masthead("Kein Eintrag markiert").message("Es wurde kein Eintrag zum editieren markiert").showInformation();
         }
