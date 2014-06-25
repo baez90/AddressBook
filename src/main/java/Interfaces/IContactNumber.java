@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Model.ContactNumberType;
+import javafx.beans.property.StringProperty;
 
 /**
  * Created by baez on 29.05.14.
@@ -33,6 +34,8 @@ public interface IContactNumber extends Comparable<IContactNumber> {
      * @param number neue Rufnummer als String
      */
     public void setNumber(String number);
+
+    public StringProperty getNumberProperty();
 
     public int getContactNumbersID();
 

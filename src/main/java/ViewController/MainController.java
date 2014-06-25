@@ -1,11 +1,10 @@
 package ViewController;
 
 import BusinessLogic.BlContacts;
-import Interfaces.IBlContacts;
-import Interfaces.IContact;
-import Interfaces.IContactList;
-import Interfaces.IErrorLog;
+import Interfaces.*;
 import Model.ContactList;
+import Model.ContactNumberList;
+import Model.ContactNumberType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,6 +75,18 @@ public class MainController {
      */
     public TableColumn<IContact, String> CityColumn;
     /**
+     * Spalte für alle Festnetz-Nummern eines Kontakts
+     */
+    public TableColumn<IContactNumber, String> HomeNrColumn;
+    /**
+     * Spalte für alle Mobil-Nummern eines Kontakts
+     */
+    public TableColumn<IContactNumber, String> MobileNrColumn;
+    /**
+     * Spalte für alle Arbeits-Nummern eines Kontakts
+     */
+    public TableColumn<IContactNumber, String> WorkNrColumn;
+    /**
      * VBox für die Telefnummer-Spalten
      */
     public VBox PhoneNrBox;
@@ -93,6 +104,9 @@ public class MainController {
      * Wrapper um die contactList
      */
     private ObservableList<IContact> displayList = FXCollections.observableList(contactList);
+    private ObservableList<IContactNumber> homeNrList = FXCollections.observableList(new ContactNumberList());
+    private ObservableList<IContactNumber> mobileNrList = FXCollections.observableList(new ContactNumberList());
+    private ObservableList<IContactNumber> workNrList = FXCollections.observableList(new ContactNumberList());
     /**
      * Zwischenspeicher für den Edit
      */
@@ -113,6 +127,9 @@ public class MainController {
         StreetAddressColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getStreetAddressProperty());
         ZipCodeColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getZipCodeProperty());
         CityColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().getCityProperty());
+        HomeNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
+        MobileNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
+        WorkNrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
 
         /*
         Geburtstage nach deutschem Format anzeigen
@@ -135,7 +152,15 @@ public class MainController {
         displayList.addAll(contactList);
         ContactTable.setItems(displayList);
 
-        ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedContact = newValue);
+        ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectedContact = newValue;
+            homeNrList.clear();
+            homeNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Home));
+            mobileNrList.clear();
+            mobileNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Mobile));
+            workNrList.clear();
+            workNrList.addAll(selectedContact.getContactNumbers().getNumbersByType(ContactNumberType.Work));
+        });
     }
 
     /**

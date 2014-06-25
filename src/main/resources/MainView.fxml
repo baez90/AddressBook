@@ -147,9 +147,9 @@
                                     <columns>
                                         <TableColumn editable="false" prefWidth="200.0" text="Telefonnummern">
                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Home"/>
-                                                <TableColumn prefWidth="62.0" text="Mobil"/>
-                                                <TableColumn prefWidth="88.0" text="Arbeit"/>
+                                                <TableColumn prefWidth="75.0" text="Home" fx:id="HomeNrColumn"/>
+                                                <TableColumn prefWidth="62.0" text="Mobil" fx:id="MobileNrColumn"/>
+                                                <TableColumn prefWidth="88.0" text="Arbeit" fx:id="WorkNrColumn"/>
                                             </columns>
                                         </TableColumn>
                                     </columns>

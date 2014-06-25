@@ -1,6 +1,8 @@
 package Model;
 
 import Interfaces.IContactNumber;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Repräsentiert Rufnummer eines Kontakts
@@ -10,7 +12,7 @@ import Interfaces.IContactNumber;
 public class ContactNumber implements IContactNumber {
     private int ContactNumbersID;
     private ContactNumberType Type;
-    private String Number;
+    private StringProperty Number;
 
     /**
      * Standard-Konstruktor
@@ -21,13 +23,13 @@ public class ContactNumber implements IContactNumber {
     public ContactNumber(ContactNumberType type, String number) {
         ContactNumbersID = 0;
         Type = type;
-        Number = number;
+        Number = new SimpleStringProperty(number);
     }
 
     public ContactNumber(int id, ContactNumberType type, String number) {
         ContactNumbersID = id;
         Type = type;
-        Number = number;
+        Number = new SimpleStringProperty(number);
     }
 
     /**
@@ -57,7 +59,7 @@ public class ContactNumber implements IContactNumber {
      */
     @Override
     public String getNumber() {
-        return Number;
+        return Number.getValue();
     }
 
     /**
@@ -67,7 +69,12 @@ public class ContactNumber implements IContactNumber {
      */
     @Override
     public void setNumber(String number) {
-        Number = number;
+        Number.setValue(number);
+    }
+
+    @Override
+    public StringProperty getNumberProperty() {
+        return Number;
     }
 
     @Override
