@@ -117,7 +117,7 @@ public class ContactNumber implements IContactNumber {
 
         ContactNumber that = (ContactNumber) o;
 
-        if (!Number.equals(that.Number)) return false;
+        if (!Number.getValue().equals(that.Number.getValue())) return false;
         if (Type != that.Type) return false;
 
         return true;
