@@ -259,15 +259,6 @@ public class Contact implements IContact {
     }
 
     /**
-     * Notwendige Methode zur Anzeige in der Tabelle
-     *
-     * @return BirthDay-Property
-     */
-    public ObjectProperty<LocalDate> birthdayProperty() {
-        return BirthDate;
-    }
-
-    /**
      * Obligatorische Implementierung für das Compare-Interface
      *
      * @param o IContact-Objekt welches verglichen werden soll
@@ -307,6 +298,11 @@ public class Contact implements IContact {
 
     }
 
+    /**
+     * Standard toString(), benötigt zum Beispiel bei der Geburtstags-Notification
+     *
+     * @return Vor- + Nachnamen des Kontakts als String
+     */
     @Override
     public String toString() {
 

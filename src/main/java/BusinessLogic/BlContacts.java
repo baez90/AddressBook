@@ -22,10 +22,6 @@ public class BlContacts implements IBlContacts {
      * Pfad für Verbindung zur DB
      */
     private String ConnectionPath;
-    /**
-     * Connection-Objekt welches zur Laufzeit initialisiert wird
-     */
-    private Connection connection = null;
 
     /**
      * Standard-Getter für DbPath
@@ -69,8 +65,9 @@ public class BlContacts implements IBlContacts {
                 return false;
             }
             Statement stmt;
+            Connection connection = prepareConnection();
             try {
-                if (!prepareConnection()) {
+                if (connection == null) {
                     return false;
                 }
                 stmt = connection.createStatement();
@@ -116,8 +113,8 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int updateContactInDB(IContact contact) {
-
-        if (!prepareConnection()) {
+        Connection connection = prepareConnection();
+        if (connection == null) {
             return -1;
         }
         String houseNumber = contact.getAddress().getStreetAddress();
@@ -160,7 +157,8 @@ public class BlContacts implements IBlContacts {
     @Override
     public int removeContactInDB(IContact contact) {
         ResultSet rs;
-        if (!prepareConnection()) {
+        Connection connection = prepareConnection();
+        if (connection == null) {
             return -1;
         } else if (!ContactExistsInDatabase(contact)) {
             return 0;
@@ -168,14 +166,14 @@ public class BlContacts implements IBlContacts {
         try {
             PreparedStatement contactStmt = connection.prepareStatement("DELETE FROM Contacts WHERE ContactID = ?;");
             PreparedStatement queryStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
-            PreparedStatement delStmt = connection.prepareStatement("DELETE FROM ContactsNumbers WHERE contactsnumbersid = ?;");
+            PreparedStatement delStmt = connection.prepareStatement("DELETE FROM ContactsNumbers WHERE ContactsNumbersID = ?;");
 
             contactStmt.setInt(1, contact.getContactID());
             queryStmt.setInt(1, contact.getContactID());
             contactStmt.executeUpdate();
             rs = queryStmt.executeQuery();
             while (rs.next()) {
-                delStmt.setInt(1, rs.getInt("ContactNumbersID"));
+                delStmt.setInt(1, rs.getInt("ContactsNumbersID"));
                 delStmt.executeUpdate();
             }
             rs.close();
@@ -185,7 +183,7 @@ public class BlContacts implements IBlContacts {
             connection.close();
             return 1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("BlContacts", "SQL-Fehler beim löschen aufgetreten", e.toString());
         }
         return 2;
     }
@@ -194,20 +192,21 @@ public class BlContacts implements IBlContacts {
      * Legt neuen Kontakt in der Datenbank an
      *
      * @param contact Kontakt welcher angelegt werden soll
-     * @return Fehlercode
+     * @return Fehlercode/ID des neuen Kontakts
      * -1 Fehler aufgetreten
      * 0 Kontakt bereits aufgetreten, wird geupdated
-     * 1 Kontakt erstellt
+     * >1 Kontakt erstellt
      */
     @Override
     public int createContactInDB(IContact contact) {
+        Connection connection = prepareConnection();
         try {
             if (!ContactExistsInDatabase(contact)) {
                 String houseNumber = contact.getAddress().getStreetAddress();
                 String street = IUtil.extractStreet(contact.getAddress().getStreetAddress());
                 houseNumber = houseNumber.substring(street.length(), houseNumber.length());
 
-                if (!prepareConnection()) {
+                if (connection == null) {
                     return -1;
                 }
                 PreparedStatement contactStmt = connection.prepareStatement("INSERT INTO Contacts (FirstName, LastName, MailAddress, Street, HouseNumber, ZipCode, City, BirthDate) VALUES(?,?,?,?,?,?,?,?);");
@@ -264,12 +263,13 @@ public class BlContacts implements IBlContacts {
     @Override
     public ContactList getContactsFromDB() {
         ContactList list = new ContactList();
+        Connection connection = prepareConnection();
         Statement stmt;
         PreparedStatement numberStmt;
         ResultSet contactRs;
         ResultSet numberRs = null;
         try {
-            if (!prepareConnection()) {
+            if (connection == null) {
                 return null;
             }
             stmt = connection.createStatement();
@@ -331,12 +331,15 @@ public class BlContacts implements IBlContacts {
     private boolean ContactExistsInDatabase(IContact contact) {
         PreparedStatement pStmt;
         ResultSet resultSet;
-        boolean contactExists;
+        Connection connection = prepareConnection();
+        boolean contactExists = true;
+        if (connection == null) {
+            return true;
+        }
         try {
-            prepareConnection();
-            pStmt = connection.prepareStatement("SELECT * FROM Contacts WHERE LastName LIKE ? AND FirstName LIKE ?;");
-            pStmt.setString(1, "%" + contact.getLastName() + "%");
-            pStmt.setString(2, "%" + contact.getFirstName() + "%");
+            pStmt = connection.prepareStatement("SELECT * FROM Contacts WHERE LastName = ? AND FirstName = ?;");
+            pStmt.setString(1, contact.getLastName());
+            pStmt.setString(2, contact.getFirstName());
             resultSet = pStmt.executeQuery();
             contactExists = resultSet.next();
             pStmt.close();
@@ -346,7 +349,7 @@ public class BlContacts implements IBlContacts {
         } catch (Exception e) {
             IErrorLog.saveError("BLContacts", "Fehler bei ContactExistsInDatabase", e.toString());
         }
-        return true;
+        return contactExists;
     }
 
     /**
@@ -354,7 +357,8 @@ public class BlContacts implements IBlContacts {
      *
      * @return boolsches Ergebnis ob Connection erfolgreich angelegt werden konnte
      */
-    private boolean prepareConnection() {
+    private Connection prepareConnection() {
+        Connection connection;
         try {
             /*
             Name des verwendeten Datenbank-Treibers
@@ -362,13 +366,13 @@ public class BlContacts implements IBlContacts {
             String driverName = "org.sqlite.JDBC";
             Class.forName(driverName);
             connection = DriverManager.getConnection(ConnectionPath);
-            return true;
+            return connection;
         } catch (ClassNotFoundException e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Laden des Treibers", e.toString());
         } catch (SQLException e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Herstellen der Verbindung", e.toString());
         }
-        return false;
+        return null;
     }
 
     /**
@@ -378,9 +382,10 @@ public class BlContacts implements IBlContacts {
      * @return ContactID des neu erstellten Kontakts
      */
     private int getContactID(IContact contact) {
+        Connection connection = prepareConnection();
         ResultSet rs;
         int id = 0;
-        if (!prepareConnection()) {
+        if (connection == null) {
             return -1;
         }
         try {
@@ -410,7 +415,8 @@ public class BlContacts implements IBlContacts {
      * @return boolsches Ergebnis ob alle benötigten Tabellen vorhanden sind
      */
     private boolean dbIsValid() {
-        if (!prepareConnection()) {
+        Connection connection = prepareConnection();
+        if (connection == null) {
             return false;
         }
         boolean contactsTableExist = false;

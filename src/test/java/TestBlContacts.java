@@ -90,9 +90,23 @@ public class TestBlContacts extends TestCase {
      */
     public void testRemoveGetContacts() {
         IBlContacts removeBl = new BlContacts();
+        IContactList removeContactList = new ContactList();
+        contactList.forEach(removeContactList::add);
         removeBl.setDbPath(testPath + "RemoveGet.db");
         removeBl.initDB();
-        removeBl.removeContactInDB(contactList.get(0));
+        removeContactList.forEach(c -> {
+            c.setContactID(removeBl.createContactInDB(c));
+            if (c.getContactID() < 1) {
+                logger.info("Fehler beim erstellen eines Kontakts in testRemoveGetContacts");
+                deleteTempDb(testPath + "RemoveGet.db");
+                fail();
+            }
+        });
+        if (removeBl.removeContactInDB(removeContactList.get(0)) != 1) {
+            logger.info("Kontakt konnte nicht gelöscht werden");
+            deleteTempDb(testPath + "RemoveGet.db");
+            fail();
+        }
         IContactList resultList = removeBl.getContactsFromDB();
         assertTrue(!resultList.contains(contactList.get(0)));
         logger.info("RemovegetContacts erfolgreich getestet");
@@ -132,8 +146,8 @@ public class TestBlContacts extends TestCase {
      */
     private void deleteTempDb(String path) {
         if (!new File(path).delete()) {
-            fail();
             logger.info("Fehler beim löschen der TempDB " + path);
+            fail();
         }
     }
 }

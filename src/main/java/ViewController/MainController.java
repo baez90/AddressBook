@@ -96,7 +96,7 @@ public class MainController {
     /**
      * Zwischenspeicher für den Edit
      */
-    private IContact contactToEdit = null;
+    private IContact selectedContact = null;
     /**
      * IBlContacts für den Datenbankzugriff
      */
@@ -135,7 +135,7 @@ public class MainController {
         displayList.addAll(contactList);
         ContactTable.setItems(displayList);
 
-        ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> contactToEdit = newValue);
+        ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedContact = newValue);
     }
 
     /**
@@ -220,6 +220,14 @@ public class MainController {
      */
     public void deleteContactClick() {
         //TODO Kontakt aus Liste und DB löschen, Table updaten
+        contactList.remove(selectedContact);
+        displayList.remove(selectedContact);
+        if (selectedContact != null) {
+            if (blContacts.removeContactInDB(selectedContact) == 1) {
+                selectedContact = null;
+            }
+        }
+
     }
 
     /**
@@ -306,10 +314,11 @@ public class MainController {
 
     /**
      * Getter für CreateEditController
+     *
      * @return IContact-Objekt welches editiert werden soll
      */
-    public IContact getContactToEdit() {
-        return contactToEdit;
+    public IContact getSelectedContact() {
+        return selectedContact;
     }
 
     /**
@@ -452,7 +461,7 @@ public class MainController {
 
     /**
      * Initialisiert ebenfalls nur die CreateEditContactView
-     * dadurch, dass das Objekt contactToEdit nicht null ist, wird ein Edit ausgeführt
+     * dadurch, dass das Objekt selectedContact nicht null ist, wird ein Edit ausgeführt
      */
     public void EditContactClick() {
         initCreateEditContactView();

@@ -76,9 +76,9 @@ public class CreateEditController {
         contactList = con.getContactList();
         mainController = con;
         BirthdayDatePicker.setValue(LocalDate.of(1992, 1, 1));
-        if (mainController.getContactToEdit() != null) {
+        if (mainController.getSelectedContact() != null) {
             //TODO Rufnummern berücksichtigen
-            contactToEdit = mainController.getContactToEdit();
+            contactToEdit = mainController.getSelectedContact();
             FirstNameBox.setText(contactToEdit.getFirstName());
             NameBox.setText(contactToEdit.getLastName());
             MailBox.setText(contactToEdit.getMailAddress());
