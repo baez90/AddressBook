@@ -1,19 +1,19 @@
 package Interfaces;
 
 /**
- * Created by baez on 29.05.14.
+ * @author baez
  */
 public interface IBlContacts {
     /**
      * Soll Kontakt in der Datenbank aktualisieren
-     *
+     * @param contact IContact welcher geupdatet werden soll
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
     public int updateContactInDB(IContact contact);
 
     /**
      * Entfernt Kontakt aus der Datanbank
-     *
+     * @param contact IContact welcher entfernt werden soll
      * @return int-Wert welcher verschiedene Erfolgs-Stati repäsentiert
      */
     public int removeContactInDB(IContact contact);
@@ -21,7 +21,7 @@ public interface IBlContacts {
     /**
      * erstellt Kontakt in der DB
      * sollte auch prüfen ob Kontakt bereits existiert
-     *
+     * @param contact Kontakt welcher erstellt werden soll
      * @return int-Wert welcher verschiedene Erfolgs-Stati repräsentiert
      */
     public int createContactInDB(IContact contact);
