@@ -144,7 +144,7 @@ public class MainController {
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
     public void updateContactTable(IContactList contactList) {
-        if (contactList.size() > 1) {
+        if (contactList.size() > 0) {
             displayList.clear();
             displayList.addAll(contactList);
         }
@@ -219,13 +219,15 @@ public class MainController {
      * löscht Kontakt aus Datenbank und aus der Liste
      */
     public void deleteContactClick() {
-        //TODO Kontakt aus Liste und DB löschen, Table updaten
-        contactList.remove(selectedContact);
-        displayList.remove(selectedContact);
+
         if (selectedContact != null) {
             if (blContacts.removeContactInDB(selectedContact) == 1) {
+                contactList.remove(selectedContact);
+                displayList.remove(selectedContact);
                 selectedContact = null;
             }
+        } else {
+            Dialogs.create().title("Info").masthead("Kein Eintrag markiert").message("Es wurde kein Eintrag zum löschen markiert").showInformation();
         }
 
     }
@@ -464,6 +466,10 @@ public class MainController {
      * dadurch, dass das Objekt selectedContact nicht null ist, wird ein Edit ausgeführt
      */
     public void EditContactClick() {
-        initCreateEditContactView();
+        if (selectedContact != null) {
+            initCreateEditContactView();
+        } else {
+            Dialogs.create().title("Info").masthead("Kein Eintrag markiert").message("Es wurde kein Eintrag zum editieren markiert").showInformation();
+        }
     }
 }
