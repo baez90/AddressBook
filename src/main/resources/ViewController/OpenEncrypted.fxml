@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="150.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="ViewController.OpenEncryptedController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="103.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="505.0" minWidth="10.0" prefWidth="367.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="505.0" minWidth="10.0" prefWidth="133.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <Label text="Passwort:">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+            <GridPane.margin>
+                <Insets left="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <PasswordField GridPane.columnIndex="1" fx:id="PasswordBox">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </PasswordField>
+        <Label GridPane.rowIndex="1" text="Quell-Pfad:">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+            <padding>
+                <Insets left="10.0"/>
+            </padding>
+        </Label>
+        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="sourcePathBox">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </TextField>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER_LEFT" prefHeight="100.0"
+              prefWidth="200.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#OpenAddressBookClick" text="Adressbuch öffnen">
+                    <HBox.margin>
+                        <Insets left="10.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen">
+                    <HBox.margin>
+                        <Insets left="10.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+        <Button GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER" mnemonicParsing="false"
+                onAction="#setSourcePathClick" text="Pfad festlegen">
+            <GridPane.margin>
+                <Insets left="10.0"/>
+            </GridPane.margin>
+        </Button>
+        <Button GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER" mnemonicParsing="false"
+                onAction="#setTargetPathClick" text="Pfad festlegen">
+            <GridPane.margin>
+                <Insets left="10.0"/>
+            </GridPane.margin>
+        </Button>
+        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="targetPathBox">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </TextField>
+        <Label GridPane.rowIndex="2" text="Ziel-Pfad:">
+            <GridPane.margin>
+                <Insets left="10.0"/>
+            </GridPane.margin>
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+    </children>
+</GridPane>
