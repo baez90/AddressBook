@@ -49,6 +49,7 @@ public class SaveEncryptedController {
      * Speichert das aktuelle Adressbuch verschlüsselt an einen Pfad welcher ausgewählt wird
      */
     public void SaveEncryptedClick() {
+        File file = new File(EncryptedSavePathBox.getText());
         if (blContacts.getDbPath() == null || blContacts.getDbPath().equals("")) {
             Dialogs.create().title("Warnung").masthead("Kein Adressbuch vorhanden").message("Es wurde weder ein Adressbuch geöffnet, noch eines angelegt.").showWarning();
             return;
@@ -56,23 +57,8 @@ public class SaveEncryptedController {
             Dialogs.create().title("Warnung").masthead("Passwortfehler").message("Die Passwörter stimmen nicht überein").showWarning();
             return;
         }
-        /*
-        FileChooser öffnet einen Dialog zum auswählen einer Datei
-         */
-        FileChooser chooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("crypt (*.crypt)", "*.crypt");
-        chooser.getExtensionFilters().add(extensionFilter);
-
-        /*
-        file speichert den Datei-Pfad der ausgewählten Datei
-         */
-        File file = chooser.showSaveDialog(new Stage());
-        if (file != null) {
-            if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {
-                EncryptedSavePathBox.setText(file.getAbsolutePath());
-                Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showInformation();
-            }
-
+        if (IFileEncryption.encryptFile(PasswordBox.getText(), blContacts.getDbPath(), file.getAbsolutePath())) {
+            Dialogs.create().title("Info").masthead("Erfolg").message("Adressbuch erfolgreich verschlüsselt").showInformation();
         }
         SaveEncryptedCancelButton.setText("Schließen");
     }
@@ -86,5 +72,27 @@ public class SaveEncryptedController {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
+    }
+
+    public void setTargetPathClick(ActionEvent actionEvent) {
+        /*
+        FileChooser öffnet einen Dialog zum auswählen einer Datei
+         */
+        FileChooser chooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("crypt (*.crypt)", "*.crypt");
+        chooser.getExtensionFilters().add(extensionFilter);
+
+        /*
+        file speichert den Datei-Pfad der ausgewählten Datei
+         */
+        File file = chooser.showSaveDialog(new Stage());
+        if (file != null) {
+            if (!file.getAbsolutePath().endsWith(".crypt")) {
+                EncryptedSavePathBox.setText(file.getAbsolutePath() + ".crypt");
+            } else {
+                EncryptedSavePathBox.setText(file.getAbsolutePath());
+            }
+
+        }
     }
 }

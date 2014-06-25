@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="185.0" prefWidth="600.0"
-          xmlns="http://javafx.com/javafx/8" fx:controller="ViewController.SaveEncryptedController">
+<GridPane alignment="CENTER" prefHeight="185.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewController.SaveEncryptedController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="191.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="409.0"/>
@@ -44,6 +44,7 @@
                 <Button mnemonicParsing="false" onAction="#SaveEncryptedClick" text="Speichern"/>
                 <Button mnemonicParsing="false" onAction="#CancelModalClick" text="Abbrechen"
                         fx:id="SaveEncryptedCancelButton"/>
+                <Button mnemonicParsing="false" onAction="#setTargetPathClick" text="Dateipfad festlegen"/>
             </children>
             <GridPane.margin>
                 <Insets left="10.0"/>
