@@ -6,8 +6,8 @@ import Model.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.stream.Collectors;
 
 /**
  * @author baez
@@ -121,7 +121,6 @@ public class BlContacts implements IBlContacts {
         String houseNumber = contact.getAddress().getStreetAddress();
         String street = IUtil.extractStreet(contact.getAddress().getStreetAddress());
         houseNumber = houseNumber.substring(street.length(), houseNumber.length()).trim();
-
         try {
             PreparedStatement updateStmt = connection.prepareStatement("UPDATE Contacts SET FirstName = ?, LastName = ?, MailAddress = ?, Street = ?, HouseNumber = ?, ZipCode = ?, City = ?, BirthDate = ? WHERE ContactID = ?;");
             updateStmt.setString(1, contact.getFirstName());
@@ -133,11 +132,24 @@ public class BlContacts implements IBlContacts {
             updateStmt.setString(7, contact.getAddress().getCity());
             updateStmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
             updateStmt.setInt(9, contact.getContactID());
-
             updateStmt.executeUpdate();
-
             updateStmt.close();
             connection.close();
+            IContactNumberList numberList = getContactNumbersByID(contact.getContactID());
+            /*
+            Alle Kontakte welche bereits vorhanden waren aktualisiert
+            */
+            updateContactNumbers(contact.getContactNumbers().stream().filter(numberList::contains).collect(Collectors.toCollection(ContactNumberList::new)));
+            /*
+            Alle neuen Kontakte werden hinzugefügt
+            */
+            createContactNumbers(contact.getContactNumbers().stream().filter(n -> !numberList.contains(n)).collect(Collectors.toCollection(ContactNumberList::new)), contact.getContactID());
+            /*
+            Alle Kontakte welche nicht mehr vorhanden sind gelöscht
+            */
+            if (removeContactNumbers(numberList.stream().filter(n -> !contact.getContactNumbers().contains(n)).collect(Collectors.toCollection(ContactNumberList::new)))) {
+                return 0;
+            }
             return 1;
         } catch (SQLException e) {
             IErrorLog.saveError("BlContacts", "Fehler beim Update eines Kontakts", e.toString());
@@ -157,7 +169,6 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int removeContactInDB(IContact contact) {
-        ResultSet rs;
         Connection connection = prepareConnection();
         if (connection == null) {
             return -1;
@@ -166,22 +177,13 @@ public class BlContacts implements IBlContacts {
         }
         try {
             PreparedStatement contactStmt = connection.prepareStatement("DELETE FROM Contacts WHERE ContactID = ?;");
-            PreparedStatement queryStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
-            PreparedStatement delStmt = connection.prepareStatement("DELETE FROM ContactsNumbers WHERE ContactsNumbersID = ?;");
-
             contactStmt.setInt(1, contact.getContactID());
-            queryStmt.setInt(1, contact.getContactID());
             contactStmt.executeUpdate();
-            rs = queryStmt.executeQuery();
-            while (rs.next()) {
-                delStmt.setInt(1, rs.getInt("ContactsNumbersID"));
-                delStmt.executeUpdate();
-            }
-            rs.close();
             contactStmt.close();
-            queryStmt.close();
-            delStmt.close();
             connection.close();
+            if (removeContactNumbers(contact.getContactNumbers())) {
+                return 2;
+            }
             return 1;
         } catch (SQLException e) {
             IErrorLog.saveError("BlContacts", "SQL-Fehler beim löschen aufgetreten", e.toString());
@@ -211,7 +213,6 @@ public class BlContacts implements IBlContacts {
                     return -1;
                 }
                 PreparedStatement contactStmt = connection.prepareStatement("INSERT INTO Contacts (FirstName, LastName, MailAddress, Street, HouseNumber, ZipCode, City, BirthDate) VALUES(?,?,?,?,?,?,?,?);");
-                PreparedStatement phoneStmt = connection.prepareStatement("INSERT INTO CONTACTSNUMBERS (ContactID, Number, NumberType) VALUES (?,?,?);");
                 contactStmt.setString(1, contact.getFirstName());
                 contactStmt.setString(2, contact.getLastName());
                 contactStmt.setString(3, contact.getMailAddress().toLowerCase());
@@ -222,27 +223,8 @@ public class BlContacts implements IBlContacts {
                 contactStmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
                 contactStmt.executeUpdate();
 
-                int contactId = getContactID(contact);
+                createContactNumbers(contact.getContactNumbers(), contact.getContactID());
 
-                for (IContactNumber nr : contact.getContactNumbers()) {
-                    phoneStmt.setInt(1, contactId);
-                    phoneStmt.setString(2, nr.getNumber());
-                    switch (nr.getType()) {
-                        case Mobile:
-                            phoneStmt.setInt(3, 0);
-                            break;
-                        case Home:
-                            phoneStmt.setInt(3, 1);
-                            break;
-                        case Work:
-                            phoneStmt.setInt(3, 2);
-                            break;
-                        default:
-                            phoneStmt.setInt(3, 5);
-                    }
-                    phoneStmt.executeUpdate();
-                }
-                phoneStmt.close();
                 contactStmt.close();
                 connection.close();
             } else {
@@ -266,55 +248,22 @@ public class BlContacts implements IBlContacts {
         ContactList list = new ContactList();
         Connection connection = prepareConnection();
         Statement stmt;
-        PreparedStatement numberStmt;
         ResultSet contactRs;
-        ResultSet numberRs = null;
         try {
             if (connection == null) {
                 return null;
             }
             stmt = connection.createStatement();
             contactRs = stmt.executeQuery("SELECT * FROM Contacts;");
-            numberStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
             while (contactRs.next()) {
-
-                Contact tempContact = new Contact(contactRs.getInt("ContactID"), contactRs.getString("FirstName"), contactRs.getString("LastName"), contactRs.getString("MailAddress"),
-                        LocalDate.now());
-                Address tempAdress = new Address();
-                tempAdress.setCity(contactRs.getString("City"));
-                tempAdress.setStreetAddress(contactRs.getString("Street") + contactRs.getString("HouseNumber"));
-                tempAdress.setZipCode(contactRs.getString("ZipCode"));
-                tempContact.setAddress(tempAdress);
-                tempContact.setBirthDate(contactRs.getDate("BirthDate").toLocalDate());
-                numberStmt.setInt(1, tempContact.getContactID());
-
-                numberRs = numberStmt.executeQuery();
-                while (numberRs.next()) {
-                    ContactNumberType tempType;
-                    switch (numberRs.getInt("NumberType")) {
-                        case 0:
-                            tempType = ContactNumberType.Mobile;
-                            break;
-                        case 1:
-                            tempType = ContactNumberType.Home;
-                            break;
-                        case 2:
-                            tempType = ContactNumberType.Work;
-                            break;
-                        default:
-                            tempType = ContactNumberType.Mobile;
-                    }
-                    tempContact.getContactNumbers().add(new ContactNumber(numberRs.getInt("ContactsNumbersID"), tempType, numberRs.getString("Number")));
-                }
-
+                IContact tempContact = new Contact(contactRs.getInt("ContactID"), contactRs.getString("FirstName"), contactRs.getString("LastName"), contactRs.getString("MailAddress"),
+                        contactRs.getDate("BirthDate").toLocalDate());
+                tempContact.setAddress(new Address(contactRs.getString("Street") + " " + contactRs.getString("HouseNumber"), contactRs.getString("ZipCode"), contactRs.getString("City")));
+                tempContact.setContactNumbers(getContactNumbersByID(tempContact.getContactID()));
                 list.add(tempContact);
-            }
-            if (numberRs != null) {
-                numberRs.close();
             }
             contactRs.close();
             stmt.close();
-            numberStmt.close();
             connection.close();
 
         } catch (Exception e) {
@@ -405,9 +354,145 @@ public class BlContacts implements IBlContacts {
             stmt.close();
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            IErrorLog.saveError("BlContacts", "Fehler beim suchen einer ContactID", e.toString());
         }
         return id;
+    }
+
+    /**
+     * Hilfsmethode für Update, liest alle Rufnummern eines Kontakts aus der Datenbank
+     *
+     * @param id ID für welche alle Rufnummern gesucht werden sollen
+     * @return IContactNumberList für den Kontakt
+     */
+    private IContactNumberList getContactNumbersByID(int id) {
+        Connection connection = prepareConnection();
+        ResultSet numberRs;
+        IContactNumberList tempList = new ContactNumberList();
+
+        if (connection != null) {
+            try {
+                PreparedStatement numberStmt = connection.prepareStatement("SELECT * FROM ContactsNumbers WHERE ContactID = ?;");
+
+                numberStmt.setInt(1, id);
+                numberRs = numberStmt.executeQuery();
+
+                while (numberRs.next()) {
+                    switch (numberRs.getInt("NumberType")) {
+                        case 0:
+                            tempList.add(new ContactNumber(numberRs.getInt("ContactsNumbersID"), ContactNumberType.Mobile, numberRs.getString("Number")));
+                            break;
+                        case 1:
+                            tempList.add(new ContactNumber(numberRs.getInt("ContactsNumbersID"), ContactNumberType.Home, numberRs.getString("Number")));
+                            break;
+                        case 2:
+                            tempList.add(new ContactNumber(numberRs.getInt("ContactsNumbersID"), ContactNumberType.Work, numberRs.getString("Number")));
+                            break;
+                    }
+
+                }
+            } catch (SQLException e) {
+                IErrorLog.saveError("BlContacts", "Fehler beim suchen aller Rufnummern eines Kontakts", e.toString());
+            }
+        }
+        return tempList;
+    }
+
+    /**
+     * Hilfsmethode zum erstellen von ContactsNumbers
+     *
+     * @param contactNumbers IContactNumberList welche alle zu erstellenden Nummern enthält
+     * @param contactID      ID des Kontakts für welchen die Nummern angelegt werden sollen
+     */
+    private void createContactNumbers(IContactNumberList contactNumbers, int contactID) {
+        Connection connection = prepareConnection();
+        if (connection != null) {
+            try {
+                PreparedStatement phoneStmt = connection.prepareStatement("INSERT INTO CONTACTSNUMBERS (ContactID, Number, NumberType) VALUES (?,?,?);");
+                for (IContactNumber nr : contactNumbers) {
+                    phoneStmt.setInt(1, contactID);
+                    phoneStmt.setString(2, nr.getNumber());
+                    switch (nr.getType()) {
+                        case Mobile:
+                            phoneStmt.setInt(3, 0);
+                            break;
+                        case Home:
+                            phoneStmt.setInt(3, 1);
+                            break;
+                        case Work:
+                            phoneStmt.setInt(3, 2);
+                            break;
+                        default:
+                            phoneStmt.setInt(3, 5);
+                    }
+                    phoneStmt.executeUpdate();
+                }
+                phoneStmt.close();
+                connection.close();
+            } catch (SQLException e) {
+                IErrorLog.saveError("BlContacts", "Fehler beim erstellen eines Kontakts", e.toString());
+            }
+        }
+    }
+
+    /**
+     * Hilfsmethode zum entfernen einer Liste von IContactsNumbers
+     *
+     * @param contactNumbers IContactNumberList welche alle zu löschenden Nummern enthält
+     * @return boolsches Ergebnis ob alle Elemente erfolgreich gelöscht werden konnten#
+     */
+    private boolean removeContactNumbers(IContactNumberList contactNumbers) {
+        Connection connection = prepareConnection();
+        if (connection != null) {
+            try {
+                PreparedStatement pStmt = connection.prepareStatement("DELETE FROM CONTACTSNUMBERS WHERE ContactsNumbersID = ?;");
+                contactNumbers.forEach(n -> {
+                    try {
+                        pStmt.setInt(1, n.getContactNumbersID());
+                        pStmt.executeUpdate();
+                    } catch (SQLException e) {
+                        IErrorLog.saveError("BlContacts", "Fehler beim entfernen einer ContactNumber", e.toString());
+                    }
+                });
+            } catch (SQLException e) {
+                IErrorLog.saveError("BlContacts", "Fehler beim entfernen einer ContactNumber", e.toString());
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void updateContactNumbers(IContactNumberList contactNumbers) {
+        Connection connection = prepareConnection();
+
+        if (connection != null) {
+            try {
+                PreparedStatement updateStmt = connection.prepareStatement("UPDATE ContactsNumbers SET Number = ?, NumberType = ? WHERE ContactsNumbersID = ?;");
+                contactNumbers.forEach(n -> {
+                    try {
+                        updateStmt.setString(1, n.getNumber());
+                        updateStmt.setInt(3, n.getContactNumbersID());
+                        switch (n.getType()) {
+                            case Mobile:
+                                updateStmt.setInt(2, 0);
+                                break;
+                            case Home:
+                                updateStmt.setInt(2, 1);
+                                break;
+                            case Work:
+                                updateStmt.setInt(2, 2);
+                                break;
+                        }
+                        updateStmt.executeUpdate();
+                    } catch (SQLException e) {
+                        IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
+                    }
+                });
+            } catch (SQLException e) {
+                IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
+            }
+        }
     }
 
     /**
