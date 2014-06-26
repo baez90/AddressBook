@@ -113,7 +113,6 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int updateContactInDB(IContact contact) {
-        //TODO Rufnummern berücksichtigen
         Connection connection = prepareConnection();
         if (connection == null) {
             return -1;
@@ -139,15 +138,19 @@ public class BlContacts implements IBlContacts {
             /*
             Alle Kontakte welche bereits vorhanden waren aktualisiert
             */
-            updateContactNumbers(contact.getContactNumbers().stream().filter(numberList::contains).collect(Collectors.toCollection(ContactNumberList::new)));
+            if (!updateContactNumbers(contact.getContactNumbers().stream().filter(numberList::contains).collect(Collectors.toCollection(ContactNumberList::new)))) {
+                return 0;
+            }
             /*
             Alle neuen Kontakte werden hinzugefügt
             */
-            createContactNumbers(contact.getContactNumbers().stream().filter(n -> !numberList.contains(n)).collect(Collectors.toCollection(ContactNumberList::new)), contact.getContactID());
+            if (!createContactNumbers(contact.getContactNumbers().stream().filter(n -> !numberList.contains(n)).collect(Collectors.toCollection(ContactNumberList::new)), contact.getContactID())) {
+                return 0;
+            }
             /*
             Alle Kontakte welche nicht mehr vorhanden sind gelöscht
             */
-            if (removeContactNumbers(numberList.stream().filter(n -> !contact.getContactNumbers().contains(n)).collect(Collectors.toCollection(ContactNumberList::new)))) {
+            if (!removeContactNumbers(numberList.stream().filter(n -> !contact.getContactNumbers().contains(n)).collect(Collectors.toCollection(ContactNumberList::new)))) {
                 return 0;
             }
             return 1;
@@ -223,10 +226,11 @@ public class BlContacts implements IBlContacts {
                 contactStmt.setDate(8, new Date(contact.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()));
                 contactStmt.executeUpdate();
 
-                createContactNumbers(contact.getContactNumbers(), contact.getContactID());
-
                 contactStmt.close();
                 connection.close();
+                if (!createContactNumbers(contact.getContactNumbers(), contact.getContactID())) {
+                    return -1;
+                }
             } else {
                 updateContactInDB(contact);
                 return 0;
@@ -404,7 +408,7 @@ public class BlContacts implements IBlContacts {
      * @param contactNumbers IContactNumberList welche alle zu erstellenden Nummern enthält
      * @param contactID      ID des Kontakts für welchen die Nummern angelegt werden sollen
      */
-    private void createContactNumbers(IContactNumberList contactNumbers, int contactID) {
+    private boolean createContactNumbers(IContactNumberList contactNumbers, int contactID) {
         Connection connection = prepareConnection();
         if (connection != null) {
             try {
@@ -429,10 +433,13 @@ public class BlContacts implements IBlContacts {
                 }
                 phoneStmt.close();
                 connection.close();
+                return true;
             } catch (SQLException e) {
                 IErrorLog.saveError("BlContacts", "Fehler beim erstellen eines Kontakts", e.toString());
+                return false;
             }
         }
+        return false;
     }
 
     /**
@@ -463,7 +470,7 @@ public class BlContacts implements IBlContacts {
         return false;
     }
 
-    private void updateContactNumbers(IContactNumberList contactNumbers) {
+    private boolean updateContactNumbers(IContactNumberList contactNumbers) {
         Connection connection = prepareConnection();
 
         if (connection != null) {
@@ -489,10 +496,13 @@ public class BlContacts implements IBlContacts {
                         IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
                     }
                 });
+                return true;
             } catch (SQLException e) {
                 IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
+                return false;
             }
         }
+        return false;
     }
 
     /**
