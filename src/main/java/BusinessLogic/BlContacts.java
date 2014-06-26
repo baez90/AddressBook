@@ -181,7 +181,7 @@ public class BlContacts implements IBlContacts {
             contactStmt.executeUpdate();
             contactStmt.close();
             connection.close();
-            if (removeContactNumbers(contact.getContactNumbers())) {
+            if (!removeContactNumbers(contact.getContactNumbers())) {
                 return 2;
             }
             return 1;
