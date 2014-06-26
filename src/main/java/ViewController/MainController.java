@@ -161,6 +161,7 @@ public class MainController {
         this.contactList = contactList;
         displayList.clear();
         displayList.addAll(contactList);
+        ContactTable.getSelectionModel().clearSelection();
     }
 
     /**
@@ -248,7 +249,7 @@ public class MainController {
      */
     public void SearchButtonClick() {
         if (contactList == null || contactList.size() < 1) {
-            Dialogs.create().title("Info").masthead("Kein Adressbuch").message("Es wurde noch kein Adressbuch geöffnet. Es muss erst ein Adressbuch erstellt oder geöffnet werden um etwas suchen zu können").showInformation();
+            Dialogs.create().title("Info").masthead("Leese Liste").message("Keine Kontakte vorhanden zum durchsuchen").showInformation();
         } else {
             updateContactTable(contactList.searchContacts(SearchBox.getText()));
         }

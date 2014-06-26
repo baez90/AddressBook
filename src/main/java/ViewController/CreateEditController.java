@@ -248,6 +248,7 @@ public class CreateEditController {
         contactToEdit.getAddress().setCity(CityBox.getText());
 
         mainController.getBlContacts().updateContactInDB(contactToEdit);
+        mainController.updateContactTable(contactList);
 
         closeModal(actionEvent);
     }

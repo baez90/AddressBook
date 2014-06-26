@@ -124,8 +124,8 @@
                         </HBox>
                         <HBox prefHeight="483.0" prefWidth="346.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <TableView fx:id="ContactTable" maxWidth="1.7976931348623157E308" prefHeight="483.0"
-                                           prefWidth="646.0" HBox.hgrow="ALWAYS">
+                                <TableView fx:id="ContactTable" prefHeight="483.0" prefWidth="646.0"
+                                           HBox.hgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="FirstNameColumn" editable="false" prefWidth="96.0"
                                                      text="Vorname"/>
@@ -146,7 +146,7 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
-                                <TableView fx:id="PhoneNrTable" maxWidth="400.0" prefHeight="483.0" prefWidth="200.0"
+                                <TableView fx:id="PhoneNrTable" maxWidth="500.0" prefHeight="483.0" prefWidth="200.0"
                                            HBox.hgrow="ALWAYS">
                                     <columns>
                                         <TableColumn editable="false" maxWidth="1.7976931348623157E308" prefWidth="-1.0"

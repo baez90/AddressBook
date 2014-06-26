@@ -113,6 +113,7 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int updateContactInDB(IContact contact) {
+        //TODO Rufnummern berücksichtigen
         Connection connection = prepareConnection();
         if (connection == null) {
             return -1;

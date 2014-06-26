@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
 /**
- * @author baez
+ * @author baez_
  */
 public class CreateEditNumberController {
 
@@ -74,6 +74,8 @@ public class CreateEditNumberController {
         TypeChoiceBox.getItems().add(ContactNumberType.Home);
         TypeChoiceBox.getItems().add(ContactNumberType.Mobile);
         TypeChoiceBox.getItems().add(ContactNumberType.Work);
+
+        TypeChoiceBox.setValue(ContactNumberType.Mobile);
 
         if (con.getNumberToEdit() != null) {
             TypeChoiceBox.setValue(con.getNumberToEdit().getType());
