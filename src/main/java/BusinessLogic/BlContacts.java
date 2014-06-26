@@ -3,6 +3,8 @@ package BusinessLogic;
 import Interfaces.*;
 import Model.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.time.ZoneId;
 import java.util.stream.Collectors;
@@ -51,7 +53,7 @@ public class BlContacts implements IBlContacts {
     @Override
     public boolean initDB() {
         if (!dbIsValid()) {
-            /*File databaseFile = new File(DbPath);
+            File databaseFile = new File(DbPath);
             try {
                 if (databaseFile.createNewFile()) {
                     IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", "");
@@ -61,7 +63,7 @@ public class BlContacts implements IBlContacts {
             } catch (IOException e) {
                 IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", e.toString());
                 return false;
-            }*/
+            }
             Statement stmt;
             Connection connection = prepareConnection();
             try {
