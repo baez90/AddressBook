@@ -42,7 +42,7 @@ public class BlContacts implements IBlContacts {
     @Override
     public void setDbPath(String dbPath) {
         DbPath = dbPath;
-        ConnectionPath = "jdbc:sqlite://" + DbPath;
+        ConnectionPath = "jdbc:sqlite:" + DbPath;
     }
 
     /**

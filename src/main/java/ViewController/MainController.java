@@ -120,6 +120,8 @@ public class MainController {
         NumberTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
         NumberColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
 
+
+
         /*
         Geburtstage nach deutschem Format anzeigen
          */
