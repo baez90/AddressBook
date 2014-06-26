@@ -31,6 +31,10 @@ public class OpenEncryptedController {
      */
     @FXML
     private TextField targetPathBox;
+    /**
+     * Zwischenspeicher des MainControllers
+     * benötigt für den Zugriff auf die BlContacts und den DbPath
+     */
     private MainController mainController;
 
     /**

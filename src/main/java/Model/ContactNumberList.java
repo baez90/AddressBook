@@ -51,6 +51,13 @@ public class ContactNumberList extends LinkedList<IContactNumber> implements ICo
 
     }
 
+    /**
+     * Überschreibung der Methode der LinkedList
+     * Fügt alle Elemente einer Collection zu dieser Liste hinzu
+     *
+     * @param c Collection welche zur Liste hinzugefügt werden soll
+     * @return boolsches Ergebnis
+     */
     @Override
     public boolean addAll(Collection<? extends IContactNumber> c) {
         c.forEach(this::add);

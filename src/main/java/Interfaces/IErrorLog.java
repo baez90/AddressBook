@@ -8,9 +8,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
+ * Fehlerklasse für die Analyse
+ *
  * @author baez
  */
 public interface IErrorLog {
+    /**
+     * Speichert Fehler als HTML-Tabellen-Zeile
+     * HTML-Datei wird anschließend von der ErrorView geladen
+     *
+     * @param errorClass      Klasse in welcher der Fehler aufgetreten ist als String
+     * @param errorDescrption Beschreibung des Fehlers als String
+     * @param errorException  Exception to String
+     */
     public static void saveError(String errorClass, String errorDescrption, String errorException) {
         try {
             File logFile = new File("errorLog.html");

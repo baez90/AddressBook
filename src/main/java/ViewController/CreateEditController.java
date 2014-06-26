@@ -64,10 +64,19 @@ public class CreateEditController {
      */
     @FXML
     private DatePicker BirthdayDatePicker;
+    /**
+     * TableView für die Telefonnummern des Kontakts welcher markiert wurde
+     */
     @FXML
     private TableView<IContactNumber> PhoneNrTable;
+    /**
+     * Spalte für den Typ der Telefonnummer
+     */
     @FXML
     private TableColumn<IContactNumber, ContactNumberType> NrTypeColumn;
+    /**
+     * Spalte für die Telefonummern
+     */
     @FXML
     private TableColumn<IContactNumber, String> NrColumn;
     /**
@@ -114,6 +123,10 @@ public class CreateEditController {
         initPhoneNrTable();
     }
 
+    /**
+     * initialisiert die TableView für die Telefonnummern, legt fest welche Variable in welcher Spalte angezeigt wird
+     * registriert den ChangeListener
+     */
     private void initPhoneNrTable() {
         NrTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
         NrColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
@@ -122,6 +135,9 @@ public class CreateEditController {
         PhoneNrTable.setItems(displayList);
     }
 
+    /**
+     * updatet den PhoneNrTable, aktualisiert die angezeigten Einträge
+     */
     public void updatePhoneNrTable() {
         displayList.clear();
         displayList.addAll(contactToEdit.getContactNumbers());
@@ -157,6 +173,9 @@ public class CreateEditController {
         initCreateEditNumber(false);
     }
 
+    /**
+     * ClickHandler für die Bearbeiten Button
+     */
     public void editNumberClick() {
         if (numberToEdit != null) {
             initCreateEditNumber(true);
@@ -177,6 +196,11 @@ public class CreateEditController {
         numberToEdit = null;
     }
 
+    /**
+     * Speichert die Formular-Daten in einen neuen Kontakt
+     *
+     * @param actionEvent Event um auf den Dialog zugreifen zu können
+     */
     private void saveNewContact(ActionEvent actionEvent) {
         if (!IUtil.validateMailAddress(MailBox.getText())) {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
@@ -204,6 +228,11 @@ public class CreateEditController {
         closeModal(actionEvent);
     }
 
+    /**
+     * Updated einen bestehenden Eintrag anhand der Formular-Daten
+     *
+     * @param actionEvent Event um auf den Dialog zugreifen zu können
+     */
     private void updateContact(ActionEvent actionEvent) {
         if (!IUtil.validateMailAddress(MailBox.getText())) {
             Dialogs.create().title("Info").masthead("Validierungsfehler").message("Die Email-Adresse hat kein gültiges Format").showInformation();
@@ -234,6 +263,12 @@ public class CreateEditController {
         stage.close();
     }
 
+    /**
+     * Initialisiert die CreateEditNumber View
+     * bei Bedarf wird eine bestehende Nummer bearbeitet
+     *
+     * @param edit boolean ob Edit oder Create
+     */
     private void initCreateEditNumber(boolean edit) {
 
         try {
@@ -257,10 +292,20 @@ public class CreateEditController {
         }
     }
 
+    /**
+     * Getter für die CreateEditNumberView
+     *
+     * @return IContact-Objekt für den Zugriff auf die Telefonnummern des Kontakts
+     */
     public IContact getContactToEdit() {
         return contactToEdit;
     }
 
+    /**
+     * Getter für die zu bearbeitende Nummer
+     *
+     * @return IContactNumber welche markiert ist
+     */
     public IContactNumber getNumberToEdit() {
         return numberToEdit;
     }

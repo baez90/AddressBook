@@ -12,8 +12,17 @@ import javafx.beans.property.StringProperty;
  * @author baez
  */
 public class ContactNumber implements IContactNumber {
+    /**
+     * ID der Nummer in der DB
+     */
     private int ContactNumbersID;
+    /**
+     * Typ der Nummer
+     */
     private ContactNumberType Type;
+    /**
+     * Nummer als String
+     */
     private StringProperty Number;
 
     /**
@@ -28,6 +37,13 @@ public class ContactNumber implements IContactNumber {
         Number = new SimpleStringProperty(number);
     }
 
+    /**
+     * Konstruktor für BlContacts
+     *
+     * @param id     ID der Nummer
+     * @param type   Typ der Rufnummer
+     * @param number Rufnummer als String
+     */
     public ContactNumber(int id, ContactNumberType type, String number) {
         ContactNumbersID = id;
         Type = type;
@@ -54,6 +70,11 @@ public class ContactNumber implements IContactNumber {
         Type = type;
     }
 
+    /**
+     * Getter für den Typ als ObjectProperty für die TableView
+     *
+     * @return ContactNumberType als ObjectProperty
+     */
     @Override
     public ObjectProperty<ContactNumberType> getTypeProperty() {
         return new SimpleObjectProperty<>(Type);
@@ -79,16 +100,31 @@ public class ContactNumber implements IContactNumber {
         Number.setValue(number);
     }
 
+    /**
+     * Getter für die Nummer als StringProperty für die TableView
+     *
+     * @return Nummer als StringProperty
+     */
     @Override
     public StringProperty getNumberProperty() {
         return Number;
     }
 
+    /**
+     * Getter für die ContactNumberID
+     *
+     * @return ContactNumberID als int
+     */
     @Override
     public int getContactNumbersID() {
         return ContactNumbersID;
     }
 
+    /**
+     * Setter für die ContactNumbersID
+     *
+     * @param id ID der Nummer als int
+     */
     @Override
     public void setContactNumbersID(int id) {
         ContactNumbersID = id;
@@ -117,6 +153,12 @@ public class ContactNumber implements IContactNumber {
         }
     }
 
+    /**
+     * Benötigt für Contains
+     *
+     * @param o Object welches verglichen werden soll
+     * @return boolsches Ergebnis des Vergleichs
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

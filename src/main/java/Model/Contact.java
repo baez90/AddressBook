@@ -47,6 +47,9 @@ public class Contact implements IContact {
      */
     private IContactNumberList ContactNumbers;
 
+    /**
+     * leerer Konstruktor
+     */
     public Contact() {
         ContactID = 0;
         FirstName = new SimpleStringProperty("");

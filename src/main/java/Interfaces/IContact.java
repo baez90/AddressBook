@@ -23,6 +23,11 @@ public interface IContact extends Comparable<IContact> {
      */
     public int getContactID();
 
+    /**
+     * Setter für die ID des Kontakts
+     *
+     * @param id ID des Kontakts als int
+     */
     public void setContactID(int id);
 
     /**
@@ -137,5 +142,10 @@ public interface IContact extends Comparable<IContact> {
      */
     public void setAddress(IAddress address);
 
+    /**
+     * benötigt für Birthday-Notification
+     *
+     * @return Vorname + Nachname als String
+     */
     public String toString();
 }
