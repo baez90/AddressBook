@@ -6,12 +6,15 @@ import Model.ContactList;
 import Model.ContactNumberList;
 import Model.ContactNumberType;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -29,6 +32,8 @@ import java.time.format.DateTimeFormatter;
  * befüllt etwaige Elemente mit Objekten
  */
 public class MainController {
+    private final Clipboard clipboard = Clipboard.getSystemClipboard();
+    private final ClipboardContent clipboardContent = new ClipboardContent();
     /**
      * Tabelle zum anzeigen der Kontakte
      */
@@ -82,12 +87,10 @@ public class MainController {
      * Spalte für alle Mobil-Nummern eines Kontakts
      */
     public TableColumn<IContactNumber, String> NumberColumn;
-
     /**
      * DateTimeFormatter zur Anzeige des Geburtsdatums im deutschen Format
      */
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
     /**
      * Liste aller Kontakte aus der Datenbank
      */
@@ -120,6 +123,69 @@ public class MainController {
         NumberTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getTypeProperty());
         NumberColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
 
+        /*
+        Kontext-Menü
+         */
+
+        ContactTable.setRowFactory(param -> {
+            final TableRow<IContact> row = new TableRow<>();
+            final ContextMenu contactMenu = new ContextMenu();
+            final ContextMenu createMenu = new ContextMenu();
+            final MenuItem editItem = new MenuItem("Bearbeiten");
+            editItem.setOnAction(event -> {
+                selectedContact = row.getItem();
+                initCreateEditContactView(true);
+            });
+            final MenuItem removeItem = new MenuItem("Löschen");
+            removeItem.setOnAction(event -> {
+                blContacts.removeContactInDB(row.getItem());
+                contactList.remove(row.getItem());
+                updateContactTable(contactList);
+            });
+            final MenuItem createItem = new MenuItem("Neuer Kontakt");
+            createItem.setOnAction(event -> initCreateEditContactView(false));
+            final MenuItem copyMailItem = new MenuItem("Email-Adresse kopieren");
+            copyMailItem.setOnAction(event -> {
+                clipboardContent.putString(row.getItem().getMailAddress());
+                clipboard.setContent(clipboardContent);
+            });
+            final MenuItem copyStreetItem = new MenuItem("Straße kopieren");
+            copyStreetItem.setOnAction(event -> {
+                clipboardContent.putString(row.getItem().getAddress().getStreetAddress());
+                clipboard.setContent(clipboardContent);
+            });
+            final MenuItem copyZipItem = new MenuItem("PLZ kopieren");
+            copyZipItem.setOnAction(event -> {
+                clipboardContent.putString(row.getItem().getAddress().getZipCode());
+                clipboard.setContent(clipboardContent);
+            });
+            final MenuItem copyCityItem = new MenuItem("Wohnort kopieren");
+            copyCityItem.setOnAction(event -> {
+                clipboardContent.putString(row.getItem().getAddress().getCity());
+                clipboard.setContent(clipboardContent);
+            });
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    selectedContact = row.getItem();
+                    initCreateEditContactView(true);
+                }
+            });
+
+
+            contactMenu.getItems().add(editItem);
+            contactMenu.getItems().add(removeItem);
+            contactMenu.getItems().add(copyMailItem);
+            contactMenu.getItems().add(copyStreetItem);
+            contactMenu.getItems().add(copyZipItem);
+            contactMenu.getItems().add(copyCityItem);
+
+            createMenu.getItems().add(createItem);
+            row.contextMenuProperty().bind(Bindings.when(row.emptyProperty()).then(createMenu).otherwise(contactMenu));
+            return row;
+        });
+
+
 
 
         /*
@@ -144,6 +210,7 @@ public class MainController {
         ContactTable.setItems(displayList);
         PhoneNrTable.setItems(phoneNrList);
 
+
         ContactTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedContact = newValue;
             phoneNrList.clear();
@@ -160,7 +227,6 @@ public class MainController {
      * @param contactList Liste von Einträgen welche das Suchkriterium erfüllen und angezeigt werden sollen
      */
     public void updateContactTable(IContactList contactList) {
-        this.contactList = contactList;
         displayList.clear();
         displayList.addAll(contactList);
         ContactTable.getSelectionModel().clearSelection();
@@ -251,7 +317,7 @@ public class MainController {
      */
     public void SearchButtonClick() {
         if (contactList == null || contactList.size() < 1) {
-            Dialogs.create().title("Info").masthead("Leese Liste").message("Keine Kontakte vorhanden zum durchsuchen").showInformation();
+            Dialogs.create().title("Info").masthead("Leere Liste").message("Keine Kontakte vorhanden zum durchsuchen").showInformation();
         } else {
             updateContactTable(contactList.searchContacts(SearchBox.getText()));
         }
@@ -264,7 +330,7 @@ public class MainController {
      * @param event Event welches die gedrückte Taste enthält
      */
     public void SearchBoxKeyDown(KeyEvent event) {
-        if (contactList != null) {
+        if (contactList != null && event.getText().length() > 0) {
             if (Character.isLetter(event.getText().charAt(0))) {
                 updateContactTable(contactList.searchContacts(SearchBox.getText() + event.getText()));
             } else {

@@ -5,6 +5,7 @@ import Model.Address;
 import Model.Contact;
 import Model.ContactNumberList;
 import Model.ContactNumberType;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.dialog.Dialogs;
 
@@ -133,6 +131,48 @@ public class CreateEditController {
         PhoneNrTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> numberToEdit = newValue);
         displayList.addAll(contactToEdit.getContactNumbers());
         PhoneNrTable.setItems(displayList);
+
+        PhoneNrTable.setRowFactory(param -> {
+            final TableRow<IContactNumber> row = new TableRow<>();
+            final ContextMenu numberMenu = new ContextMenu();
+            final ContextMenu createMenu = new ContextMenu();
+
+            final MenuItem createItem = new MenuItem("Neue Nummer");
+            createItem.setOnAction(event -> {
+                numberToEdit = null;
+                initCreateEditNumber(false);
+            });
+
+            final MenuItem editItem = new MenuItem("Bearbeiten");
+            editItem.setOnAction(event -> {
+                numberToEdit = row.getItem();
+                initCreateEditNumber(true);
+            });
+
+            final MenuItem removeItem = new MenuItem("Löschen");
+            removeItem.setOnAction(event -> {
+                contactToEdit.getContactNumbers().remove(row.getItem());
+                displayList.clear();
+                displayList.addAll(contactToEdit.getContactNumbers());
+                PhoneNrTable.setItems(displayList);
+                numberToEdit = null;
+            });
+
+            numberMenu.getItems().add(editItem);
+            numberMenu.getItems().add(removeItem);
+
+            createMenu.getItems().add(createItem);
+
+            row.contextMenuProperty().bind(Bindings.when(row.emptyProperty()).then(createMenu).otherwise(numberMenu));
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    initCreateEditNumber(true);
+                }
+            });
+
+            return row;
+        });
     }
 
     /**

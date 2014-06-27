@@ -24,7 +24,14 @@ public class ContactList extends LinkedList<IContact> implements IContactList {
      */
     @Override
     public IContactList searchContacts(String searchString) {
-        return this.stream().filter(i -> i.getFirstName().toLowerCase().contains(searchString.toLowerCase()) || i.getLastName().toLowerCase().contains(searchString.toLowerCase()) || !i.getContactNumbers().searchNumber(searchString).isEmpty()).collect(Collectors.toCollection(ContactList::new));
+        if (searchString.length() < 1) {
+            return this;
+        } else {
+            return this.stream().filter(i -> i.getFirstName().toLowerCase().contains(searchString.toLowerCase()) || i.getLastName().
+                    toLowerCase().contains(searchString.toLowerCase()) || !i.getContactNumbers().searchNumber(searchString).isEmpty()).
+                    collect(Collectors.toCollection(ContactList::new));
+        }
+
     }
 
     /**
