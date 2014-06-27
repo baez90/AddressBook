@@ -1,6 +1,11 @@
 import BusinessLogic.BlContacts;
-import Interfaces.*;
+import BusinessLogic.ErrorLog;
+import Interfaces.IBlContacts;
+import Interfaces.IContact;
+import Interfaces.IContactList;
+import Interfaces.IContactNumberList;
 import Model.*;
+import Model.Error;
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -79,7 +84,8 @@ public class TestBlContacts extends TestCase {
             testList.forEach(c -> c.getContactNumbers().forEach(n -> assertTrue(numberList.contains(n))));
             logger.info("ContactNumbers erfolgreich getestet");
         } catch (Exception e) {
-            IErrorLog.saveError("BlContacts", "Fehler beim Lesen aller kontakte", e.toString());
+            ErrorLog.getInstance().saveError(new Error("TestBlContacts", "testCreateGetContacts", "", e.toString(), e.getStackTrace()));
+
         }
         deleteTempDb(testPath + "CreateGet.db");
 

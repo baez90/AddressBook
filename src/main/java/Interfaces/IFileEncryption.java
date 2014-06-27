@@ -1,5 +1,8 @@
 package Interfaces;
 
+import BusinessLogic.ErrorLog;
+import Model.Error;
+
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -85,19 +88,19 @@ public interface IFileEncryption {
             fis.close();
             return true;
         } catch (NoSuchAlgorithmException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Crypto-Algorithmus nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (NoSuchProviderException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Crypto-Provider nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (NoSuchPaddingException e) {
-            IErrorLog.saveError("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Padding-Variante nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (InvalidKeyException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Key ungültig", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Crypto-Key ungültig", e.toString(), e.getStackTrace()));
         } catch (FileNotFoundException e) {
-            IErrorLog.saveError("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (IOException e) {
-            IErrorLog.saveError("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString(), e.getStackTrace()));
         } catch (InvalidKeySpecException e) {
-            IErrorLog.saveError("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "encryptFile", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString(), e.getStackTrace()));
         }
         return false;
     }
@@ -168,19 +171,19 @@ public interface IFileEncryption {
             fis.close();
             return true;
         } catch (NoSuchAlgorithmException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Algorithmus nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Crypto-Algorithmus nicht gefunden", e.toString(), e.getStackTrace()));
         } catch (NoSuchProviderException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Provider nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Crypto-Provider nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (NoSuchPaddingException e) {
-            IErrorLog.saveError("IFileEncryption", "Padding-Variante nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Padding-Variante nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (InvalidKeyException e) {
-            IErrorLog.saveError("IFileEncryption", "Crypto-Key ungültig", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Crypto-Key ungültig", e.toString(), e.getStackTrace()));
         } catch (FileNotFoundException e) {
-            IErrorLog.saveError("IFileEncryption", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Die zu verschlüsselnde Datei ist nicht verfügbar", e.toString(), e.getStackTrace()));
         } catch (IOException e) {
-            IErrorLog.saveError("IFileEncryption", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Eine Input- oder Output-Operation ist fehlgeschlagen", e.toString(), e.getStackTrace()));
         } catch (InvalidKeySpecException e) {
-            IErrorLog.saveError("IFileEncryption", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString());
+            ErrorLog.getInstance().add(new Error("IFileEncryption", "decryptFile", "Probleme mit der Key-Spezifizierung aufgetreten", e.toString(), e.getStackTrace()));
         }
         return false;
     }

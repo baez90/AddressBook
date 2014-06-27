@@ -1,10 +1,15 @@
 package ViewController;
 
 import BusinessLogic.BlContacts;
-import Interfaces.*;
+import BusinessLogic.ErrorLog;
+import Interfaces.IBlContacts;
+import Interfaces.IContact;
+import Interfaces.IContactList;
+import Interfaces.IContactNumber;
 import Model.ContactList;
 import Model.ContactNumberList;
 import Model.ContactNumberType;
+import Model.Error;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -32,12 +37,21 @@ import java.time.format.DateTimeFormatter;
  * befüllt etwaige Elemente mit Objekten
  */
 public class MainController {
+    /**
+     * Zugriff auf die Zwischenablage
+     */
     private final Clipboard clipboard = Clipboard.getSystemClipboard();
+    /**
+     * Zugriff auf den Inhalt der Zwischenablage
+     */
     private final ClipboardContent clipboardContent = new ClipboardContent();
     /**
      * Tabelle zum anzeigen der Kontakte
      */
     public TableView<IContact> ContactTable;
+    /**
+     * TableView für die Nummern des Kontakts
+     */
     public TableView<IContactNumber> PhoneNrTable;
     /**
      * Button zum suchen von Kontakten
@@ -99,6 +113,9 @@ public class MainController {
      * Wrapper um die contactList
      */
     private ObservableList<IContact> displayList = FXCollections.observableList(contactList);
+    /**
+     * Wrapper für Liste der Kontaktnummern für die TableView
+     */
     private ObservableList<IContactNumber> phoneNrList = FXCollections.observableList(new ContactNumberList());
     /**
      * Zwischenspeicher für den Edit
@@ -439,7 +456,7 @@ public class MainController {
             CreateEditController createEditController = loader.getController();
             createEditController.initController(this, edit);
         } catch (IOException e) {
-            IErrorLog.saveError("MainController", "Fehler beim laden der CreateEditContactView", e.toString());
+            ErrorLog.getInstance().add(new Error("MainController", "initCreateEditContactView", "Fehler beim der View", e.toString(), e.getStackTrace()));
         }
     }
 
@@ -464,7 +481,7 @@ public class MainController {
             OpenEncryptedController openEncryptedController = loader.getController();
             openEncryptedController.initOpenEncryptedController(this);
         } catch (IOException e) {
-            IErrorLog.saveError("MainController", "Fehler beim laden der OpenEncryptedAddressBookView", e.toString());
+            ErrorLog.getInstance().add(new Error("MainController", "initOpenEncryptedAddressBookView", "Fehler beim laden der View", e.toString(), e.getStackTrace()));
             e.printStackTrace();
         }
     }
@@ -492,7 +509,7 @@ public class MainController {
             saveEncryptedController.initSaveEncryptedController(this);
 
         } catch (IOException e) {
-            IErrorLog.saveError("MainController", "Fehler beim laden der SaveAddressBookEncryptedView", e.toString());
+            ErrorLog.getInstance().add(new Error("MainController", "initSaveAddressBookEncryptedView", "Fehler beim laden der View", e.toString(), e.getStackTrace()));
         }
     }
 
@@ -533,7 +550,7 @@ public class MainController {
             HTMLViewController.initHelpAboutView(content);
 
         } catch (IOException e) {
-            IErrorLog.saveError("MainController", "Fehler beim laden der HelpAboutView ( " + content + "-Content)", e.toString());
+            ErrorLog.getInstance().add(new Error("MainController", "initHelpAboutView", "Fehler beim laden der HelpAboutView ( " + content + "-Content)", e.toString(), e.getStackTrace()));
         }
     }
 

@@ -2,6 +2,7 @@ package BusinessLogic;
 
 import Interfaces.*;
 import Model.*;
+import Model.Error;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,12 +57,12 @@ public class BlContacts implements IBlContacts {
             File databaseFile = new File(DbPath);
             try {
                 if (databaseFile.createNewFile()) {
-                    IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", "");
+                    ErrorLog.getInstance().add(new Error("BlContacts", "initDB", "Fehler beim erstellen des Datenbankfiles", "", null));
                     return false;
                 }
 
             } catch (IOException e) {
-                IErrorLog.saveError("BlContacts", "Fehler beim Erstellen des Datenbankfiles", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "initDB", "", e.toString(), e.getStackTrace()));
                 return false;
             }
             Statement stmt;
@@ -95,7 +96,7 @@ public class BlContacts implements IBlContacts {
                 stmt.close();
 
             } catch (Exception e) {
-                IErrorLog.saveError("BlContacts", "Fehler bei INITDB", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "InitDB", "", e.toString(), e.getStackTrace()));
                 return false;
             }
         }
@@ -155,7 +156,7 @@ public class BlContacts implements IBlContacts {
             }
             return 1;
         } catch (SQLException e) {
-            IErrorLog.saveError("BlContacts", "Fehler beim Update eines Kontakts", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "updateContactInDB", e.getMessage(), e.toString(), e.getStackTrace()));
         }
         return 0;
     }
@@ -189,7 +190,7 @@ public class BlContacts implements IBlContacts {
             }
             return 1;
         } catch (SQLException e) {
-            IErrorLog.saveError("BlContacts", "SQL-Fehler beim löschen aufgetreten", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "removeContactInDB", e.getMessage(), e.toString(), e.getStackTrace()));
         }
         return 2;
     }
@@ -236,7 +237,7 @@ public class BlContacts implements IBlContacts {
                 return 0;
             }
         } catch (Exception e) {
-            IErrorLog.saveError("BLContacts", "Fehler bei Create Contact", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "createContactInDB", "", e.toString(), e.getStackTrace()));
             return -1;
         }
         return getContactID(contact);
@@ -271,7 +272,7 @@ public class BlContacts implements IBlContacts {
             connection.close();
 
         } catch (Exception e) {
-            IErrorLog.saveError("BLContacts", "Fehler beim laden aller Kontakte", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "getContactsFromDB", "", e.toString(), e.getStackTrace()));
         }
         return list;
     }
@@ -301,7 +302,7 @@ public class BlContacts implements IBlContacts {
             connection.close();
             return contactExists;
         } catch (Exception e) {
-            IErrorLog.saveError("BLContacts", "Fehler bei ContactExistsInDatabase", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "ContactExistsInDatabase", "", e.toString(), e.getStackTrace()));
         }
         return contactExists;
     }
@@ -322,9 +323,9 @@ public class BlContacts implements IBlContacts {
             connection = DriverManager.getConnection(ConnectionPath);
             return connection;
         } catch (ClassNotFoundException e) {
-            IErrorLog.saveError("BlContacts", "Fehler beim Laden des Treibers", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "prepareConnection", "Fehler beim Laden des DB-Treibers", e.toString(), e.getStackTrace()));
         } catch (SQLException e) {
-            IErrorLog.saveError("BlContacts", "Fehler beim Herstellen der Verbindung", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "prepareConnection", e.getMessage(), e.toString(), e.getStackTrace()));
         }
         return null;
     }
@@ -358,7 +359,7 @@ public class BlContacts implements IBlContacts {
             stmt.close();
             connection.close();
         } catch (SQLException e) {
-            IErrorLog.saveError("BlContacts", "Fehler beim suchen einer ContactID", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "getContactID", e.getMessage(), e.toString(), e.getStackTrace()));
         }
         return id;
     }
@@ -396,7 +397,7 @@ public class BlContacts implements IBlContacts {
 
                 }
             } catch (SQLException e) {
-                IErrorLog.saveError("BlContacts", "Fehler beim suchen aller Rufnummern eines Kontakts", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "getContactNumbersByID", e.getMessage(), e.toString(), e.getStackTrace()));
             }
         }
         return tempList;
@@ -435,7 +436,7 @@ public class BlContacts implements IBlContacts {
                 connection.close();
                 return true;
             } catch (SQLException e) {
-                IErrorLog.saveError("BlContacts", "Fehler beim erstellen eines Kontakts", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "createContactNumbers", "SQL-Exception", e.toString(), e.getStackTrace()));
                 return false;
             }
         }
@@ -458,11 +459,11 @@ public class BlContacts implements IBlContacts {
                         pStmt.setInt(1, n.getContactNumbersID());
                         pStmt.executeUpdate();
                     } catch (SQLException e) {
-                        IErrorLog.saveError("BlContacts", "Fehler beim entfernen einer ContactNumber", e.toString());
+                        ErrorLog.getInstance().add(new Error("BlContacts", "removeContactNumbers", e.getMessage(), e.toString(), e.getStackTrace()));
                     }
                 });
             } catch (SQLException e) {
-                IErrorLog.saveError("BlContacts", "Fehler beim entfernen einer ContactNumber", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "removeContactNumbers", e.getMessage(), e.toString(), e.getStackTrace()));
                 return false;
             }
             return true;
@@ -493,12 +494,12 @@ public class BlContacts implements IBlContacts {
                         }
                         updateStmt.executeUpdate();
                     } catch (SQLException e) {
-                        IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
+                        ErrorLog.getInstance().add(new Error("BlContacts", "updateContactNumbers", e.getMessage(), e.toString(), e.getStackTrace()));
                     }
                 });
                 return true;
             } catch (SQLException e) {
-                IErrorLog.saveError("BlContacts", "Fehler beim updaten einer ContactNumber", e.toString());
+                ErrorLog.getInstance().add(new Error("BlContacts", "updateContactNumbers", e.getMessage(), e.toString(), e.getStackTrace()));
                 return false;
             }
         }
@@ -530,7 +531,7 @@ public class BlContacts implements IBlContacts {
             connection.close();
             metaResult.close();
         } catch (SQLException e) {
-            IErrorLog.saveError("BlContacts", "Fehler bei dbValid", e.toString());
+            ErrorLog.getInstance().add(new Error("BlContacts", "dbIsValid", e.getMessage(), e.toString(), e.getStackTrace()));
         }
         return (contactsTableExist & contactsNumbersTableExist);
     }
