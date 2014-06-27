@@ -131,6 +131,10 @@ public class ErrorConsoleController {
         }
     }
 
+    /**
+     * Speichert alle Fehler in ein Logfile
+     * Pfad wird durch FileChooser festgelegt
+     */
     public void SaveLogfileClick() {
         FileChooser chooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("txt (*.txt)", "*.txt");
@@ -148,6 +152,11 @@ public class ErrorConsoleController {
 
     }
 
+    /**
+     * Schließt die Anwendung
+     *
+     * @param actionEvent Event für den Zugriff auf die Stage
+     */
     public void QuitClick(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
