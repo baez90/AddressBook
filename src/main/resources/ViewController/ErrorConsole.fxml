@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
-<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ViewController.ErrorConsoleController">
-    <children>
-        <TableView HBox.hgrow="ALWAYS" fx:id="ErrorTable">
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0"
+            prefWidth="940.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ViewController.ErrorConsoleController">
+    <center>
+        <TableView BorderPane.alignment="CENTER" fx:id="ErrorTable">
             <columns>
                 <TableColumn prefWidth="75.0" text="ErrorClass" fx:id="ClassColumn"/>
                 <TableColumn prefWidth="75.0" text="ErrorMethod" fx:id="MethodColumn"/>
@@ -18,5 +19,17 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
-    </children>
-</HBox>
+    </center>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#SaveLogfileClick" text="Logfile speichern"/>
+                        <MenuItem mnemonicParsing="false" onAction="#QuitClick" text="Schließen"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>

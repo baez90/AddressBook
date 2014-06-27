@@ -18,5 +18,5 @@ public interface IErrorLog extends List<IError> {
     /**
      * Speichert alle Fehler aus der Liste in ein Logfile
      */
-    public void saveAsLogFile();
+    public void saveAsLogFile(String filePath);
 }

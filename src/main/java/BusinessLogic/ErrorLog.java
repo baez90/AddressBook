@@ -56,15 +56,15 @@ public class ErrorLog extends LinkedList<IError> implements IErrorLog {
      * Speichert alle Fehler aus der Liste in ein Logfile
      */
     @Override
-    public void saveAsLogFile() {
-        File logfile = new File("logfile.txt");
+    public void saveAsLogFile(String filePath) {
+        File logfile = new File(filePath);
         try {
             if (!logfile.exists()) {
                 if (!logfile.createNewFile()) {
                     return;
                 }
             }
-            BufferedWriter fileWriter = new BufferedWriter(new FileWriter("logfile.txt", true));
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(filePath, true));
             stream().forEach(e -> {
                 try {
                     fileWriter.write(formatter.format(e.getErrorTime()) + "\t" + e.getErrorClass() + "\t" + e.getErrorMethod() + "\t" + e.getErrorClass() + "\t" + e.getErrorException());

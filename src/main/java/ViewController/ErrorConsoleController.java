@@ -5,16 +5,20 @@ import Interfaces.IError;
 import Model.Error;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -125,5 +129,28 @@ public class ErrorConsoleController {
             ErrorLog.getInstance().add(new Error("ErrorConsoleController", "initStackTraceViewer", "Fehler beim laden der View", e.toString(), e.getStackTrace()));
             e.printStackTrace();
         }
+    }
+
+    public void SaveLogfileClick() {
+        FileChooser chooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("txt (*.txt)", "*.txt");
+        chooser.getExtensionFilters().add(extensionFilter);
+
+        File logfile = chooser.showSaveDialog(new Stage());
+
+        if (logfile != null) {
+            if (!logfile.getAbsolutePath().endsWith(".txt")) {
+                ErrorLog.getInstance().saveAsLogFile(logfile.getAbsolutePath() + ".txt");
+            } else {
+                ErrorLog.getInstance().saveAsLogFile(logfile.getAbsolutePath());
+            }
+        }
+
+    }
+
+    public void QuitClick(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }
