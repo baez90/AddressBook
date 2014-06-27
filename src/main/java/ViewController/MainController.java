@@ -228,8 +228,7 @@ public class MainController {
                 super.updateItem(item, empty);
 
                 if (item == null || empty) {
-                    setText(null);
-                    setStyle("");
+                    setText("");
                 } else {
                     // Format date.
                     setText(formatter.format(item));
@@ -403,7 +402,20 @@ public class MainController {
      * Zeigt die Error-Listen-Webseite an
      */
     public void ViewErrorListClick() {
-        initHelpAboutView("HTML-Content/error.html");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ErrorConsole.fxml"));
+        try {
+            Parent errorConsoleRoot = loader.load();
+            Stage errorConsoleStage = new Stage();
+            errorConsoleStage.setTitle("Error Console");
+            errorConsoleStage.setScene(new Scene(errorConsoleRoot));
+            errorConsoleStage.show();
+
+            ErrorConsoleController errorController = loader.getController();
+            errorController.initErrorConsole();
+        } catch (IOException e) {
+            ErrorLog.getInstance().saveError(new Error("MainController", "ViewErrorListClick", "Fehler beim laden der View", e.toString(), e.getStackTrace()));
+            e.printStackTrace();
+        }
     }
 
     /**

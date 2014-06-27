@@ -1,6 +1,10 @@
 package Model;
 
 import Interfaces.IError;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.time.LocalDateTime;
 
@@ -92,6 +96,16 @@ public class Error implements IError {
     }
 
     /**
+     * Getter für Error-Console
+     *
+     * @return ErrorClass als StringProperty
+     */
+    @Override
+    public StringProperty getErrorClassProperty() {
+        return new SimpleStringProperty(ErrorClass);
+    }
+
+    /**
      * Standard-Getter
      *
      * @return Methode in welcher der Fehler aufgetreten ist als String
@@ -109,6 +123,16 @@ public class Error implements IError {
     @Override
     public void setErrorMethod(String errorMethod) {
         ErrorMethod = errorMethod;
+    }
+
+    /**
+     * Getter für Error-Console
+     *
+     * @return ErrorMethod als StringProperty
+     */
+    @Override
+    public StringProperty getErrorMethodProperty() {
+        return new SimpleStringProperty(ErrorMethod);
     }
 
     /**
@@ -132,6 +156,16 @@ public class Error implements IError {
     }
 
     /**
+     * Getter für Error-Console
+     *
+     * @return ErrorContext als StringProperty
+     */
+    @Override
+    public StringProperty getErrorContextProperty() {
+        return new SimpleStringProperty(ErrorContext);
+    }
+
+    /**
      * Standard-Getter
      *
      * @return Exception als String
@@ -152,6 +186,16 @@ public class Error implements IError {
     }
 
     /**
+     * Getter für ErrorConsole
+     *
+     * @return ErrorException als StringProperty
+     */
+    @Override
+    public StringProperty getErrorExceptionProperty() {
+        return new SimpleStringProperty(ErrorException);
+    }
+
+    /**
      * Standard-Getter
      *
      * @return Zeitpunkt zu welchem der Error gemeldet wurde
@@ -169,6 +213,16 @@ public class Error implements IError {
     @Override
     public void setErrorTime(LocalDateTime errorTime) {
         ErrorTime = errorTime;
+    }
+
+    /**
+     * Getter für die Error-Console
+     *
+     * @return ErrorTime als ObjectProperty
+     */
+    @Override
+    public ObjectProperty<LocalDateTime> getErrorTimeProperty() {
+        return new SimpleObjectProperty<>(ErrorTime);
     }
 
     /**

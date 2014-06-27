@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ViewController.ErrorConsoleController">
+    <children>
+        <TableView HBox.hgrow="ALWAYS" fx:id="ErrorTable">
+            <columns>
+                <TableColumn prefWidth="75.0" text="ErrorClass" fx:id="ClassColumn"/>
+                <TableColumn prefWidth="75.0" text="ErrorMethod" fx:id="MethodColumn"/>
+                <TableColumn prefWidth="75.0" text="ErrorContext" fx:id="ContextColumn"/>
+                <TableColumn prefWidth="75.0" text="ErrorException" fx:id="ExceptionColumn"/>
+                <TableColumn prefWidth="75.0" text="ErrorTime" fx:id="TimeColumn"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </children>
+</HBox>

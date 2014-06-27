@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+           prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ViewController.StackTraceViewerController" fx:id="StackTraceTable">
+    <columns>
+        <TableColumn prefWidth="75.0" text="LineNumber" fx:id="LineColumn"/>
+        <TableColumn prefWidth="75.0" text="ClassName" fx:id="ClassColumn"/>
+        <TableColumn prefWidth="75.0" text="MethodName" fx:id="MethodColumn"/>
+    </columns>
+    <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TableView>

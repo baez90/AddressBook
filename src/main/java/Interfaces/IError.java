@@ -1,5 +1,8 @@
 package Interfaces;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -21,6 +24,13 @@ public interface IError {
     public void setErrorClass(String errorClass);
 
     /**
+     * Getter für Error-Console
+     *
+     * @return ErrorClass als StringProperty
+     */
+    public StringProperty getErrorClassProperty();
+
+    /**
      * Standard-Getter
      *
      * @return Methode in welcher der Fehler aufgetreten ist als String
@@ -33,6 +43,13 @@ public interface IError {
      * @param errorMethod Methode in welcher der Fehler aufgetreten ist als String
      */
     public void setErrorMethod(String errorMethod);
+
+    /**
+     * Getter für Error-Console
+     *
+     * @return ErrorMethod als StringProperty
+     */
+    public StringProperty getErrorMethodProperty();
 
     /**
      * Standard-Getter
@@ -49,6 +66,13 @@ public interface IError {
     public void setErrorContext(String errorContext);
 
     /**
+     * Getter für Error-Console
+     *
+     * @return ErrorContext als StringProperty
+     */
+    public StringProperty getErrorContextProperty();
+
+    /**
      * Standard-Getter
      *
      * @return Exception als String
@@ -63,6 +87,13 @@ public interface IError {
     public void setErrorException(String errorException);
 
     /**
+     * Getter für ErrorConsole
+     *
+     * @return ErrorException als StringProperty
+     */
+    public StringProperty getErrorExceptionProperty();
+
+    /**
      * Standard-Getter
      *
      * @return Zeitpunkt zu welchem der Error gemeldet wurde
@@ -75,6 +106,13 @@ public interface IError {
      * @param errorTime Zeitpunkt zu welchem der Fehler aufgetreten ist
      */
     public void setErrorTime(LocalDateTime errorTime);
+
+    /**
+     * Getter für die Error-Console
+     *
+     * @return ErrorTime als ObjectProperty
+     */
+    public ObjectProperty<LocalDateTime> getErrorTimeProperty();
 
     /**
      * Standard-Getter

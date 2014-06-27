@@ -24,7 +24,7 @@ public class ErrorLog extends LinkedList<IError> implements IErrorLog {
      * Instanz des Error-Logs für den Singleton
      */
     private static ErrorLog ourInstance = new ErrorLog();
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     /**
      * privater Konstruktor für das Singleton
