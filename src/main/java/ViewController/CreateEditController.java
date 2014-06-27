@@ -132,9 +132,19 @@ public class CreateEditController {
         displayList.addAll(contactToEdit.getContactNumbers());
         PhoneNrTable.setItems(displayList);
 
+        /*
+        RowFactory für KontextMenüs und Doppelklick Handler
+         */
+
         PhoneNrTable.setRowFactory(param -> {
             final TableRow<IContactNumber> row = new TableRow<>();
+            /*
+            Menü zum Bearbeiten
+             */
             final ContextMenu numberMenu = new ContextMenu();
+            /*
+            Menü zum Erstellen von Nummern
+             */
             final ContextMenu createMenu = new ContextMenu();
 
             final MenuItem createItem = new MenuItem("Neue Nummer");
@@ -163,8 +173,16 @@ public class CreateEditController {
 
             createMenu.getItems().add(createItem);
 
+            /*
+            Zeigt Menü zum Erstellen von Kontakten an wenn es eine leere Zeile ist
+            Zeigt Menü zum Bearbeiten von Kontakten an wenn Zeile nicht leer ist
+             */
+
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty()).then(createMenu).otherwise(numberMenu));
 
+            /*
+            Handler für Doppelklick
+             */
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2) {
                     initCreateEditNumber(true);

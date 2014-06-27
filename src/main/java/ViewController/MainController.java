@@ -124,12 +124,18 @@ public class MainController {
         NumberColumn.setCellValueFactory(cellData -> cellData.getValue().getNumberProperty());
 
         /*
-        Kontext-Menü
+        RowFactory für Kontext-Menü und Doppelklick
          */
 
         ContactTable.setRowFactory(param -> {
             final TableRow<IContact> row = new TableRow<>();
+            /*
+            Menü zum Bearbeiten
+             */
             final ContextMenu contactMenu = new ContextMenu();
+            /*
+            Menü zum Erstellen
+             */
             final ContextMenu createMenu = new ContextMenu();
             final MenuItem editItem = new MenuItem("Bearbeiten");
             editItem.setOnAction(event -> {
@@ -165,6 +171,9 @@ public class MainController {
                 clipboard.setContent(clipboardContent);
             });
 
+            /*
+            Handler für Doppelklick
+             */
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2) {
                     selectedContact = row.getItem();
@@ -181,6 +190,11 @@ public class MainController {
             contactMenu.getItems().add(copyCityItem);
 
             createMenu.getItems().add(createItem);
+
+            /*
+            Zeigt Menü zum Erstellen an, wenn Zeile leer ist
+            Zeigt Menü zum Bearbeiten an, wenn Zeile nicht leer ist
+             */
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty()).then(createMenu).otherwise(contactMenu));
             return row;
         });
