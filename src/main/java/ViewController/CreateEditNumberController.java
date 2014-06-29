@@ -46,7 +46,12 @@ public class CreateEditNumberController {
      */
     public void SaveNumberClick(ActionEvent actionEvent) {
         if (NrBox.getText().length() > 0) {
-            contactNumbers.add(new ContactNumber(TypeChoiceBox.getValue(), NrBox.getText()));
+            if (controller.getNumberToEdit() != null) {
+                controller.getNumberToEdit().setNumber(NrBox.getText());
+                controller.getNumberToEdit().setType(TypeChoiceBox.getValue());
+            } else {
+                contactNumbers.add(new ContactNumber(TypeChoiceBox.getValue(), NrBox.getText()));
+            }
             controller.updatePhoneNrTable();
             closeModal(actionEvent);
         } else {
