@@ -1,9 +1,6 @@
 import BusinessLogic.BlContacts;
 import BusinessLogic.ErrorLog;
-import Interfaces.IBlContacts;
-import Interfaces.IContact;
-import Interfaces.IContactList;
-import Interfaces.IContactNumberList;
+import Interfaces.*;
 import Model.*;
 import Model.Error;
 import junit.framework.TestCase;
@@ -144,6 +141,38 @@ public class TestBlContacts extends TestCase {
         logger.info("updateContacts erfolgreich getestet");
         deleteTempDb(testPath + "UpdateContacts.db");
     }
+
+    public void testNumberManagement() {
+        IBlContacts createNumberBl = new BlContacts();
+        createNumberBl.setDbPath(testPath + "CreateNumber.db");
+        createNumberBl.initDB();
+
+        contactList.forEach(createNumberBl::createContactInDB);
+
+        IContactList resultList = createNumberBl.getContactsFromDB();
+        IContactNumber testNumber = new ContactNumber(ContactNumberType.Mobile, "123456");
+        resultList.get(0).getContactNumbers().add(testNumber);
+        createNumberBl.updateContactInDB(resultList.get(0));
+        resultList = createNumberBl.getContactsFromDB();
+        assertTrue(resultList.get(0).getContactNumbers().contains(testNumber));
+        logger.info("CreateNumber durch Contact-Update erfolgreich getestet");
+
+        resultList.get(0).getContactNumbers().get(0).setNumber("456389");
+        createNumberBl.updateContactInDB(resultList.get(0));
+        resultList = createNumberBl.getContactsFromDB();
+        assertTrue(resultList.get(0).getContactNumbers().get(0).getNumber().equals("456389"));
+        logger.info("Update von Nummer erfolgreich getestet");
+
+        testNumber = resultList.get(0).getContactNumbers().remove(0);
+        resultList.get(0).getContactNumbers().remove(testNumber);
+        createNumberBl.updateContactInDB(resultList.get(0));
+        resultList = createNumberBl.getContactsFromDB();
+        assertFalse(resultList.get(0).getContactNumbers().contains(testNumber));
+        logger.info("Entfernen von Nummer erfolgreich getestet");
+
+        deleteTempDb(testPath + "CreateNumber.db");
+    }
+
 
     /**
      * Hilfsmethode zum ablöschen der diversten TempDBs
