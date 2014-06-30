@@ -206,9 +206,10 @@ public class BlContacts implements IBlContacts {
      */
     @Override
     public int createContactInDB(IContact contact) {
-        Connection connection = prepareConnection();
+
         try {
             if (!ContactExistsInDatabase(contact)) {
+                Connection connection = prepareConnection();
                 String houseNumber = contact.getAddress().getStreetAddress();
                 String street = IUtil.extractStreet(contact.getAddress().getStreetAddress());
                 houseNumber = houseNumber.substring(street.length(), houseNumber.length());
